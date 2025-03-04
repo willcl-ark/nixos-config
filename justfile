@@ -1,0 +1,74 @@
+set shell := ["bash", "-uc"]
+os := os()
+hostname := "desktop"
+user := "will"
+
+[private]
+default:
+    just --list
+
+# Build configuration without switching
+[group('local')]
+build:
+    nixos-rebuild build --flake .#{{hostname}}
+
+# Build and switch to new configuration
+[group('local')]
+switch:
+    sudo nixos-rebuild switch --flake .#{{hostname}}
+
+# Build a VM for testing
+[group('test')]
+build-vm:
+    nixos-rebuild build-vm --flake .#{{hostname}}
+
+# Show what would change without building
+[group('test')]
+dry-run:
+    nixos-rebuild dry-run --flake .#{{hostname}}
+
+# Update system and home-manager inputs
+[group('update')]
+update:
+    nix flake update
+
+# Update specific input
+[group('update')]
+update-input input="nixpkgs":
+    nix flake lock --update-input {{input}}
+
+# Clean up old generations (keeps last 3)
+[group('maintenance')]
+cleanup-generations:
+    sudo nix-collect-garbage --delete-older-than 14d
+    sudo nixos-rebuild boot --flake .#{{hostname}}
+
+# Check NixOS configuration for errors
+[group('check')]
+check-config:
+    nixos-rebuild dry-activate --flake .#{{hostname}}
+
+# Rebuild user environment (home-manager standalone)
+[group('home')]
+update-home:
+    nix run nixpkgs#home-manager -- switch --flake .#{{user}}@{{os}}
+
+# Copy the current hardware configuration to the repo
+[group('system')]
+update-hardware:
+    sudo cp /etc/nixos/hardware-configuration.nix hosts/desktop/hardware-configuration.nix
+
+# Run a garbage collection
+[group('maintenance')]
+gc:
+    sudo nix-collect-garbage -d
+
+# Create a boot entry for current configuration
+[group('system')]
+boot:
+    sudo nixos-rebuild boot --flake .#{{hostname}}
+
+# List system generations
+[group('info')]
+generations:
+    sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
