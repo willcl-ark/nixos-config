@@ -15,7 +15,7 @@
       modules = [
         ./hosts/desktop/configuration.nix
         ./hosts/desktop/hardware-configuration.nix
-        ./modules/desktop.nix
+        ./modules/desktop-environment.nix
 
         # home-manager as module
         home-manager.nixosModules.home-manager

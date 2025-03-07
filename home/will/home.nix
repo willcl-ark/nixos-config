@@ -7,12 +7,14 @@
     ./programs/fish.nix
     ./programs/ghostty.nix
     ./programs/tmux.nix
+    ./programs/sway.nix
   ];
 
   home.packages = with pkgs; [
     bitwarden
     fastfetch
     firefox
+    wl-clipboard # Wayland clipboard utilities
     helm
     k3d
     k9s
