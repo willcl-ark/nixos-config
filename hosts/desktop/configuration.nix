@@ -20,12 +20,27 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
+    bat
     curl
+    eza
+    fd
+    fzf
     git
     gnupg
+    htop
+    jq
     just
+    magic-wormhole
+    mosh
+    ncdu
+    nettools
+    nfs
     pinentry-curses
     pinentry-gtk2 # For GUI PIN entry
+    ripgrep
+    rsync
+    time
+    tor
     wget
     yubikey-manager
     yubikey-personalization

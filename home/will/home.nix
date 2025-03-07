@@ -10,36 +10,26 @@
   ];
 
   home.packages = with pkgs; [
-    # Genral/cli
-    bat
-    curl
-    eza
-    fd
-    fzf
-    htop
-    jq
-    just
-    magic-wormhole
-    mosh
-    ripgrep
-    ruff
-    time
-    uv
-    weechat
-
-    # GUI
-    firefox
-
-    # Audio
-    imv # Image viewer
-    networkmanagerapplet # Network management GUI
-    pavucontrol
-
-    # Other
     bitwarden
+    fastfetch
+    firefox
+    helm
+    k3d
+    k9s
+    ksnip
+    msmtp
+    networkmanagerapplet # Network management GUI
+    nicotine-plus
+    pavucontrol
+    ruff
     signal-desktop
     tailscale
+    tokei
+    tor-browser
+    urlscan
+    uv
     vlc
+    weechat
   ];
 
   programs = {
