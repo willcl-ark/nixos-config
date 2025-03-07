@@ -6,12 +6,11 @@
     ./programs/development.nix
     ./programs/fish.nix
     ./programs/ghostty.nix
-    ./programs/neovim.nix
     ./programs/tmux.nix
   ];
 
   home.packages = with pkgs; [
-    # General dev tools
+    # Genral/cli
     bat
     curl
     eza
@@ -26,6 +25,7 @@
     ruff
     time
     uv
+    weechat
 
     # GUI
     firefox
