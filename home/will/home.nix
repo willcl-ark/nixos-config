@@ -12,6 +12,7 @@
 
   home.packages = with pkgs; [
     bitwarden
+    borgbackup
     fastfetch
     firefox
     helm
