@@ -108,7 +108,7 @@
     displayManager.defaultSession = "sway";
   };
 
-  services.xserver.xkbOptions = "caps:escape";
+  services.xserver.xkb.options = "caps:escape";
 
   # Docker configuration
   virtualisation = {
