@@ -37,13 +37,14 @@
     cmake-language-server
     gitlint
     isort
-    jsonlint
-    luacheck
-    markdownlint
+    luajitPackages.luacheck
+    markdownlint-cli
     mdformat
+    nodePackages.jsonlint
     pyright
     stylua
-    typos-cli
+    typos
+    typos-lsp
     yamllint
     zls
 

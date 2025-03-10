@@ -34,7 +34,7 @@
     mosh
     ncdu
     nettools
-    nfs
+    nfs-utils
     pinentry-curses
     pinentry-gtk2 # For GUI PIN entry
     ripgrep
