@@ -20,6 +20,7 @@
     k9s
     ksnip
     msmtp
+    mullvad
     neomutt
     networkmanagerapplet
     nicotine-plus
