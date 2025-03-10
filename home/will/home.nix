@@ -14,13 +14,13 @@
     bitwarden
     fastfetch
     firefox
-    wl-clipboard # Wayland clipboard utilities
     helm
     k3d
     k9s
     ksnip
     msmtp
-    networkmanagerapplet # Network management GUI
+    neomutt
+    networkmanagerapplet
     nicotine-plus
     pavucontrol
     ruff
@@ -32,6 +32,7 @@
     uv
     vlc
     weechat
+    wl-clipboard
   ];
 
   programs = {
