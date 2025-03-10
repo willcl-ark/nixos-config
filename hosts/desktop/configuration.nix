@@ -104,9 +104,11 @@
     initialPassword = "changeme";
   };
 
-  services.xserver = {
+  services = {
     displayManager.defaultSession = "sway";
   };
+
+  services.xserver.xkbOptions = "caps:escape";
 
   # Docker configuration
   virtualisation = {
