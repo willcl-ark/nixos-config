@@ -104,10 +104,7 @@
     initialPassword = "changeme";
   };
 
-  # Explicitly disable GNOME and set Sway as default
   services.xserver = {
-    desktopManager.gnome.enable = false;
-    displayManager.gdm.enable = false;
     displayManager.defaultSession = "sway";
   };
 
