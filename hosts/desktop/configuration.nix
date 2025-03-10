@@ -104,9 +104,12 @@
     initialPassword = "changeme";
   };
 
-  # Explicitly disable GNOME
-  services.xserver.desktopManager.gnome.enable = false;
-  services.xserver.displayManager.gdm.enable = false;
+  # Explicitly disable GNOME and set Sway as default
+  services.xserver = {
+    desktopManager.gnome.enable = false;
+    displayManager.gdm.enable = false;
+    displayManager.defaultSession = "sway";
+  };
 
   # Docker configuration
   virtualisation = {

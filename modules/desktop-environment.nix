@@ -4,8 +4,6 @@
   # Enable minimal X11 services for compatibility
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = false; # Explicitly disable GDM
-    desktopManager.gnome.enable = false; # Explicitly disable GNOME
   };
 
   # Keyboard layout
@@ -46,7 +44,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd ${pkgs.sway}/bin/sway";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
         user = "greeter";
       };
     };
