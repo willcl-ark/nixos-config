@@ -79,6 +79,10 @@
     # YubiKey support
     pcscd.enable = true; # Smart card daemon for Yubikey
     udev.packages = [ pkgs.yubikey-personalization pkgs.libu2f-host ];
+    
+    displayManager.defaultSession = "sway";
+    
+    xserver.xkb.options = "caps:escape";
   };
 
   time.timeZone = "Europe/London";
@@ -103,12 +107,6 @@
     extraGroups = [ "wheel" "networkmanager" "docker" ];
     initialPassword = "changeme";
   };
-
-  services = {
-    displayManager.defaultSession = "sway";
-  };
-
-  services.xserver.xkb.options = "caps:escape";
 
   # Docker configuration
   virtualisation = {
