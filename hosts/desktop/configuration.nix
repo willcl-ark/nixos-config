@@ -90,6 +90,10 @@
     initialPassword = "changeme";
   };
 
+  # Explicitly disable GNOME
+  services.xserver.desktopManager.gnome.enable = false;
+  services.xserver.displayManager.gdm.enable = false;
+
   # Docker configuration
   virtualisation = {
     docker = {

@@ -1,8 +1,12 @@
 { pkgs, ... }:
 
 {
-  # Disable X11 services since we're using Wayland
-  services.xserver.enable = false;
+  # Enable minimal X11 services for compatibility
+  services.xserver = {
+    enable = true;
+    displayManager.gdm.enable = false; # Explicitly disable GDM
+    desktopManager.gnome.enable = false; # Explicitly disable GNOME
+  };
 
   # Keyboard layout
   console.keyMap = "uk";
@@ -42,7 +46,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd ${pkgs.sway}/bin/sway";
         user = "greeter";
       };
     };
@@ -52,6 +56,15 @@
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true; # so that gtk works properly
+    extraPackages = with pkgs; [
+      swaylock
+      swayidle
+      wl-clipboard
+      mako
+      ghostty
+      wofi
+      waybar
+    ];
   };
 
   # Add Wayland-related packages
