@@ -3,7 +3,7 @@
     # Languages and runtimes
     go
     lua
-    luajit
+    # luajit
     python3
     rustup
     zig
@@ -37,7 +37,7 @@
     cmake-language-server
     gitlint
     isort
-    luajitPackages.luacheck
+    # luajitPackages.luacheck
     markdownlint-cli
     mdformat
     nodePackages.jsonlint
