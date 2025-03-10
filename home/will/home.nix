@@ -21,7 +21,7 @@
     ksnip
     msmtp
     mullvad
-    neomutt
+    # neomutt
     networkmanagerapplet
     nicotine-plus
     pavucontrol
