@@ -86,7 +86,7 @@
           "network"
           "cpu"
           "memory"
-          "temperature"
+          # "temperature"
           "battery"
           "clock"
           "tray"
@@ -104,20 +104,20 @@
             <tt><small>{calendar}</small></tt>'';
         };
 
-        "cpu" = { format = "CPU {usage}%"; };
+        "cpu" = { format = "CPU {usage}% "; };
 
-        "memory" = { format = "RAM {}%"; };
+        "memory" = { format = "RAM {}% "; };
 
-        "battery" = { format = "BAT {capacity}%"; };
+        "battery" = { format = "BAT {capacity}% "; };
 
         "network" = {
-          format-wifi = "WiFi ({signalStrength}%)";
-          format-ethernet = "ETH";
-          format-disconnected = "Disconnected";
+          format-wifi = "WiFi ({signalStrength}%) ";
+          format-ethernet = "ETH ";
+          format-disconnected = "Disconnected ";
         };
 
         "pulseaudio" = {
-          format = "VOL {volume}%";
+          format = "VOL {volume}% ";
           on-click = "pavucontrol";
         };
       };
