@@ -1,6 +1,6 @@
 set shell := ["bash", "-uc"]
 os := os()
-hostname := "desktop"
+host := "desktop"
 user := "will"
 
 [private]
@@ -9,26 +9,26 @@ default:
 
 # Build configuration without switching
 [group('local')]
-build:
+build hostname=host:
     nixos-rebuild build --flake .#{{hostname}}
 
 [group('remote')]
-build-test hostname=hostname:
+build-test hostname=host:
     nix-shell -p nixos-rebuild --command "nixos-rebuild build --flake .#{{hostname}} --impure --show-trace"
 
 # Build and switch to new configuration
 [group('local')]
-switch:
+switch hostname=host:
     sudo nixos-rebuild switch --flake .#{{hostname}}
 
 # Build a VM for testing
 [group('test')]
-build-vm:
+build-vm hostname=host:
     nixos-rebuild build-vm --flake .#{{hostname}}
 
 # Show what would change without building
 [group('test')]
-dry-run:
+dry-run hostname=host:
     nixos-rebuild dry-run --flake .#{{hostname}}
 
 # Update system and home-manager inputs
@@ -43,13 +43,13 @@ update-input input="nixpkgs":
 
 # Clean up old generations (keeps last 3)
 [group('maintenance')]
-cleanup-generations:
+cleanup-generations hostname=host:
     sudo nix-collect-garbage --delete-older-than 14d
     sudo nixos-rebuild boot --flake .#{{hostname}}
 
 # Check NixOS configuration for errors
 [group('check')]
-check-config:
+check-config hostname=host:
     nixos-rebuild dry-activate --flake .#{{hostname}}
 
 # Rebuild user environment (home-manager standalone)
@@ -69,7 +69,7 @@ gc:
 
 # Create a boot entry for current configuration
 [group('system')]
-boot:
+boot hostname=host:
     sudo nixos-rebuild boot --flake .#{{hostname}}
 
 # List system generations
