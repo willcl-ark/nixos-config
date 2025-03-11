@@ -6,16 +6,8 @@
 
   # Boot configuration
   boot.loader = {
-    grub = {
-      enable = true;
-      device = "nodev"; # Use nodev instead of a specific device
-      useOSProber = true;
-      efiSupport = false;
-      forceInstall = true;
-    };
-    # TODO: switch to UEFI
-    # systemd-boot.enable = true;
-    # efi.canTouchEfiVariables = true;
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
 
   # System packages
@@ -79,9 +71,9 @@
     # YubiKey support
     pcscd.enable = true; # Smart card daemon for Yubikey
     udev.packages = [ pkgs.yubikey-personalization pkgs.libu2f-host ];
-    
+
     displayManager.defaultSession = "sway";
-    
+
     xserver.xkb.options = "caps:escape";
   };
 
