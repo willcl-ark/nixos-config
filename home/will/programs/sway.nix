@@ -74,78 +74,11 @@
   # Configure waybar
   programs.waybar = {
     enable = true;
-    settings = {
-      mainBar = {
-        layer = "top";
-        position = "top";
-        height = 30;
-        modules-left = [ "sway/workspaces" "sway/mode" ];
-        modules-center = [ "sway/window" ];
-        modules-right = [
-          "pulseaudio"
-          "network"
-          "cpu"
-          "memory"
-          # "temperature"
-          "battery"
-          "clock"
-          "tray"
-        ];
-
-        "sway/workspaces" = {
-          disable-scroll = true;
-          all-outputs = true;
-        };
-
-        "clock" = {
-          format = "{:%H:%M %d/%m/%Y}";
-          tooltip-format = ''
-            <big>{:%Y %B}</big>
-            <tt><small>{calendar}</small></tt>'';
-        };
-
-        "cpu" = { format = "CPU {usage}% "; };
-
-        "memory" = { format = "RAM {}% "; };
-
-        "battery" = { format = "BAT {capacity}% "; };
-
-        "network" = {
-          format-wifi = "WiFi ({signalStrength}%) ";
-          format-ethernet = "ETH ";
-          format-disconnected = "Disconnected ";
-        };
-
-        "pulseaudio" = {
-          format = "VOL {volume}% ";
-          on-click = "pavucontrol";
-        };
-      };
-    };
-
-    style = ''
-      * {
-        font-family: JetBrainsMono Nerd Font;
-        font-size: 13px;
-      }
-
-      window#waybar {
-        background: #2d2d2d;
-        color: #ffffff;
-      }
-
-      #workspaces button {
-        padding: 0 5px;
-        background: transparent;
-        color: #ffffff;
-        border-bottom: 3px solid transparent;
-      }
-
-      #workspaces button.focused {
-        background: #444444;
-        border-bottom: 3px solid #ffffff;
-      }
-    '';
+    # Use the custom configuration file from sway/config
+    settings = builtins.fromJSON (builtins.readFile ./sway/config);
+    
+    # Use the custom style from sway/style.css
+    style = builtins.readFile ./sway/style.css;
   };
 
   # Configure the notification daemon
