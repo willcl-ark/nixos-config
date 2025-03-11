@@ -75,7 +75,9 @@
   programs.waybar = {
     enable = true;
     # Use the custom configuration file from sway/config
-    settings = builtins.fromJSON (builtins.readFile ./sway/config);
+    settings = {
+      mainBar = builtins.fromJSON (builtins.readFile ./sway/config);
+    };
     
     # Use the custom style from sway/style.css
     style = builtins.readFile ./sway/style.css;

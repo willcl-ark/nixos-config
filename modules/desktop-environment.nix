@@ -2,9 +2,7 @@
 
 {
   # Enable minimal X11 services for compatibility
-  services.xserver = {
-    enable = true;
-  };
+  services.xserver = { enable = true; };
 
   # Keyboard layout
   console.keyMap = "uk";
@@ -71,19 +69,6 @@
     brightnessctl
     wayland
     xdg-utils
-
-    # Application launcher and menus
-    wofi
-
-    # Notification daemon
-    mako
-
-    # Status bar
-    waybar
-
-    # Screen locker
-    swaylock
-    swayidle
 
     # Screenshot and screen recording
     grim

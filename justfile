@@ -12,6 +12,10 @@ default:
 build:
     nixos-rebuild build --flake .#{{hostname}}
 
+[group('remote')]
+build-test hostname=hostname:
+    nix-shell -p nixos-rebuild --command "nixos-rebuild build --flake .#{{hostname}} --impure --show-trace"
+
 # Build and switch to new configuration
 [group('local')]
 switch:

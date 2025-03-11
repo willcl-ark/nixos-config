@@ -31,8 +31,6 @@
 		"clock#time"
 	],
 
-	// Modules
-
 	"battery": {
 		"interval": 10,
 		"states": {
@@ -65,7 +63,6 @@
 		"interval": 20,
 		"format": "{:%e %b %Y}",
 		"tooltip": false
-		//"tooltip-format": "{:%e %B %Y}"
 	},
 
 	"cpu": {
@@ -157,7 +154,6 @@
 
 	"tray": {
 		"icon-size": 18
-		//"spacing": 10
 	},
 
 	"custom/arrow1": {
@@ -210,5 +206,3 @@
 		"tooltip": false
 	}
 }
-
-// vi:ft=jsonc
