@@ -3,7 +3,7 @@
     enable = true;
     config = {
       modifier = "Mod4"; # Super key
-      terminal = "foot";
+      terminal = "ghostty";
       menu = "wofi --show drun";
 
       # Use waybar as the default bar
@@ -19,7 +19,7 @@
       keybindings =
         let modifier = config.wayland.windowManager.sway.config.modifier;
         in lib.mkOptionDefault {
-          "${modifier}+Return" = "exec foot";
+          "${modifier}+Return" = "exec ghostty";
           "${modifier}+d" = "exec wofi --show drun";
           "${modifier}+Shift+e" =
             "exec swaynag -t warning -m 'Do you want to exit sway?' -b 'Yes' 'swaymsg exit'";
@@ -34,7 +34,10 @@
 
       # Set up input devices
       input = {
-        "type:keyboard" = { xkb_layout = "gb"; };
+        "type:keyboard" = {
+          xkb_layout = "gb";
+          xkb_options = "caps:escape";
+        };
 
         "type:touchpad" = {
           tap = "enabled";
