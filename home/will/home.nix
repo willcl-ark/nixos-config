@@ -70,7 +70,6 @@
 
     direnv = {
       enable = true;
-      enableFishIntegration = true;
       package = pkgs.direnv;
       nix-direnv = {
         enable = true;
