@@ -55,14 +55,22 @@
   ];
 
   programs = {
-    bash = {
+    fish = {
       enable = true;
-      bashrcExtra = "";
+      interactiveShellInit = ''
+        set fish_greeting # Disable greeting
+      '';
+      plugins = [
+        {
+          name = "fzf-fish";
+          src = pkgs.fishPlugins.fzf-fish.src;
+        }
+      ];
     };
 
     direnv = {
       enable = true;
-      enableBashIntegration = true;
+      enableFishIntegration = true;
       package = pkgs.direnv;
       nix-direnv = {
         enable = true;
@@ -72,7 +80,7 @@
 
     fzf = {
       enable = true;
-      enableBashIntegration = true;
+      enableFishIntegration = true;
     };
 
     gpg = {
@@ -169,6 +177,7 @@
 
     starship = {
       enable = true;
+      enableFishIntegration = true;
       settings = {
         directory.truncation_length = 3;
         gcloud.disabled = true;
@@ -179,7 +188,7 @@
 
     zoxide = {
       enable = true;
-      enableBashIntegration = true;
+      enableFishIntegration = true;
     };
   };
 

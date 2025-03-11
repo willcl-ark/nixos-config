@@ -10,6 +10,7 @@
 
     # Development tools
     just
+    neovim
     qemu
     ruff
     uv

@@ -24,6 +24,7 @@
     just
     magic-wormhole
     mosh
+    neovim
     ncdu
     nettools
     nfs-utils
@@ -37,6 +38,8 @@
     yubikey-manager
     yubikey-personalization
   ];
+
+  programs.fish.enable = true; # Enables vendor fish completions
 
   # Better firmware handling
   hardware.enableAllFirmware = true;
