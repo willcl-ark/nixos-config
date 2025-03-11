@@ -10,6 +10,23 @@
     ./programs/sway.nix
   ];
 
+  # Explicitly allow home-manager to use system packages
+  home.enableNixpkgsReleaseCheck = false;
+
+  # Make sure PATH includes system packages
+  home.sessionPath = [ "/run/current-system/sw/bin" ];
+
+  # Set Wayland environment variables
+  home.sessionVariables = {
+    XDG_SESSION_TYPE = "wayland";
+    XDG_CURRENT_DESKTOP = "sway";
+    MOZ_ENABLE_WAYLAND = "1";
+    QT_QPA_PLATFORM = "wayland";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+    SDL_VIDEODRIVER = "wayland";
+  };
+
   home.packages = with pkgs; [
     bitwarden
     borgbackup
