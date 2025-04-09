@@ -157,26 +157,26 @@
       #     file-decoration-style = "none";
       #     file-style = "bold yellow ul";
       #   };
-        features = "line-numbers decorations mellow-barbet";
-        whitespace-error-style = "22 reverse";
-      };
+      features = "line-numbers decorations mellow-barbet";
+      whitespace-error-style = "22 reverse";
     };
+  };
 
-    starship = {
-      enable = true;
-      enableFishIntegration = true;
-      settings = {
-        directory.truncation_length = 3;
-        gcloud.disabled = true;
-        memory_usage.disabled = true;
-        shlvl.disabled = false;
-      };
+  starship = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      directory.truncation_length = 3;
+      gcloud.disabled = true;
+      memory_usage.disabled = true;
+      shlvl.disabled = false;
     };
+  };
 
-    zoxide = {
-      enable = true;
-      enableFishIntegration = true;
-    };
+  zoxide = {
+    enable = true;
+    enableFishIntegration = true;
+  };
 
   services = {
     gpg-agent = {

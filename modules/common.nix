@@ -69,8 +69,6 @@
     pcscd.enable = true; # Smart card daemon for Yubikey
     udev.packages = [ pkgs.yubikey-personalization pkgs.libu2f-host ];
 
-    displayManager.defaultSession = "sway";
-
     xserver.xkb.options = "caps:escape";
   };
 
