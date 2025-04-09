@@ -3,11 +3,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-  };
-
   environment.systemPackages = with pkgs; [
     bat
     curl
@@ -40,23 +35,17 @@
 
   hardware.enableAllFirmware = true;
 
-  # Networking base config
   networking = {
     networkmanager.enable = true;
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 ]; # ssh
-      allowedUDPPorts = [ 51820 ]; # wireguard
+      allowedTCPPorts = [ ];
+      allowedUDPPorts = [ ];
       allowPing = true;
     };
   };
 
   services = {
-    printing = {
-      enable = true;
-      drivers = [ pkgs.gutenprint ];
-    };
-
     openssh.enable = true;
 
     tailscale = {
@@ -96,13 +85,10 @@
   virtualisation = {
     docker = {
       enable = true;
-      # Rootless mode
-      # rootless = {
-      #   enable = true;
-      #   setSocketVariable = true;
-      # };
-      # Root mode
-      daemon.settings = { storage-driver = "overlay2"; };
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
     };
   };
 

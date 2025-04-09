@@ -1,15 +1,9 @@
 { pkgs, ... }:
 
 {
-  # System-wide configuration
-  environment.systemPackages = with pkgs; [
-    dejavu_fonts
-    font-awesome
-    noto-fonts
-    noto-fonts-emoji
-    nerdfonts.jetbrains-mono
-  ];
+  imports = [ ./common.nix ];
 
+  # System-wide configuration
   console.keyMap = "uk";
 
   fonts = {
@@ -44,11 +38,4 @@
     blueman.enable = true;
     dbus.enable = true;
   };
-
-  hardware = {
-    bluetooth.enable = true;
-    acpilight.enable = true;
-  };
-
-  security.rtkit.enable = true;
 }

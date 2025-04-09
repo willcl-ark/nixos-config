@@ -9,10 +9,7 @@
     zig
 
     # Development tools
-    just
-    neovim
     qemu
-    ruff
     uv
 
     # Build tools
@@ -22,7 +19,6 @@
     docker
     elfutils
     findutils
-    git
     gnugrep
     gnumake
     gnused
@@ -43,6 +39,7 @@
     mdformat
     nodePackages.jsonlint
     pyright
+    ruff
     stylua
     typos
     typos-lsp

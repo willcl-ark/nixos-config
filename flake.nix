@@ -31,6 +31,13 @@
         ];
       };
 
+      # Standalone home-manager configuration
+      # Used by 'just update-home'
+      homeConfigurations."will@linux" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./home/will/home.nix ];
+      };
+
       formatter.${system} = pkgs.nixpkgs-fmt;
     };
 }

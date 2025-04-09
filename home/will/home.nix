@@ -31,31 +31,15 @@
     networkmanagerapplet
     nicotine-plus
     pavucontrol
-    ruff
     signal-desktop
-    tailscale
     tokei
     tor-browser
     urlscan
-    uv
     vlc
     weechat
   ];
 
   programs = {
-    fish = {
-      enable = true;
-      interactiveShellInit = ''
-        set fish_greeting # Disable greeting
-      '';
-      plugins = [
-        {
-          name = "fzf-fish";
-          src = pkgs.fishPlugins.fzf-fish.src;
-        }
-      ];
-    };
-
     direnv = {
       enable = true;
       package = pkgs.direnv;
@@ -150,13 +134,6 @@
         tags =
           "!sh -c 'git for-each-ref --sort=-taggerdate --format=\"%(refname:lstrip=2)\" refs/tags | fzf | xargs git checkout'";
       };
-      # delta.options = {
-      #   decorations = {
-      #     commit-decoration-style = "bold yellow box ul";
-      #     commit-style = "raw";
-      #     file-decoration-style = "none";
-      #     file-style = "bold yellow ul";
-      #   };
       features = "line-numbers decorations mellow-barbet";
       whitespace-error-style = "22 reverse";
     };

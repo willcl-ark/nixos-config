@@ -76,3 +76,14 @@ boot hostname=host:
 [group('info')]
 generations:
     sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+
+# Comprehensive system upgrade: update flake inputs and rebuild system
+[group('update')]
+upgrade hostname=host user=user:
+    echo "Updating flake inputs..."
+    nix flake update
+    echo "Rebuilding system configuration..."
+    sudo nixos-rebuild switch --flake .#{{hostname}}
+    echo "Updating home-manager configuration..."
+    nix run nixpkgs#home-manager -- switch --flake .#{{user}}@{{os}}
+    echo "System upgrade complete!"
