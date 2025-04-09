@@ -7,7 +7,6 @@
     ./programs/fish.nix
     ./programs/ghostty.nix
     ./programs/tmux.nix
-    ./programs/sway.nix
   ];
 
   # Explicitly allow home-manager to use system packages
@@ -16,18 +15,8 @@
   # Make sure PATH includes system packages
   home.sessionPath = [ "/run/current-system/sw/bin" ];
 
-  # Set Wayland environment variables
-  home.sessionVariables = {
-    XDG_SESSION_TYPE = "wayland";
-    XDG_CURRENT_DESKTOP = "sway";
-    MOZ_ENABLE_WAYLAND = "1";
-    QT_QPA_PLATFORM = "wayland";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    SDL_VIDEODRIVER = "wayland";
-  };
-
   home.packages = with pkgs; [
+    asciinema
     bitwarden
     borgbackup
     fastfetch
@@ -37,7 +26,7 @@
     k9s
     ksnip
     msmtp
-    # mullvad
+    mullvad
     # neomutt
     networkmanagerapplet
     nicotine-plus
@@ -51,7 +40,6 @@
     uv
     vlc
     weechat
-    wl-clipboard
   ];
 
   programs = {
@@ -109,7 +97,7 @@
         init.defaultBranch = "master";
         pull.rebase = true;
         push.autoSetupRemote = true;
-        core.editor = "nvim";
+        core.editor = "${pkgs.nvim}/bin/nvim";
         gpg.program = "${pkgs.gnupg}/bin/gpg2";
       };
       aliases = {
@@ -162,13 +150,13 @@
         tags =
           "!sh -c 'git for-each-ref --sort=-taggerdate --format=\"%(refname:lstrip=2)\" refs/tags | fzf | xargs git checkout'";
       };
-      delta.options = {
-        decorations = {
-          commit-decoration-style = "bold yellow box ul";
-          commit-style = "raw";
-          file-decoration-style = "none";
-          file-style = "bold yellow ul";
-        };
+      # delta.options = {
+      #   decorations = {
+      #     commit-decoration-style = "bold yellow box ul";
+      #     commit-style = "raw";
+      #     file-decoration-style = "none";
+      #     file-style = "bold yellow ul";
+      #   };
         features = "line-numbers decorations mellow-barbet";
         whitespace-error-style = "22 reverse";
       };
@@ -189,7 +177,6 @@
       enable = true;
       enableFishIntegration = true;
     };
-  };
 
   services = {
     gpg-agent = {
@@ -202,5 +189,5 @@
     };
   };
 
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 }

@@ -1,21 +1,24 @@
 { pkgs, ... }:
 
 {
-  # Enable minimal X11 services for compatibility
-  services.xserver = { enable = true; };
+  # System-wide configuration
+  environment.systemPackages = with pkgs; [
+    dejavu_fonts
+    font-awesome
+    noto-fonts
+    noto-fonts-emoji
+    nerdfonts.jetbrains-mono
+  ];
 
-  # Keyboard layout
   console.keyMap = "uk";
 
-  # Fonts configuration
-  # TODO: Get my ComicCode font in here as set it as monospace
   fonts = {
     packages = with pkgs; [
       dejavu_fonts
       font-awesome
       noto-fonts
       noto-fonts-emoji
-      nerd-fonts.jetbrains-mono
+      nerdfonts.jetbrains-mono
     ];
     fontconfig.defaultFonts = {
       monospace = [ "JetBrainsMono Nerd Font" ];
@@ -24,82 +27,28 @@
     };
   };
 
-  # Sound with pipewire
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # Bluetooth
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
-
-  # greetd display manager
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
-        user = "greeter";
-      };
+  services = {
+    xserver = {
+      enable = true;
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
     };
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+
+    blueman.enable = true;
+    dbus.enable = true;
   };
 
-  # Sway and Wayland packages
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true; # so that gtk works properly
-    extraPackages = with pkgs; [
-      swaylock
-      swayidle
-      wl-clipboard
-      mako
-      ghostty
-      wofi
-      waybar
-    ];
+  hardware = {
+    bluetooth.enable = true;
+    acpilight.enable = true;
   };
 
-  # Add Wayland-related packages
-  environment.systemPackages = with pkgs; [
-    # Base utilities
-    brightnessctl
-    wayland
-    xdg-utils
-
-    # Screenshot and screen recording
-    grim
-    slurp
-    wf-recorder
-
-    # Image viewer and media player
-    imv
-    mpv
-
-    # Volume/brightness overlay bar
-    wob
-
-    # Window management helpers
-    autotiling-rs
-
-    # Terminal
-    foot
-  ];
-
-  # XDG portal for better desktop integration
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  };
-
-  # Enable dbus for service integration
-  services.dbus.enable = true;
-
-  # Ensure sway can access brightness controls without sudo
-  hardware.acpilight.enable = true;
+  security.rtkit.enable = true;
 }
-

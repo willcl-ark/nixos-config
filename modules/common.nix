@@ -1,16 +1,13 @@
 { pkgs, ... }: {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # Boot configuration
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
 
-  # System packages
   environment.systemPackages = with pkgs; [
     bat
     curl
@@ -41,22 +38,20 @@
 
   programs.fish.enable = true; # Enables vendor fish completions
 
-  # Better firmware handling
   hardware.enableAllFirmware = true;
 
-  # Networking base configuration
+  # Networking base config
   networking = {
     networkmanager.enable = true;
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 ];
-      allowedUDPPorts = [ 51820 ];
+      allowedTCPPorts = [ 22 ]; # ssh
+      allowedUDPPorts = [ 51820 ]; # wireguard
       allowPing = true;
     };
   };
 
   services = {
-    # Printing
     printing = {
       enable = true;
       drivers = [ pkgs.gutenprint ];
@@ -81,7 +76,6 @@
 
   time.timeZone = "Europe/London";
 
-  # Configure locale
   i18n.defaultLocale = "en_GB.UTF-8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_GB.UTF-8";
@@ -95,14 +89,12 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  # User account
   users.users.will = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "docker" ];
     hashedPassword = "$y$j9T$JV/cbQ/2QXvnouRK.3UPT0$9ZE12JKYtJPuQEfqHeEgl072NxE.VoTov2F/u7tyxD5";
   };
 
-  # Docker configuration
   virtualisation = {
     docker = {
       enable = true;
@@ -116,5 +108,5 @@
     };
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }

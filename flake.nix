@@ -9,7 +9,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = { nixpkgs, home-manager, ... }: {
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -17,7 +17,6 @@
         ./hosts/desktop/hardware-configuration.nix
         ./modules/desktop-environment.nix
 
-        # home-manager as module
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
@@ -33,7 +32,6 @@
         ./hosts/laptop/hardware-configuration.nix
         ./modules/desktop-environment.nix
 
-        # home-manager as module
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
