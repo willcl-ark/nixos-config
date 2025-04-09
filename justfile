@@ -31,6 +31,11 @@ build-vm hostname=host:
 dry-run hostname=host:
     nixos-rebuild dry-run --flake .#{{hostname}}
 
+# Show what would change without building
+[group('test')]
+dry-run-guest hostname=host:
+    nix-shell -p nixos-anywhere nixos-rebuild --command "nixos-rebuild dry-run --flake .#{{hostname}}"
+
 # Update system and home-manager inputs
 [group('update')]
 update:

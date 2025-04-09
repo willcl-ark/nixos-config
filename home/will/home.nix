@@ -81,7 +81,7 @@
         init.defaultBranch = "master";
         pull.rebase = true;
         push.autoSetupRemote = true;
-        core.editor = "${pkgs.nvim}/bin/nvim";
+        core.editor = "${pkgs.neovim}/bin/nvim";
         gpg.program = "${pkgs.gnupg}/bin/gpg2";
       };
       aliases = {
@@ -134,25 +134,23 @@
         tags =
           "!sh -c 'git for-each-ref --sort=-taggerdate --format=\"%(refname:lstrip=2)\" refs/tags | fzf | xargs git checkout'";
       };
-      features = "line-numbers decorations mellow-barbet";
-      whitespace-error-style = "22 reverse";
     };
-  };
 
-  starship = {
-    enable = true;
-    enableFishIntegration = true;
-    settings = {
-      directory.truncation_length = 3;
-      gcloud.disabled = true;
-      memory_usage.disabled = true;
-      shlvl.disabled = false;
+    starship = {
+      enable = true;
+      enableFishIntegration = true;
+      settings = {
+        directory.truncation_length = 3;
+        gcloud.disabled = true;
+        memory_usage.disabled = true;
+        shlvl.disabled = false;
+      };
     };
-  };
 
-  zoxide = {
-    enable = true;
-    enableFishIntegration = true;
+    zoxide = {
+      enable = true;
+      enableFishIntegration = true;
+    };
   };
 
   services = {
