@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ../../modules/common.nix ];
+  imports = [ ../../modules/common.nix ./nvidia.nix ];
 
   # Host-specific config
   boot.loader = {
