@@ -30,13 +30,17 @@
     uutils-coreutils # Rust coreutils
 
     # LSPs and linters etc.
+    basedpyright
     clang-tools
     cmake-language-server
+    fish-lsp
     gitlint
+    gopls
     isort
-    # luajitPackages.luacheck
     markdownlint-cli
     mdformat
+    nil
+    lua-language-server
     nodePackages.jsonlint
     pyright
     ruff
@@ -49,7 +53,6 @@
     # Git-related
     delta
     difftastic
-    gh
     lazygit
 
     # Misc
