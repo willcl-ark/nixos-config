@@ -15,10 +15,11 @@
     htop
     jq
     just
+    keyd
     magic-wormhole
     mosh
-    neovim
     ncdu
+    neovim
     nettools
     nfs-utils
     pinentry
@@ -61,7 +62,21 @@
     pcscd.enable = true; # Smart card daemon for Yubikey
     udev.packages = [ pkgs.yubikey-personalization pkgs.libu2f-host ];
 
-    xserver.xkb.options = "caps:escape";
+    # Remap caps lock to escape
+    keyd = {
+      enable = true;
+      keyboards = {
+        default = {
+          ids = [ "*" ]; # Apply to all keyboards
+          settings = {
+            main = {
+              "capslock" = "esc"; # Remap Caps Lock to Escape
+            };
+          };
+        };
+      };
+    };
+
   };
 
   time.timeZone = "Europe/London";
