@@ -27,6 +27,7 @@
     wl-clipboard
   ];
 
+  security.rtkit.enable = true; # Goes with pipewire
   services = {
     xserver = {
       enable = true;
