@@ -38,6 +38,17 @@
 
   programs.fish.enable = true; # Enables vendor fish completions
   documentation.man.generateCaches = false; # Disable very slow man-cache build
+  # Use fish shell by default, but not for login shell
+  # https://nixos.wiki/wiki/Fish
+  programs.bash = {
+  interactiveShellInit = ''
+    if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+    then
+      shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
+      exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
+    fi
+  '';
+};
 
   hardware.enableAllFirmware = true;
 
