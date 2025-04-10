@@ -144,6 +144,7 @@
       settings = {
         directory.truncation_length = 3;
         gcloud.disabled = true;
+        aws.disabled = true;
         memory_usage.disabled = true;
         shlvl.disabled = false;
       };
