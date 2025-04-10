@@ -13,6 +13,7 @@
     git
     gnupg
     htop
+    imagemagick
     jq
     just
     keyd
