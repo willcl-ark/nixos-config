@@ -12,9 +12,6 @@
   # Explicitly allow home-manager to use system packages
   home.enableNixpkgsReleaseCheck = false;
 
-  # Make sure PATH includes system packages
-  home.sessionPath = [ "/run/current-system/sw/bin" ];
-
   home.packages = with pkgs; [
     asciinema
     bitwarden
