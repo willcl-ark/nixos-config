@@ -23,7 +23,7 @@
     shell-integration-features = no-cursor
 
     macos-titlebar-style = hidden
-    window-decoration = false
+    # window-decoration = false
 
     # 10 MB
     scrollback-limit = 10000

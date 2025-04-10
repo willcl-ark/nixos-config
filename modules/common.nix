@@ -36,6 +36,7 @@
   ];
 
   programs.fish.enable = true; # Enables vendor fish completions
+  documentation.man.generateCaches = false; # Disable very slow man-cache build
 
   hardware.enableAllFirmware = true;
 
