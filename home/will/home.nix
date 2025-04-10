@@ -135,35 +135,44 @@
       };
     };
 
-    starship = {
+    gh = {
       enable = true;
-      enableFishIntegration = true;
+      gitCredentialHelper.enable = true;
       settings = {
-        directory.truncation_length = 3;
-        gcloud.disabled = true;
-        aws.disabled = true;
-        memory_usage.disabled = true;
-        shlvl.disabled = false;
+        git_protocol = "https";
+        prompt = "enabled";
       };
     };
 
-    zoxide = {
-      enable = true;
-      enableFishIntegration = true;
+  starship = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      directory.truncation_length = 3;
+      gcloud.disabled = true;
+      aws.disabled = true;
+      memory_usage.disabled = true;
+      shlvl.disabled = false;
     };
   };
 
-  services = {
-    gpg-agent = {
-      enable = true;
-      # enableSshSupport = true;
-      enableExtraSocket = true;
-      extraConfig = ''
+  zoxide = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+};
+
+services = {
+gpg-agent = {
+enable = true;
+# enableSshSupport = true;
+enableExtraSocket = true;
+extraConfig = ''
         allow-loopback-pinentry
         pinentry-program /run/current-system/sw/bin/pinentry-gnome3
       '';
-    };
-  };
+};
+};
 
-  home.stateVersion = "25.05";
+home.stateVersion = "25.05";
 }
