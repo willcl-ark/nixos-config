@@ -26,6 +26,7 @@
     neomutt
     networkmanagerapplet
     nicotine-plus
+    nzbget
     pavucontrol
     signal-desktop
     tokei
