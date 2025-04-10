@@ -21,6 +21,10 @@
     };
   };
 
+  environment.systemPackages = with pkgs; [
+    wl-clipboard
+  ];
+
   services = {
     xserver = {
       enable = true;

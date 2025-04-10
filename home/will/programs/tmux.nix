@@ -27,9 +27,9 @@
       set -g prefix C-a
       bind C-a send-prefix
 
-      # copy to X clipboard
+      # copy to clipboard
       bind -T copy-mode-vi v send -X begin-selection
-      bind -T copy-mode-vi y send-keys -X copy-pipe 'xclip --clipboard &> /dev/null'
+      bind -T copy-mode-vi y send-keys -X copy-pipe 'wl-copy &> /dev/null'
       bind -T copy-mode-vi Enter send-keys -X cancel
 
       # shortcut for moving tmux buffer to clipboard
