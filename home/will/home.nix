@@ -58,12 +58,15 @@
       package = pkgs.gnupg;
       homedir = "${config.home.homeDirectory}/.gnupg";
       settings = {
-        # Use a Yubikey reader
-        reader-port = "Yubikey";
         # Always use the card
         use-agent = true;
         # Cache for 10 minutes
-        default-cache-ttl = "600";
+        # default-cache-ttl = "600";
+      };
+      scdaemonSettings = {
+        # Use a Yubikey reader
+        reader-port = "Yubikey";
+        disable-ccid = true;
       };
     };
 
@@ -159,6 +162,7 @@
       enableExtraSocket = true;
       extraConfig = ''
         allow-loopback-pinentry
+        pinentry-program /run/current-system/sw/bin/pinentry-gnome3
       '';
     };
   };

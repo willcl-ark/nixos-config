@@ -21,8 +21,10 @@
     ncdu
     nettools
     nfs-utils
+    pinentry
     pinentry-curses
-    pinentry-gtk2 # For GUI PIN entry
+    pinentry-gnome3
+    pinentry-tty
     ripgrep
     rsync
     time
