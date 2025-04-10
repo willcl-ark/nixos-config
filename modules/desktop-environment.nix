@@ -10,9 +10,11 @@
     packages = with pkgs; [
       dejavu_fonts
       font-awesome
+      nerd-fonts.droid-sans-mono
+      nerd-fonts.fira-code
+      nerd-fonts.jetbrains-mono
       noto-fonts
       noto-fonts-emoji
-      nerd-fonts.jetbrains-mono
     ];
     fontconfig.defaultFonts = {
       monospace = [ "JetBrainsMono Nerd Font" ];
