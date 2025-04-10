@@ -27,6 +27,7 @@
     networkmanagerapplet
     nicotine-plus
     nzbget
+    offlineimap
     pavucontrol
     signal-desktop
     tokei
