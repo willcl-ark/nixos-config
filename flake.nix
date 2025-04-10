@@ -27,6 +27,8 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.will = import ./home/will/home.nix;
+            # Backup files that would be overwritten by home-manager
+            home-manager.backupFileExtension = "backup";
           }
         ];
       };
