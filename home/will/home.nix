@@ -30,6 +30,7 @@
     offlineimap
     pavucontrol
     signal-desktop
+    telegram-desktop
     tokei
     tor-browser
     urlscan
