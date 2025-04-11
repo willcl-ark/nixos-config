@@ -44,6 +44,7 @@
     nodePackages.jsonlint
     pyright
     ruff
+    shellcheck
     stylua
     typos
     typos-lsp
