@@ -41,6 +41,7 @@
     mdformat
     nil
     lua-language-server
+    lua54Packages.luacheck
     nodePackages.jsonlint
     pyright
     ruff
