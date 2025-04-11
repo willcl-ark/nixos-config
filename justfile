@@ -20,6 +20,7 @@ build-test hostname=host:
 [group('local')]
 switch hostname=host:
     sudo nixos-rebuild switch --flake .#{{hostname}}
+    -unlink result
 
 # Build a VM for testing
 [group('test')]
