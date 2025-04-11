@@ -15,6 +15,7 @@
   home.packages = with pkgs; [
     asciinema
     bitwarden
+    claude-code
     fastfetch
     firefox
     helm
