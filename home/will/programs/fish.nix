@@ -20,8 +20,7 @@
     ];
 
     shellAliases = {
-      l = "eza -la";
-      ll = "eza -l";
+      ll = "eza -al";
       vim = "nvim";
     };
 
