@@ -26,6 +26,8 @@
     neomutt
     networkmanagerapplet
     nicotine-plus
+    notmuch
+    notmuch-addrlookup
     nzbget
     offlineimap
     pavucontrol
