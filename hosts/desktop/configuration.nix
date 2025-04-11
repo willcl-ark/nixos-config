@@ -9,6 +9,7 @@
 
   environment.systemPackages = with pkgs; [
     apcupsd
+    guix
     pavucontrol
   ];
 
@@ -24,5 +25,6 @@
       enable = true;
       drivers = [ pkgs.gutenprint ];
     };
+    guix.enable = true;
   };
 }
