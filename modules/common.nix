@@ -29,6 +29,7 @@
     pinentry-tty
     ripgrep
     rsync
+    stow
     time
     tor
     tree
@@ -37,7 +38,10 @@
     yubikey-personalization
   ];
 
-  programs.fish.enable = true; # Enables vendor fish completions
+  programs.fish = {
+    enable = true; # Enables fish vendor completions
+    shellInit = ""; # Empty shellInit to avoid conflicts with dotfiles
+  };
   documentation.man.generateCaches = false; # Disable very slow man-cache build
   # Use fish shell by default, but not for login shell
   # https://nixos.wiki/wiki/Fish

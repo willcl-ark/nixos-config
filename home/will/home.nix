@@ -4,7 +4,6 @@
 
   imports = [
     ./programs/development.nix
-    ./programs/fish.nix
     ./programs/ghostty.nix
     ./programs/tmux.nix
   ];
@@ -51,7 +50,6 @@
 
     fzf = {
       enable = true;
-      enableFishIntegration = true;
     };
 
     gpg = {
@@ -150,7 +148,6 @@
 
     starship = {
       enable = true;
-      enableFishIntegration = true;
       settings = {
         directory.truncation_length = 3;
         gcloud.disabled = true;
@@ -162,7 +159,6 @@
 
     zoxide = {
       enable = true;
-      enableFishIntegration = true;
     };
   };
 
