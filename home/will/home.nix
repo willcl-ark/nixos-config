@@ -21,6 +21,7 @@
     k3d
     k9s
     ksnip
+    lynx
     msmtp
     mullvad
     neomutt
