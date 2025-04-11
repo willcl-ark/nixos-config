@@ -31,6 +31,7 @@
     rsync
     time
     tor
+    tree
     wget
     yubikey-manager
     yubikey-personalization
