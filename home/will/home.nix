@@ -50,6 +50,7 @@
         enable = true;
         package = pkgs.nix-direnv;
       };
+      silent = true;
     };
 
     fzf = {
