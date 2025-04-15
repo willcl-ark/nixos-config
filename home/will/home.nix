@@ -20,6 +20,7 @@
     helm
     k3d
     k9s
+    keet
     ksnip
     lynx
     msmtp
@@ -124,7 +125,7 @@
         # Custom scripts
         show-pr =
           "!f() { git log --merges --ancestry-path --oneline $1..HEAD | tail -n 1; }; f";
-        ack = "!f() { git rev-parse HEAD | tr -d '[:space:]' | xsel -b; }; f";
+        ack = "!f() { git rev-parse HEAD | tr -d '[:space:]' | wl-copy; }; f";
         files = "!f() { git diff-tree --no-commit-id --name-only -r HEAD; }; f";
         fixup =
           "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
@@ -152,11 +153,11 @@
     starship = {
       enable = true;
       settings = {
+        aws.disabled = true;
         directory.truncation_length = 3;
         gcloud.disabled = true;
-        aws.disabled = true;
         memory_usage.disabled = true;
-        shlvl.disabled = false;
+        shlvl.disabled = true;
       };
     };
 
