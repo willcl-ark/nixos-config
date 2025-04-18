@@ -5,6 +5,7 @@
     lua
     # luajit
     python3
+    python311
     rustup
     zig
 
