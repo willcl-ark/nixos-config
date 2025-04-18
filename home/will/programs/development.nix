@@ -4,7 +4,7 @@
     go
     lua
     # luajit
-    python3
+    # python312
     python311
     rustup
     zig
@@ -31,6 +31,7 @@
     uutils-coreutils # Rust coreutils
 
     # LSPs and linters etc.
+    actionlint
     basedpyright
     clang-tools
     cmake-language-server
