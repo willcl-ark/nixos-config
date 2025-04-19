@@ -29,6 +29,7 @@
     pinentry-tty
     ripgrep
     rsync
+    sops
     stow
     time
     tor
