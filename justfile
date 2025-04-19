@@ -56,7 +56,7 @@ cleanup-generations hostname=host:
 # Check NixOS configuration for errors
 [group('check')]
 check-config hostname=host:
-    nixos-rebuild dry-activate --flake .#{{hostname}}
+    sudo nixos-rebuild dry-activate --flake .#{{hostname}}
 
 # Rebuild user environment (home-manager standalone)
 [group('home')]
