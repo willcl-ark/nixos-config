@@ -6,6 +6,7 @@
   environment.systemPackages = with pkgs; [
     bat
     borgbackup
+    btop
     curl
     eza
     fd
