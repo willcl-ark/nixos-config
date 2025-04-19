@@ -1,0 +1,11 @@
+keys:
+  - &yubikey 67AA5B46E7AF78053167FE343B8F814A784218F8
+  - &host age19497qrtggnh0wgp2mw5j9j4h2h05alrynus2wjd679ve2tl4pp0snd4mn6
+
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - pgp:
+          - *yubikey
+        age:
+          - *host
