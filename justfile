@@ -18,9 +18,10 @@ build-test hostname=host:
 
 # Build and switch to new configuration
 [group('local')]
+[no-exit-message]
 switch hostname=host:
     sudo nixos-rebuild switch --flake .#{{hostname}}
-    -unlink result
+    @-unlink result 2&>1 /dev/null || true
 
 # Build a VM for testing
 [group('test')]
