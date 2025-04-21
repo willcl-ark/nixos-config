@@ -5,6 +5,7 @@
 
   environment.systemPackages = with pkgs; [
     bat
+    bitcoind
     borgbackup
     btop
     curl
