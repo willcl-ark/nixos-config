@@ -64,6 +64,11 @@ check-config hostname=host:
 update-home:
     nix run nixpkgs#home-manager -- switch --flake .#{{user}}@{{os}}
 
+# Test rebuild user environment (home-manager build)
+[group('home')]
+build-home:
+    nix run nixpkgs#home-manager -- build --flake .#{{user}}@{{os}}
+
 # Copy the current hardware configuration to the repo
 [group('system')]
 update-hardware:

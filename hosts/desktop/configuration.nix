@@ -1,11 +1,22 @@
-{ pkgs, ... }: {
-  imports = [ ../../modules/common.nix ../../modules/borg.nix ./nvidia.nix ];
+{ config, pkgs, lib, ... }:
 
-  # Host-specific config
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-  };
+with lib;
+let
+  cfg = config.host;
+in
+{
+  imports = [
+    ../../modules/common.nix
+    ../../modules/borg.nix
+  ];
+
+  # Host-specific config based on host params
+  boot.loader = mkMerge [
+    (mkIf (cfg.bootLoader.type == "systemd-boot") {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    })
+  ];
 
   environment.systemPackages = with pkgs; [
     apcupsd
@@ -18,13 +29,27 @@
     acpilight.enable = true;
   };
 
-  networking.hostName = "nix-desktop";
+  networking.hostName = cfg.name;
 
   services = {
-    printing = {
+    apcupsd.enable = true;
+    printing = mkIf cfg.services.printing {
       enable = true;
       drivers = [ pkgs.gutenprint ];
     };
     guix.enable = true;
+
+    # Enable Borg backup with host-specific configuration
+    my.borgbackup = {
+      enable = true;
+      # Only specify host-specific excludes
+      excludePaths = [
+        # Standard excludes are inherited from the module
+        # Host-specific excludes:
+        "/home/${cfg.user}/.bitcoin/blocks/*"
+        "/home/${cfg.user}/.bitcoin/chainstate/*"
+        "/home/${cfg.user}/.bitcoin/indexes/*"
+      ];
+    };
   };
 }

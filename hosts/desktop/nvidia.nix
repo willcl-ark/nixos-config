@@ -1,14 +1,22 @@
-{ config, ... }: {
-  # Enable OpenGL
-  hardware.graphics = {
+# Modified slightly from:
+# https://nixos.wiki/wiki/Nvidia#Modifying_NixOS_Configuration
+{ config, lib, ... }:
+
+with lib;
+let
+  cfg = config.host;
+  enableNvidia = cfg.gpu.type == "nvidia";
+in
+{
+  # Enable OpenGL only if using NVIDIA
+  hardware.graphics = mkIf enableNvidia {
     enable = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = mkIf enableNvidia [ "nvidia" ];
 
-  hardware.nvidia = {
-
+  hardware.nvidia = mkIf enableNvidia {
     # Modesetting is required.
     modesetting.enable = true;
 

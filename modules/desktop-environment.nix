@@ -3,7 +3,6 @@
 {
   imports = [ ./common.nix ];
 
-  # System-wide configuration
   console.keyMap = "uk";
 
   fonts = {
@@ -27,7 +26,8 @@
     wl-clipboard
   ];
 
-  security.rtkit.enable = true; # Goes with pipewire
+  security.rtkit.enable = true; # For pipewire
+
   services = {
     xserver = {
       enable = true;

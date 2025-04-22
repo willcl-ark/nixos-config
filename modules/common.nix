@@ -1,24 +1,31 @@
-{ pkgs, ... }: {
+{ lib, pkgs, ... }:
+
+with lib;
+
+{
+  imports = [
+    ./networking.nix
+    ./security.nix
+    ./users.nix
+    ./virtualization.nix
+  ];
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.config.allowUnfree = true;
 
+  # Common system packages
   environment.systemPackages = with pkgs; [
     bat
-    bitcoind
-    borgbackup
-    btop
     curl
     eza
     fd
     fzf
     git
-    gnupg
     htop
     imagemagick
     jq
     just
-    keyd
     magic-wormhole
     mosh
     ncdu
@@ -34,74 +41,20 @@
     sops
     stow
     time
-    tor
     tree
     wget
-    yubikey-manager
-    yubikey-personalization
+
+    # Specialized tools
+    bitcoind
+    borgbackup
+    btop
+    tor
   ];
 
-  programs.fish = {
-    enable = true; # Enables fish vendor completions
-    shellInit = ""; # Empty shellInit to avoid conflicts with dotfiles
-  };
-  documentation.man.generateCaches = false; # Disable very slow man-cache build
-  # Use fish shell by default, but not for login shell
-  # https://nixos.wiki/wiki/Fish
-  programs.bash = {
-    interactiveShellInit = ''
-      if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
-      then
-        shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-        exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
-      fi
-    '';
-  };
-
+  # Enable firmware for all devices
   hardware.enableAllFirmware = true;
 
-  networking = {
-    networkmanager.enable = true;
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [ ];
-      allowedUDPPorts = [ ];
-      allowPing = true;
-    };
-  };
-
-  services = {
-    openssh.enable = true;
-
-    tailscale = {
-      enable = true;
-      openFirewall = true;
-      useRoutingFeatures = "client"; # Enable IP forwarding for relay nodes
-    };
-
-    # YubiKey support
-    pcscd.enable = true; # Smart card daemon for Yubikey
-    udev.packages = [ pkgs.yubikey-personalization pkgs.libu2f-host ];
-
-    # Remap caps lock to escape
-    keyd = {
-      enable = true;
-      keyboards = {
-        default = {
-          ids = [ "*" ]; # Apply to all keyboards
-          settings = {
-            main = {
-              "capslock" = "esc"; # Remap Caps Lock to Escape
-            };
-          };
-        };
-      };
-    };
-
-  };
-
   time.timeZone = "Europe/London";
-
   i18n.defaultLocale = "en_GB.UTF-8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_GB.UTF-8";
@@ -115,21 +68,30 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  users.users.will = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "docker" "audio" ];
+  users.my = {
+    defaultUser = "will";
+    createDefaultUser = true;
     hashedPassword = "$y$j9T$JV/cbQ/2QXvnouRK.3UPT0$9ZE12JKYtJPuQEfqHeEgl072NxE.VoTov2F/u7tyxD5";
   };
 
-  virtualisation = {
-    docker = {
-      enable = true;
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
-    };
+  networking.my = {
+    enableNetworkManager = true;
+    enableFirewall = true;
+    enableTailscale = true;
   };
 
+  security.my = {
+    enableYubikey = true;
+    enableKeyd = true;
+    remapCapsToEsc = true;
+    gpg.enable = true;
+  };
+
+  virtualization.my = {
+    enableDocker = true;
+    dockerRootless = true;
+  };
+
+  # (do not change after deployment)
   system.stateVersion = "25.05";
 }

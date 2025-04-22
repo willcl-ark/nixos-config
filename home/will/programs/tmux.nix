@@ -10,7 +10,6 @@
 
     mouse = true;
 
-    # Increase history limit
     historyLimit = 50000;
 
     # Terminal configuration

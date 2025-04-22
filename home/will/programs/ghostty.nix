@@ -5,7 +5,7 @@
 
   home.file.".config/ghostty/config".text = ''
     font-family = ComicCode Nerd Font
-    font-size = 10
+    font-size = 9
     font-feature = -calt
     font-feature = -liga
     font-feature = -dlig
