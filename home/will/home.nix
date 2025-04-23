@@ -15,6 +15,7 @@ with lib;
     # Temporarily disable home-manager fish config to use system fish with existing dotfiles
     # ./programs/fish.nix
     ./programs/ghostty.nix
+    ./programs/development.nix
   ];
 
   sops = {
