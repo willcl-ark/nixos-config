@@ -13,13 +13,13 @@
     historyLimit = 50000;
 
     # Terminal configuration
-    terminal = "tmux-256color";
+    terminal = "xterm-direct";
 
     keyMode = "vi";
 
     extraConfig = ''
       # Pass through ghostty capabilites
-      set -ga terminal-overrides ",xterm-ghostty:*"
+      set -ga terminal-overrides ",xterm-ghostty:*:Tc"
 
       # unbind the prefix and bind it to Ctrl-a like screen
       unbind C-b
