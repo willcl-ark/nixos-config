@@ -45,6 +45,10 @@
                 # Configure all users specified for this host
                 users = nixpkgs.lib.genAttrs userNames (user: import ./home/${user}/home.nix);
                 backupFileExtension = "backup";
+                extraSpecialArgs = { inherit self; };
+                sharedModules = [
+                  sops-nix.homeManagerModules.sops
+                ];
               };
             }
 
@@ -62,6 +66,7 @@
           pkgs = nixpkgsFor.${system};
           modules = [
             ./home/${username}/home.nix
+            sops-nix.homeManagerModules.sops
           ];
           extraSpecialArgs = {
             inherit self;

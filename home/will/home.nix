@@ -11,10 +11,16 @@ with lib;
     ../profiles
     ../roles
     ./programs/tmux.nix
+    # TODO: revert
     # Temporarily disable home-manager fish config to use system fish with existing dotfiles
     # ./programs/fish.nix
     ./programs/ghostty.nix
   ];
+
+  sops = {
+    defaultSopsFile = ../../secrets/will.yaml;
+    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+  };
 
   # Enable specific profiles and roles
   profiles.desktop.enable = true; # Enable desktop profile
@@ -25,11 +31,11 @@ with lib;
       enableGo = true;
       enablePython = true;
       enableRust = true;
-      enableK8s = true; # Kubernetes tools
+      enableK8s = true; # k8s tools
     };
 
-    email.enable = true; # Email client
-    messaging.enable = true; # Messaging applications
+    email.enable = true;
+    messaging.enable = true; # Messaging apps
   };
 
   # Explicitly allow home-manager to use system packages
