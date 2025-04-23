@@ -4,14 +4,14 @@ keys:
   - &will age1yggqyza4vmts7uuuuykz42sd8dwqszgcfd6y6avw8ul5pm2ekffsg2gqr2
 
 creation_rules:
-  - path_regex: secrets/users/will\.yaml$
+  - path_regex: secrets/will.yaml
     key_groups:
       - pgp:
           - *yubikey
         age:
           - *will
           - *host
-  - path_regex: secrets/.*\.yaml$
+  - path_regex: secrets/default.yaml
     key_groups:
       - pgp:
           - *yubikey
