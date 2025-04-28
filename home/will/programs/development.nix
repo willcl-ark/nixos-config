@@ -8,6 +8,7 @@
     zig
 
     # Development tools
+    gh-dash
     qemu
     uv
 
