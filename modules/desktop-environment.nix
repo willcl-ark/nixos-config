@@ -24,14 +24,32 @@
 
   environment.systemPackages = with pkgs; [
     wl-clipboard
+    grim
+    slurp
+    mako
   ];
 
-  security.rtkit.enable = true; # For pipewire
+  security = {
+    rtkit.enable = true; # For pipewire
+    polkit.enable = true; # Required for Sway/Wayland
+    # Required for swaylock to work
+    pam.services.swaylock = { };
+  };
+
+  # Enable Wayland and Sway
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+  };
 
   services = {
+    # Keep xserver for compatibility, but use GDM with Wayland
     xserver = {
       enable = true;
-      displayManager.gdm.enable = true;
+      displayManager.gdm = {
+        enable = true;
+        wayland = true;
+      };
       desktopManager.gnome.enable = true;
     };
 
@@ -44,5 +62,6 @@
 
     blueman.enable = true;
     dbus.enable = true;
+    gnome.gnome-keyring.enable = true;
   };
 }

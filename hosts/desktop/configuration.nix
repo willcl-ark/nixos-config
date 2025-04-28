@@ -22,12 +22,19 @@ in
     apcupsd
     guix
     pavucontrol
+    light
   ];
 
   hardware = {
     bluetooth.enable = true;
     acpilight.enable = true;
   };
+
+  # Enable light for brightness control
+  programs.light.enable = true;
+
+  # Add user to video group for brightness control
+  users.users.${cfg.user}.extraGroups = [ "video" ];
 
   networking.hostName = cfg.name;
 

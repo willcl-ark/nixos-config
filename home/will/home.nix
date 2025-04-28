@@ -18,6 +18,7 @@ with lib;
     # ./programs/fish.nix
     ./programs/ghostty.nix
     ./programs/development.nix
+    ./programs/sway.nix
   ];
 
   sops = {
