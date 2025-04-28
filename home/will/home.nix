@@ -81,6 +81,7 @@ with lib;
     };
     extraConfig = {
       init.defaultBranch = "master";
+      diff.algorithm = "patience";
       pull.rebase = true;
       push.autoSetupRemote = true;
       core.editor = "${pkgs.neovim}/bin/nvim";
