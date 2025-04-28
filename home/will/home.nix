@@ -148,6 +148,13 @@ with lib;
     };
   };
 
+  programs.ripgrep = {
+    enable = true;
+    arguments = [
+      "-uu"
+    ];
+  };
+
   programs.starship = {
     enable = true;
     settings = {
