@@ -3,6 +3,8 @@
 with lib;
 
 {
+  nix.settings.trusted-users = [ "will" ];
+
   home.username = "will";
   home.homeDirectory = "/home/will";
 
