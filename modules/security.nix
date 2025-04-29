@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.security.my;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.security.my;
+in {
   options.security.my = {
     enableYubikey = mkOption {
       type = types.bool;
@@ -44,15 +45,23 @@ in
     # YubiKey support
     services.pcscd.enable = cfg.enableYubikey;
     environment.systemPackages = with pkgs;
-      (if cfg.enableYubikey then [
-        gnupg
-        yubikey-personalization
-        yubikey-manager
-        pcsclite
-      ] else [ ]) ++
-      (if cfg.enableKeyd then [
-        keyd
-      ] else [ ]);
+      (
+        if cfg.enableYubikey
+        then [
+          gnupg
+          yubikey-personalization
+          yubikey-manager
+          pcsclite
+        ]
+        else []
+      )
+      ++ (
+        if cfg.enableKeyd
+        then [
+          keyd
+        ]
+        else []
+      );
 
     services.udev.packages = mkIf cfg.enableYubikey [
       pkgs.yubikey-personalization
@@ -64,7 +73,7 @@ in
       enable = true;
       keyboards = {
         default = {
-          ids = [ "*" ]; # Apply to all keyboards
+          ids = ["*"]; # Apply to all keyboards
           settings = {
             main = mkIf cfg.remapCapsToEsc {
               "capslock" = "esc";

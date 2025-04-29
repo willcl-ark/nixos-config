@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
 {
-  nix.settings.trusted-users = [ "will" ];
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; {
+  nix.settings.trusted-users = ["will"];
 
   home.username = "will";
   home.homeDirectory = "/home/will";
@@ -121,21 +123,15 @@ with lib;
       fix = "commit --amend --no-edit";
 
       # Custom scripts
-      show-pr =
-        "!f() { git log --merges --ancestry-path --oneline $1..HEAD | tail -n 1; }; f";
+      show-pr = "!f() { git log --merges --ancestry-path --oneline $1..HEAD | tail -n 1; }; f";
       ack = "!f() { git rev-parse HEAD | tr -d '[:space:]' | wl-copy; }; f";
       files = "!f() { git diff-tree --no-commit-id --name-only -r HEAD; }; f";
-      fixup =
-        "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
+      fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
       last = "log -1 HEAD";
-      rb =
-        "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch); }; f";
-      rba =
-        "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch) --autosquash; }; f";
-      review =
-        "!f() { git -c sequence.editor='sed -i s/pick/edit/' rebase -i $(git merge-base master HEAD); }; f";
-      tags =
-        "!sh -c 'git for-each-ref --sort=-taggerdate --format=\"%(refname:lstrip=2)\" refs/tags | fzf | xargs git checkout'";
+      rb = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch); }; f";
+      rba = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch) --autosquash; }; f";
+      review = "!f() { git -c sequence.editor='sed -i s/pick/edit/' rebase -i $(git merge-base master HEAD); }; f";
+      tags = "!sh -c 'git for-each-ref --sort=-taggerdate --format=\"%(refname:lstrip=2)\" refs/tags | fzf | xargs git checkout'";
     };
   };
 

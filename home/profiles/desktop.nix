@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.profiles.desktop;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.profiles.desktop;
+in {
   options.profiles.desktop = {
     enable = mkEnableOption "Desktop profile";
   };
@@ -25,6 +26,5 @@ in
       tor-browser
       vlc
     ];
-
   };
 }

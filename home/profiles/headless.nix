@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.profiles.headless;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.profiles.headless;
+in {
   options.profiles.headless = {
     enable = mkEnableOption "Minimal profile (for servers/headless)";
   };
@@ -20,6 +21,5 @@ in
       rsync
       git
     ];
-
   };
 }

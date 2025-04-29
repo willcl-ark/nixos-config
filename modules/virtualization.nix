@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.virtualization.my;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.virtualization.my;
+in {
   options.virtualization.my = {
     enableDocker = mkOption {
       type = types.bool;
@@ -58,12 +59,12 @@ in
 
     # Add users to necessary groups
     users.groups = mkMerge [
-      (mkIf cfg.enableKvm { libvirtd = { }; })
+      (mkIf cfg.enableKvm {libvirtd = {};})
     ];
 
     # Add necessary packages
     environment.systemPackages = mkMerge [
-      (mkIf cfg.enableKvm (with pkgs; [ virt-manager spice-gtk ]))
+      (mkIf cfg.enableKvm (with pkgs; [virt-manager spice-gtk]))
     ];
   };
 }

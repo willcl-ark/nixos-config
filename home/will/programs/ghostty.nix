@@ -1,7 +1,5 @@
-{ pkgs, ... }:
-
-{
-  home.packages = with pkgs; [ ghostty ];
+{pkgs, ...}: {
+  home.packages = with pkgs; [ghostty];
 
   home.file.".config/ghostty/config".text = ''
     font-family = ComicCode Nerd Font

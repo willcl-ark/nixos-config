@@ -1,8 +1,9 @@
-{ lib, pkgs, ... }:
-
-with lib;
-
 {
+  lib,
+  pkgs,
+  ...
+}:
+with lib; {
   imports = [
     ./networking.nix
     ./security.nix
@@ -10,7 +11,7 @@ with lib;
     ./virtualization.nix
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   nixpkgs.config.allowUnfree = true;
 

@@ -1,10 +1,12 @@
-{ config, pkgs, lib, ... }:
-
-with lib;
-let
-  cfg = config.host;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.host;
+in {
   imports = [
     ../../modules/common.nix
     ../../modules/borg.nix
@@ -35,7 +37,7 @@ in
     apcupsd.enable = true;
     printing = mkIf cfg.services.printing {
       enable = true;
-      drivers = [ pkgs.gutenprint ];
+      drivers = [pkgs.gutenprint];
     };
     guix.enable = true;
 

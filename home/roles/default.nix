@@ -1,5 +1,4 @@
-{ ... }:
-
+{...}:
 # This file acts as a roles selector
 {
   imports = [

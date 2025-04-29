@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.roles.messaging;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.roles.messaging;
+in {
   options.roles.messaging = {
     enable = mkEnableOption "Messaging client role";
   };
