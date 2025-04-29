@@ -1,7 +1,5 @@
-{ pkgs, ... }:
-
-{
-  imports = [ ./common.nix ];
+{pkgs, ...}: {
+  imports = [./common.nix];
 
   console.keyMap = "uk";
 
@@ -16,9 +14,9 @@
       noto-fonts-emoji
     ];
     fontconfig.defaultFonts = {
-      monospace = [ "JetBrainsMono Nerd Font" ];
-      sansSerif = [ "DejaVu Sans" ];
-      serif = [ "DejaVu Serif" ];
+      monospace = ["JetBrainsMono Nerd Font"];
+      sansSerif = ["DejaVu Sans"];
+      serif = ["DejaVu Serif"];
     };
   };
 
@@ -33,7 +31,7 @@
     rtkit.enable = true; # For pipewire
     polkit.enable = true; # Required for Sway/Wayland
     # Required for swaylock to work
-    pam.services.swaylock = { };
+    pam.services.swaylock = {};
   };
 
   # Enable Wayland and Sway

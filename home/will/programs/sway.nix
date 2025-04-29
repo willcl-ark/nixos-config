@@ -1,18 +1,20 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; {
   wayland.windowManager.sway = {
     enable = true;
     wrapperFeatures.gtk = true; # Fixes common issues with GTK 3 apps
-    extraOptions = [ "--unsupported-gpu" ]; # Allow Sway to work with NVIDIA
+    extraOptions = ["--unsupported-gpu"]; # Allow Sway to work with NVIDIA
     config = rec {
       modifier = "Mod4";
       terminal = "ghostty";
       workspaceAutoBackAndForth = true;
       fonts = {
-        names = [ "Comic Code" ];
+        names = ["Comic Code"];
         size = 9.0;
       };
 
@@ -30,10 +32,9 @@ with lib;
         };
       };
 
-      keybindings =
-        let
-          modifier = config.wayland.windowManager.sway.config.modifier;
-        in
+      keybindings = let
+        modifier = config.wayland.windowManager.sway.config.modifier;
+      in
         lib.mkOptionDefault {
           "${modifier}+Return" = "exec ${terminal}";
           "${modifier}+q" = "kill";
@@ -116,7 +117,7 @@ with lib;
     enable = true;
     package = pkgs.rofi-wayland-unwrapped;
     theme = "gruvbox-dark";
-    extraConfig = { };
+    extraConfig = {};
   };
 
   # additional Wayland utils

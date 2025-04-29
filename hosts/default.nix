@@ -1,8 +1,5 @@
-{ lib, ... }:
-
-with lib;
-
-{
+{lib, ...}:
+with lib; {
   # host options that can be used across the configuration
   options.host = {
     name = mkOption {
@@ -18,7 +15,7 @@ with lib;
 
     cpu = {
       type = mkOption {
-        type = types.enum [ "intel" "amd" "generic" ];
+        type = types.enum ["intel" "amd" "generic"];
         default = "generic";
         description = "The CPU type for microcode and optimizations";
       };
@@ -32,7 +29,7 @@ with lib;
 
     gpu = {
       type = mkOption {
-        type = types.enum [ "nvidia" "amd" "intel" "none" ];
+        type = types.enum ["nvidia" "amd" "intel" "none"];
         default = "none";
         description = "The GPU type for drivers and configurations";
       };
@@ -40,7 +37,7 @@ with lib;
 
     filesystem = {
       type = mkOption {
-        type = types.enum [ "ext4" "btrfs" "zfs" "other" ];
+        type = types.enum ["ext4" "btrfs" "zfs" "other"];
         default = "ext4";
         description = "Main filesystem used";
       };
@@ -66,7 +63,7 @@ with lib;
 
     bootLoader = {
       type = mkOption {
-        type = types.enum [ "systemd-boot" "grub-efi" "grub-bios" ];
+        type = types.enum ["systemd-boot" "grub-efi" "grub-bios"];
         default = "systemd-boot";
         description = "Boot loader to use";
       };

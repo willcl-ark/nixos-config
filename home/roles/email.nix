@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.roles.email;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.roles.email;
+in {
   options.roles.email = {
     enable = mkEnableOption "Email client role";
   };
@@ -61,7 +62,7 @@ in
           enable = true;
           create = "both";
           expunge = "both";
-          patterns = [ "*" ];
+          patterns = ["*"];
         };
 
         msmtp.enable = true;
@@ -74,7 +75,7 @@ in
 
         imapnotify = {
           enable = true;
-          boxes = [ "Inbox" ];
+          boxes = ["Inbox"];
           onNotifyPost = ''
             ${pkgs.libnotify}/bin/notify-send "New mail arrived for will@256k1.dev"
           '';
@@ -94,10 +95,10 @@ in
         preNew = "mbsync --all";
       };
       new = {
-        tags = [ "unread" "inbox" ];
-        ignore = [ ".mbsyncstate" ".uidvalidity" ];
+        tags = ["unread" "inbox"];
+        ignore = [".mbsyncstate" ".uidvalidity"];
       };
-      search.excludeTags = [ "deleted" "spam" ];
+      search.excludeTags = ["deleted" "spam"];
       maildir.synchronizeFlags = true;
     };
 
@@ -107,65 +108,197 @@ in
       enable = true;
       binds = [
         # Basic navigation
-        { map = [ "index" "pager" ]; key = "\\Cd"; action = "half-down"; }
-        { map = [ "index" "pager" ]; key = "\\Cu"; action = "half-up"; }
-        { map = [ "index" ]; key = "g"; action = "noop"; }
-        { map = [ "index" ]; key = "gg"; action = "first-entry"; }
-        { map = [ "index" ]; key = "G"; action = "last-entry"; }
-        { map = [ "pager" ]; key = "g"; action = "noop"; }
-        { map = [ "pager" ]; key = "gg"; action = "top"; }
-        { map = [ "pager" ]; key = "G"; action = "bottom"; }
+        {
+          map = ["index" "pager"];
+          key = "\\Cd";
+          action = "half-down";
+        }
+        {
+          map = ["index" "pager"];
+          key = "\\Cu";
+          action = "half-up";
+        }
+        {
+          map = ["index"];
+          key = "g";
+          action = "noop";
+        }
+        {
+          map = ["index"];
+          key = "gg";
+          action = "first-entry";
+        }
+        {
+          map = ["index"];
+          key = "G";
+          action = "last-entry";
+        }
+        {
+          map = ["pager"];
+          key = "g";
+          action = "noop";
+        }
+        {
+          map = ["pager"];
+          key = "gg";
+          action = "top";
+        }
+        {
+          map = ["pager"];
+          key = "G";
+          action = "bottom";
+        }
 
         # Additional vim-like bindings
-        { map = [ "index" ]; key = "j"; action = "next-entry"; }
-        { map = [ "index" ]; key = "k"; action = "previous-entry"; }
-        { map = [ "pager" ]; key = "j"; action = "next-line"; }
-        { map = [ "pager" ]; key = "k"; action = "previous-line"; }
+        {
+          map = ["index"];
+          key = "j";
+          action = "next-entry";
+        }
+        {
+          map = ["index"];
+          key = "k";
+          action = "previous-entry";
+        }
+        {
+          map = ["pager"];
+          key = "j";
+          action = "next-line";
+        }
+        {
+          map = ["pager"];
+          key = "k";
+          action = "previous-line";
+        }
 
         # Sidebar navigation
-        { map = [ "index" "pager" ]; key = "<down>"; action = "sidebar-next"; }
-        { map = [ "index" "pager" ]; key = "<up>"; action = "sidebar-prev"; }
-        { map = [ "index" "pager" ]; key = "<right>"; action = "sidebar-open"; }
+        {
+          map = ["index" "pager"];
+          key = "<down>";
+          action = "sidebar-next";
+        }
+        {
+          map = ["index" "pager"];
+          key = "<up>";
+          action = "sidebar-prev";
+        }
+        {
+          map = ["index" "pager"];
+          key = "<right>";
+          action = "sidebar-open";
+        }
 
         # Other useful bindings
-        { map = [ "index" "pager" ]; key = "@"; action = "compose-to-sender"; }
-        { map = [ "index" "pager" ]; key = "R"; action = "group-reply"; }
-        { map = [ "index" ]; key = "D"; action = "purge-message"; }
-        { map = [ "index" ]; key = "<tab>"; action = "sync-mailbox"; }
-        { map = [ "index" ]; key = "<space>"; action = "collapse-thread"; }
-        { map = [ "attach" ]; key = "<return>"; action = "view-mailcap"; }
-        { map = [ "editor" ]; key = "<tab>"; action = "complete-query"; }
+        {
+          map = ["index" "pager"];
+          key = "@";
+          action = "compose-to-sender";
+        }
+        {
+          map = ["index" "pager"];
+          key = "R";
+          action = "group-reply";
+        }
+        {
+          map = ["index"];
+          key = "D";
+          action = "purge-message";
+        }
+        {
+          map = ["index"];
+          key = "<tab>";
+          action = "sync-mailbox";
+        }
+        {
+          map = ["index"];
+          key = "<space>";
+          action = "collapse-thread";
+        }
+        {
+          map = ["attach"];
+          key = "<return>";
+          action = "view-mailcap";
+        }
+        {
+          map = ["editor"];
+          key = "<tab>";
+          action = "complete-query";
+        }
 
         # Drafts
-        { map = [ "compose" ]; key = "P"; action = "postpone-message"; }
-        { map = [ "index" ]; key = "p"; action = "recall-message"; }
+        {
+          map = ["compose"];
+          key = "P";
+          action = "postpone-message";
+        }
+        {
+          map = ["index"];
+          key = "p";
+          action = "recall-message";
+        }
 
         # Notmuch search
-        { map = [ "index" ]; key = "X"; action = "vfolder-from-query"; }
+        {
+          map = ["index"];
+          key = "X";
+          action = "vfolder-from-query";
+        }
       ];
 
       macros = [
         # Archive message
-        { map = [ "index" "pager" ]; key = "A"; action = "<save-message>=Archive<enter>"; }
+        {
+          map = ["index" "pager"];
+          key = "A";
+          action = "<save-message>=Archive<enter>";
+        }
 
         # Sync email
-        { map = [ "index" ]; key = "O"; action = "<shell-escape>mbsync -a<enter>"; }
+        {
+          map = ["index"];
+          key = "O";
+          action = "<shell-escape>mbsync -a<enter>";
+        }
 
         # Mark as read
-        { map = [ "index" ]; key = "\\Cr"; action = "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>"; }
+        {
+          map = ["index"];
+          key = "\\Cr";
+          action = "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>";
+        }
 
         # URL handling
-        { map = [ "index" "pager" ]; key = "\\cb"; action = "<pipe-message> urlscan<Enter>"; }
-        { map = [ "attach" "compose" ]; key = "\\cb"; action = "<pipe-entry> urlscan<Enter>"; }
+        {
+          map = ["index" "pager"];
+          key = "\\cb";
+          action = "<pipe-message> urlscan<Enter>";
+        }
+        {
+          map = ["attach" "compose"];
+          key = "\\cb";
+          action = "<pipe-entry> urlscan<Enter>";
+        }
 
         # Save all attachments
-        { map = [ "index" "pager" ]; key = "E"; action = "<pipe-message>ripmime -i - -d ~/Downloads && rm ~/Downloads/textfile*"; }
+        {
+          map = ["index" "pager"];
+          key = "E";
+          action = "<pipe-message>ripmime -i - -d ~/Downloads && rm ~/Downloads/textfile*";
+        }
 
         # Search with notmuch
-        { map = [ "index" ]; key = "\\\\"; action = "<vfolder-from-query>"; }
+        {
+          map = ["index"];
+          key = "\\\\";
+          action = "<vfolder-from-query>";
+        }
 
         # Save to folder
-        { map = [ "index" "pager" ]; key = "S"; action = "<save-message>?<enter>"; }
+        {
+          map = ["index" "pager"];
+          key = "S";
+          action = "<save-message>?<enter>";
+        }
       ];
 
       settings = {

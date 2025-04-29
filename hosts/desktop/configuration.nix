@@ -1,10 +1,12 @@
-{ config, pkgs, lib, ... }:
-
-with lib;
-let
-  cfg = config.host;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.host;
+in {
   imports = [
     ../../modules/common.nix
     ../../modules/borg.nix
@@ -34,7 +36,7 @@ in
   programs.light.enable = true;
 
   # Add user to video group for brightness control
-  users.users.${cfg.user}.extraGroups = [ "video" ];
+  users.users.${cfg.user}.extraGroups = ["video"];
 
   networking.hostName = cfg.name;
 
@@ -42,7 +44,7 @@ in
     apcupsd.enable = true;
     printing = mkIf cfg.services.printing {
       enable = true;
-      drivers = [ pkgs.gutenprint ];
+      drivers = [pkgs.gutenprint];
     };
     guix.enable = true;
 

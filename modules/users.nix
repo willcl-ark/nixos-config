@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.users.my;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.users.my;
+in {
   options.users.my = {
     defaultUser = mkOption {
       type = types.str;
@@ -21,7 +22,7 @@ in
 
     extraGroups = mkOption {
       type = types.listOf types.str;
-      default = [ "wheel" "networkmanager" "docker" "audio" ];
+      default = ["wheel" "networkmanager" "docker" "audio"];
       description = "Extra groups for the default user";
     };
 
