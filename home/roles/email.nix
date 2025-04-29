@@ -76,12 +76,10 @@ in {
         imapnotify = {
           enable = true;
           boxes = ["Inbox"];
+          onNotify = "${pkgs.isync}/bin/mbsync --quiet will:INBOX";
           onNotifyPost = ''
             ${pkgs.libnotify}/bin/notify-send "New mail arrived for will@256k1.dev"
           '';
-          extraConfig = {
-            onNewMail = "${pkgs.isync}/bin/mbsync --quiet will:INBOX";
-          };
         };
       };
     };
