@@ -24,7 +24,10 @@ in {
     apcupsd
     guix
     pavucontrol
+    sshfs
   ];
+
+  programs.fuse.userAllowOther = true;
 
   hardware = {
     bluetooth.enable = true;
@@ -53,5 +56,17 @@ in {
         "/home/${cfg.user}/.bitcoin/indexes/*"
       ];
     };
+  };
+  systemd.tmpfiles.rules = [
+    "d /mnt/seedbox 0755 ${cfg.user} users - -"
+  ];
+  fileSystems."/mnt/seedbox" = {
+    device = "davidblaine@100.95.152.4:/home/davidblaine/";
+    fsType = "sshfs";
+    options = [
+      "IdentityFile=/home/${cfg.user}/.ssh/hetzner-temp"
+      "port=4747"
+      "allow_other"
+    ];
   };
 }
