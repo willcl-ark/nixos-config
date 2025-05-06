@@ -74,7 +74,13 @@ with lib; {
   # Git configuration
   programs.git = {
     enable = true;
-    delta.enable = true;
+    delta = {
+      enable = true;
+      options = {
+        line-numbers = true;
+        conflict-style = "zdiff3";
+      };
+    };
     userName = "will";
     userEmail = "will@256k1.dev";
     signing = {
