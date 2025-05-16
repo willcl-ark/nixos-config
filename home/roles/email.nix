@@ -13,7 +13,7 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      libnotify
+      # libnotify
       lynx # For viewing HTML emails in neomutt
       notmuch-addrlookup
       ripmime # For extracting attachments
@@ -77,9 +77,9 @@ in {
           enable = true;
           boxes = ["Inbox"];
           onNotify = "${pkgs.isync}/bin/mbsync --quiet will:INBOX";
-          onNotifyPost = ''
-            ${pkgs.libnotify}/bin/notify-send "New mail arrived for will@256k1.dev"
-          '';
+          # onNotifyPost = ''
+          #   ${pkgs.libnotify}/bin/notify-send "New mail arrived for will@256k1.dev"
+          # '';
         };
       };
     };
