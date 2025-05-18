@@ -20,7 +20,7 @@ in {
       ksnip
       mullvad
       networkmanagerapplet
-      pavucontrol
+      pwvucontrol
       signal-desktop
       telegram-desktop
       tor-browser

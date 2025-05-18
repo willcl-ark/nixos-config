@@ -23,7 +23,7 @@ in {
   environment.systemPackages = with pkgs; [
     apcupsd
     guix
-    pavucontrol
+    pwvucontrol
     sshfs
   ];
 
