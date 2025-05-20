@@ -161,7 +161,10 @@ with lib; {
     enable = true;
     settings = {
       aws.disabled = true;
-      directory.truncation_length = 3;
+      directory = {
+        truncation_length = 3;
+        truncate_to_repo = false;
+      };
       gcloud.disabled = true;
       memory_usage.disabled = true;
       shlvl.disabled = true;
