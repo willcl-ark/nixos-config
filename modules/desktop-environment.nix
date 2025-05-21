@@ -25,9 +25,9 @@
       wl-clipboard
     ];
 
-    # Enable screensharing in Firefox
     variables = {
-      MOZ_ENABLE_WAYLAND = "1";
+      MOZ_ENABLE_WAYLAND = "1"; # Enable screensharing in Firefox
+      NIXOS_OZONE_WL = "1"; # Wayland support for electron apps + Chrome
     };
   };
 
