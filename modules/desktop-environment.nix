@@ -20,9 +20,16 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    wl-clipboard
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      wl-clipboard
+    ];
+
+    # Enable screensharing in Firefox
+    variables = {
+      MOZ_ENABLE_WAYLAND = "1";
+    };
+  };
 
   security.rtkit.enable = true; # For pipewire
 
