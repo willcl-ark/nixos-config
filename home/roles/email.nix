@@ -329,6 +329,7 @@ in {
         named-mailboxes "Sent" =Sent
         named-mailboxes "Trash" =Trash
         named-mailboxes "bitcoin-dev" =Inbox/bitcoin-dev
+        named-mailboxes "Maed House" =Inbox/Maed\ House
         named-mailboxes "Archive 2021" =Archive/2021
         named-mailboxes "Archive 2022" =Archive/2022
         named-mailboxes "Archive 2023" =Archive/2023
