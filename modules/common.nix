@@ -19,6 +19,7 @@ with lib; {
   environment.systemPackages = with pkgs; [
     bat
     curl
+    dig
     eza
     fd
     fzf
