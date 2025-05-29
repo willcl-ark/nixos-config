@@ -28,7 +28,10 @@ with lib; {
   };
 
   # Enable specific profiles and roles
-  profiles.desktop.enable = true; # Enable desktop profile
+  profiles.desktop = {
+    enable = true; # Enable desktop profile
+    desktopEnvironment = "i3"; # Set to "gnome" or "i3"
+  };
 
   roles = {
     dev = {

@@ -1,53 +1,24 @@
-{pkgs, ...}: {
-  imports = [./common.nix];
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.host.desktop;
+in {
+  imports = [
+    ./desktop-common.nix
+    ./desktop-gnome.nix
+    ./desktop-i3.nix
+  ];
 
-  console.keyMap = "uk";
-
-  fonts = {
-    packages = with pkgs; [
-      dejavu_fonts
-      font-awesome
-      nerd-fonts.droid-sans-mono
-      nerd-fonts.fira-code
-      nerd-fonts.jetbrains-mono
-      noto-fonts
-      noto-fonts-emoji
-    ];
-    fontconfig.defaultFonts = {
-      monospace = ["JetBrainsMono Nerd Font"];
-      sansSerif = ["DejaVu Sans"];
-      serif = ["DejaVu Serif"];
+  options.host.desktop = {
+    enable = mkEnableOption "desktop environment";
+    environment = mkOption {
+      type = types.enum ["gnome" "i3"];
+      default = "gnome";
+      description = "Which desktop environment to use";
     };
-  };
-
-  environment = {
-    systemPackages = with pkgs; [
-      wl-clipboard
-    ];
-
-    variables = {
-      MOZ_ENABLE_WAYLAND = "1"; # Enable screensharing in Firefox
-      NIXOS_OZONE_WL = "1"; # Wayland support for electron apps + Chrome
-    };
-  };
-
-  security.rtkit.enable = true; # For pipewire
-
-  services = {
-    xserver = {
-      enable = true;
-      displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
-    };
-
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-
-    blueman.enable = true;
-    dbus.enable = true;
   };
 }
