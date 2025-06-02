@@ -18,6 +18,7 @@ in {
         libsecret
         lxappearance
         lxqt.lxqt-policykit
+        nautilus
         networkmanagerapplet
         picom
         playerctl
