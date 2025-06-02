@@ -27,6 +27,7 @@ in {
     };
 
     programs.dconf.enable = true;
+    programs.i3lock.enable = true;
 
     security.pam.services.lightdm.enableGnomeKeyring = true;
 
