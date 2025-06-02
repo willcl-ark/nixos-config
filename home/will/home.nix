@@ -133,7 +133,7 @@ with lib; {
 
       # Custom scripts
       show-pr = "!f() { git log --merges --ancestry-path --oneline $1..HEAD | tail -n 1; }; f";
-      ack = "!f() { git rev-parse HEAD | tr -d '[:space:]' | wl-copy; }; f";
+      ack = "!f() { git rev-parse HEAD | tr -d '[:space:]' | xsel -b; }; f";
       files = "!f() { git diff-tree --no-commit-id --name-only -r HEAD; }; f";
       fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
       last = "log -1 HEAD";

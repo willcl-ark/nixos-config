@@ -22,6 +22,7 @@ in {
         picom
         playerctl
         rofi
+        xsel
       ];
     };
 
