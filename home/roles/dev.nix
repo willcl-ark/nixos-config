@@ -67,7 +67,7 @@ in {
       )
       ++ (
         if cfg.enablePython
-        then [pkgs.python311 pkgs.uv]
+        then [pkgs.python312 pkgs.uv]
         else []
       )
       ++ (
@@ -81,18 +81,6 @@ in {
         else []
       )
       ++ [
-        # LSPs
-        basedpyright
-        clang-tools
-        cmake-language-server
-        fish-lsp
-        gopls
-        lua-language-server
-        nil
-        pyright
-        typos-lsp
-        zls
-
         # Linters
         actionlint
         gitlint
@@ -102,12 +90,6 @@ in {
         ruff
         shellcheck
         yamllint
-
-        # Formatters
-        isort
-        mdformat
-        stylua
-        typos
       ];
 
     programs.direnv = {
