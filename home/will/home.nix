@@ -95,7 +95,7 @@ with lib; {
       diff.algorithm = "patience";
       pull.rebase = true;
       push.autoSetupRemote = true;
-      core.editor = "${pkgs.neovim}/bin/nvim";
+      core.editor = "nvim";
       gpg.program = "${pkgs.gnupg}/bin/gpg2";
     };
     aliases = {

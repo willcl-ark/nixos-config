@@ -11,6 +11,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ned = {
+      url = "github:bitcoin-dev-tools/ned";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {

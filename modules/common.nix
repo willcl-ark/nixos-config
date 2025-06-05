@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  self,
   ...
 }:
 with lib; {
@@ -31,7 +32,7 @@ with lib; {
     magic-wormhole
     mosh
     ncdu
-    neovim
+    self.inputs.ned.packages.${pkgs.stdenv.hostPlatform.system}.default
     nettools
     nfs-utils
     nh
