@@ -5,57 +5,83 @@
   ...
 }:
 with lib; {
+  # Common configuration shared between desktop and macbook
+
   nix.settings.trusted-users = ["will"];
-
-  home.username = "will";
-  home.homeDirectory = "/home/will";
-
-  # Import profiles and roles
-  imports = [
-    ../profiles
-    ../roles
-    ./programs/tmux.nix
-    # TODO: revert
-    # Temporarily disable home-manager fish config to use system fish with existing dotfiles
-    # ./programs/fish.nix
-    ./programs/ghostty.nix
-    ./programs/development.nix
-  ];
-
-  sops = {
-    defaultSopsFile = ../../secrets/will.yaml;
-    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-  };
-
-  # Enable specific profiles and roles
-  profiles.desktop = {
-    enable = true; # Enable desktop profile
-    desktopEnvironment = "i3"; # Set to "gnome" or "i3"
-  };
-
-  roles = {
-    dev = {
-      enable = true;
-      enableGo = true;
-      enablePython = true;
-      enableRust = true;
-      enableK8s = true; # k8s tools
-    };
-
-    email.enable = true;
-    messaging.enable = true; # Messaging apps
-  };
 
   # Explicitly allow home-manager to use system packages
   home.enableNixpkgsReleaseCheck = false;
 
-  # Additional packages not covered by roles or profiles
+  # Common packages for all systems
   home.packages = with pkgs; [
+    # Misc packages
     asciinema
     claude-code
     fastfetch
-    nzbget
     tokei
+
+    # Basic CLI tools
+    curl
+    htop
+    rsync
+    tmux
+    wget
+    git
+
+    # Development tools
+    fzf
+    ripgrep
+    fd
+    jq
+
+    # Languages and runtimes
+    go
+    lua
+    python312
+    rustup
+    zig
+
+    # Development tools
+    gh-dash
+    qemu
+    uv
+
+    # Build tools
+    bash
+    clang_19
+    cmake
+    docker
+    elfutils
+    findutils
+    gnugrep
+    gnumake
+    gnused
+    gnutar
+    mold
+    ninja
+    podman
+    sqlite
+
+    # Git-related
+    delta
+    difftastic
+    lazygit
+
+    # Email tools
+    lynx
+    notmuch-addrlookup
+    ripmime
+    urlscan
+
+    # Linters
+    actionlint
+    gitlint
+    lua54Packages.luacheck
+    markdownlint-cli
+    nodePackages.jsonlint
+    ruff
+    shellcheck
+    yamllint
   ];
 
   # GPG configuration
@@ -64,13 +90,7 @@ with lib; {
     package = pkgs.gnupg;
     homedir = "${config.home.homeDirectory}/.gnupg";
     settings = {
-      # Always use the card
       use-agent = true;
-    };
-    scdaemonSettings = {
-      # Use a Yubikey reader
-      reader-port = "Yubikey";
-      disable-ccid = true;
     };
   };
 
@@ -131,8 +151,7 @@ with lib; {
       com = "commit -m";
       fix = "commit --amend --no-edit";
 
-      # Custom scripts
-      ack = "!f() { git rev-parse HEAD | tr -d '[:space:]' | xsel -b; }; f";
+      # Custom scripts (platform-agnostic)
       files = "!f() { git diff-tree --no-commit-id --name-only -r HEAD; }; f";
       fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
       last = "log -1 HEAD";
@@ -178,15 +197,6 @@ with lib; {
 
   programs.zoxide = {
     enable = true;
-  };
-
-  services.gpg-agent = {
-    enable = true;
-    enableExtraSocket = true;
-    extraConfig = ''
-      allow-loopback-pinentry
-      pinentry-program /run/current-system/sw/bin/pinentry-gnome3
-    '';
   };
 
   home.stateVersion = "25.05";

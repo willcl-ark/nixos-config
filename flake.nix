@@ -24,7 +24,7 @@
     sops-nix,
     ...
   }: let
-    supportedSystems = ["x86_64-linux" "aarch64-linux"];
+    supportedSystems = ["x86_64-linux" "aarch64-darwin"];
     # Helper function to generate attributes for each system
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
@@ -56,7 +56,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 # Configure all users specified for this host
-                users = nixpkgs.lib.genAttrs userNames (user: import ./home/${user}/home.nix);
+                users = nixpkgs.lib.genAttrs userNames (user: import ./home/desktop.nix);
                 backupFileExtension = "backup";
                 extraSpecialArgs = {inherit self;};
                 sharedModules = [
@@ -73,18 +73,16 @@
     # Helper function for standalone home-manager configurations
     mkHome = {
       system ? "x86_64-linux",
-      username,
-      hostname ? "unknown",
+      configFile,
     }:
       home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgsFor.${system};
         modules = [
-          ./home/${username}/home.nix
+          configFile
           sops-nix.homeManagerModules.sops
         ];
         extraSpecialArgs = {
           inherit self;
-          host = hostname;
         };
       };
   in {
@@ -97,16 +95,17 @@
           ./modules/desktop-environment.nix
         ];
       };
-      # TODO!
-      # macbook = mkHost { ... };
     };
 
     # Standalone home-manager configuration(s)
     # NB. home-manager is built-in to the above desktop config
     homeConfigurations = {
       "will@linux" = mkHome {
-        username = "will";
-        hostname = "linux";
+        configFile = ./home/desktop.nix;
+      };
+      "will@macbook" = mkHome {
+        system = "aarch64-darwin"; # M-series Mac
+        configFile = ./home/macbook.nix;
       };
     };
 
@@ -116,7 +115,7 @@
     devShells = forAllSystems (system: {
       default = nixpkgsFor.${system}.mkShell {
         buildInputs = with nixpkgsFor.${system}; [
-          nixpkgs-fmt
+          alejandra
           nil
           sops
           ssh-to-age

@@ -31,7 +31,8 @@ build-vm hostname=host:
 # Show what would change without build
 [group('test')]
 dry-run hostname=host:
-    nixos-rebuild dry-run --flake .#{{hostname}}
+    nh os switch --dry -H {{hostname}} .
+    # nixos-rebuild dry-run --flake .#{{hostname}}
 
 # Show what would change without build
 [group('test')]
