@@ -29,8 +29,10 @@ in {
       bitwarden
       firefox
       keet
+      kew
       ksnip
       mullvad
+      museeks
       networkmanagerapplet
       pwvucontrol
       signal-desktop

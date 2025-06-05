@@ -51,6 +51,7 @@ with lib; {
     bitcoind
     borgbackup
     btop
+    cachix
     tor
   ];
 
