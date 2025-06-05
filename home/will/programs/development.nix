@@ -3,7 +3,7 @@
     # Languages and runtimes
     go
     lua
-    python311
+    python312
     rustup
     zig
 
