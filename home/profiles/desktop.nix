@@ -21,7 +21,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Enable i3 profile when i3 is selected as desktop environment  
+    # Enable i3 profile when i3 is selected as desktop environment
     profiles.i3.enable = cfg.desktopEnvironment == "i3";
 
     # Extra graphical apps for desktop
