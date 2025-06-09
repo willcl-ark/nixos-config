@@ -22,17 +22,18 @@ with lib; {
 
     # Basic CLI tools
     curl
+    git
     htop
     rsync
     tmux
+    unzip
     wget
-    git
 
     # Development tools
-    fzf
-    ripgrep
     fd
+    fzf
     jq
+    ripgrep
 
     # Languages and runtimes
     go
