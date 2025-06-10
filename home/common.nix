@@ -128,7 +128,7 @@ with lib; {
       d = "difftool";
       ds = "diff --staged";
       f = "fetch --all --prune";
-      lo = "log --oneline -n 20";
+      lo = "log --oneline -n 40";
       m = "mergetool";
       po = "push origin";
       pu = "push upstream";
