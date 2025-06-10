@@ -484,6 +484,21 @@
     };
   };
 
+  # Services configuration
+  services = {
+    dunst = {
+      enable = true;
+      settings = {
+        global = {
+          # Don't wake up the display for notifications
+          follow = "none";
+          # Pause notifications when screen is locked
+          idle_threshold = 0;
+        };
+      };
+    };
+  };
+
   # i3 configuration
   home.sessionVariables = {
     QT_SCALE_FACTOR = "2";
@@ -542,11 +557,6 @@
         }
         {
           command = "${pkgs.gnome-keyring}/bin/gnome-keyring-daemon --start --components=secrets";
-          always = false;
-          notification = false;
-        }
-        {
-          command = "${pkgs.dunst}/bin/dunst";
           always = false;
           notification = false;
         }
@@ -638,7 +648,7 @@
         "XF86AudioStop" = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl stop";
         "Shift+XF86Tools" = "exec --no-startup-id ${pkgs.ksnip}/bin/ksnip --rectarea";
         "XF86Tools" = "exec --no-startup-id ${pkgs.ksnip}/bin/ksnip --fullscreen";
-        "${modifier}+x" = "exec --no-startup-id ${pkgs.i3lock}/bin/i3lock -c 000000";
+        "${modifier}+x" = "exec --no-startup-id ${pkgs.dunst}/bin/dunstctl set-paused true && ${pkgs.i3lock}/bin/i3lock -c 000000 && sleep 1 && ${pkgs.xorg.xset}/bin/xset dpms force off && ${pkgs.dunst}/bin/dunstctl set-paused false";
       };
 
       modes = {
