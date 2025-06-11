@@ -50,7 +50,18 @@
     # i3 specific
     dunst
     gnome-keyring
+    dmenu
   ];
+
+  # Scripts for custom keybinds
+  home.file.".local/bin/gh-issue-open.sh" = {
+    text = ''
+      #!/usr/bin/env bash
+      issue=$(echo "" | ${pkgs.rofi}/bin/rofi -dmenu -p "Bitcoin Issue #")
+      [ -n "$issue" ] && ${pkgs.firefox}/bin/firefox --new-tab "https://github.com/bitcoin/bitcoin/issues/$issue"
+    '';
+    executable = true;
+  };
 
   # Programs configuration
   programs = {
@@ -649,6 +660,7 @@
         "Shift+XF86Tools" = "exec --no-startup-id ${pkgs.ksnip}/bin/ksnip --rectarea";
         "XF86Tools" = "exec --no-startup-id ${pkgs.ksnip}/bin/ksnip --fullscreen";
         "${modifier}+x" = "exec --no-startup-id ${pkgs.dunst}/bin/dunstctl set-paused true && ${pkgs.i3lock}/bin/i3lock -c 000000 && sleep 1 && ${pkgs.xorg.xset}/bin/xset dpms force off && ${pkgs.dunst}/bin/dunstctl set-paused false";
+        "${modifier}+g" = "exec --no-startup-id ~/.local/bin/gh-issue-open.sh";
       };
 
       modes = {
