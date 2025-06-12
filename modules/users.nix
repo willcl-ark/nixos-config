@@ -22,7 +22,7 @@ in {
 
     extraGroups = mkOption {
       type = types.listOf types.str;
-      default = ["wheel" "networkmanager" "docker" "audio"];
+      default = ["wheel" "networkmanager" "audio"];
       description = "Extra groups for the default user";
     };
 

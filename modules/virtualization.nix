@@ -35,7 +35,7 @@ in {
 
   config = {
     virtualisation.docker = mkIf cfg.enableDocker {
-      enable = true;
+      enable = !cfg.dockerRootless;  # Only enable root Docker if rootless is disabled
       rootless = mkIf cfg.dockerRootless {
         enable = true;
         setSocketVariable = true;
