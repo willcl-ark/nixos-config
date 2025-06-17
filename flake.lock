@@ -61,11 +61,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1750033262,
-        "narHash": "sha256-TcFN78w6kPspxpbPsxW/8vQ1GAtY8Y3mjBaC+oB8jo4=",
+        "lastModified": 1750099781,
+        "narHash": "sha256-6EVPi3XzioPzwxLZ/2nD6jbKCLA2ZXRdOWFgHg2ozrA=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "66523b0efe93ce5b0ba96dcddcda15d36673c1f0",
+        "rev": "1db3cb415da14c81d8e0fdd3a5edeba82ad13a1f",
         "type": "github"
       },
       "original": {
@@ -98,8 +98,8 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1750060404,
-        "narHash": "sha256-stcn3uFBdCinC1LLAdsh6ccQRdvSo4UW3HCtxaZM9Oo=",
+        "lastModified": 1750106342,
+        "narHash": "sha256-0X7o1deQ3yWIgxSrdyrL7+16jU5/Xd4a0qKfOmbFJkM=",
         "path": "/home/will/src/bitcoin-dev-tools/ned",
         "type": "path"
       },
