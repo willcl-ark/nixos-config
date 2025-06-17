@@ -71,25 +71,23 @@
       set-environment -gu DIRENV_DIR
       set-environment -gu DIRENV_WATCHES
       set-environment -gu DIRENV_LAYOUT
+
+      # TPM settings
+      set -g @plugin 'tmux-plugins/tpm' # mandatory
+
+      # set -g @plugin 'egel/tmux-gruvbox'
+      # set -g @tmux-gruvbox 'light' # or 'dark256', 'light', 'light256'
+
+      set -g @plugin 'catppuccin/tmux#v2.1.3' # See https://github.com/catppuccin/tmux/tags for additional tags
+      set -g @catppuccin_flavor 'macchiato' # latte, frappe, macchiato or mocha
+
+      run '~/.tmux/plugins/tpm/tpm'
     '';
 
     # Install plugins
     plugins = with pkgs.tmuxPlugins; [
       sensible # Sensible defaults
-      pain-control # Better pane management
       yank # Copy to system clipboard
-      resurrect # Save and restore sessions
-      continuum # Auto-save sessions
-      {
-        plugin = dracula;
-        extraConfig = ''
-          set -g @dracula-show-battery false
-          set -g @dracula-show-powerline true
-          set -g @dracula-refresh-rate 10
-          set -g @dracula-show-fahrenheit false
-          set -g @dracula-military-time true
-        '';
-      }
     ];
   };
 }

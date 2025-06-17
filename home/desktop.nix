@@ -121,7 +121,7 @@
           ];
           settings = {
             theme = {
-              theme = "gruvbox-dark";
+              theme = "ctp-macchiato";
             };
             icons = {
               icons = "awesome4";

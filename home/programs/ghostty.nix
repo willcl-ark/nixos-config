@@ -12,7 +12,7 @@
 
     mouse-hide-while-typing = true
 
-    theme = GruvboxDark
+    theme = catppuccin-macchiato
 
     window-padding-x = 4
     window-padding-y = 4
