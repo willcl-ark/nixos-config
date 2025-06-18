@@ -23,6 +23,7 @@
   home.packages = with pkgs; [
     # Desktop GUI apps
     bitwarden
+    evince
     firefox
     keet
     kew
@@ -786,6 +787,17 @@
   sops = {
     defaultSopsFile = ../secrets/will.yaml;
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+  };
+
+  # XDG MIME applications
+  xdg.mimeApps = {
+    enable = true;
+    associations.added = {
+      "application/pdf" = ["org.gnome.Evince.desktop"];
+    };
+    defaultApplications = {
+      "application/pdf" = ["org.gnome.Evince.desktop"];
+    };
   };
 
   # Desktop-specific services
