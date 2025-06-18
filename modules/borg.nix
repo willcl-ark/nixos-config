@@ -82,7 +82,7 @@ in {
         "/home/*/.cache/*"
         "/home/*/.cargo/registry/cache/*"
         "/home/*/.ccache/*"
-        "/home/*/.docker/buildx/*"
+        "/home/*/.local/share/containers/*"
         "/home/*/.rustup/toolchains/*"
         "/nix/*"
         "/var/cache/*"

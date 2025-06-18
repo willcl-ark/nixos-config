@@ -8,16 +8,10 @@ with lib; let
   cfg = config.virtualization.my;
 in {
   options.virtualization.my = {
-    enableDocker = mkOption {
+    enablePodman = mkOption {
       type = types.bool;
       default = true;
-      description = "Whether to enable Docker";
-    };
-
-    dockerRootless = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Whether to enable rootless Docker";
+      description = "Whether to enable Podman";
     };
 
     enableKvm = mkOption {
@@ -25,23 +19,9 @@ in {
       default = false;
       description = "Whether to enable KVM virtualization";
     };
-
-    enablePodman = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Whether to enable Podman";
-    };
   };
 
   config = {
-    virtualisation.docker = mkIf cfg.enableDocker {
-      enable = !cfg.dockerRootless;  # Only enable root Docker if rootless is disabled
-      rootless = mkIf cfg.dockerRootless {
-        enable = true;
-        setSocketVariable = true;
-      };
-    };
-
     virtualisation.libvirtd = mkIf cfg.enableKvm {
       enable = true;
       qemu = {
@@ -54,6 +34,7 @@ in {
     virtualisation.podman = mkIf cfg.enablePodman {
       enable = true;
       dockerCompat = true;
+      dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
     };
 

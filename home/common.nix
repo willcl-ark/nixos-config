@@ -51,7 +51,6 @@ with lib; {
     bash
     clang_19
     cmake
-    docker
     elfutils
     findutils
     gnugrep

@@ -93,8 +93,7 @@ with lib; {
   };
 
   virtualization.my = {
-    enableDocker = true;
-    dockerRootless = true;
+    enablePodman = true;
   };
 
   # (do not change after deployment)
