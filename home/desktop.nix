@@ -349,7 +349,9 @@
         mark_old = "no";
         wait_key = "no";
         mail_check_stats = "yes";
-        query_command = "\"notmuch-addrlookup --format=mutt '%s'\"";
+        query_command = "\"echo '' && notmuch address %s\"";
+        query_format = "\"%4c %t %-70.70a %-70.70n %?e?(%e)?\"";
+        sort_alias = "unsorted";
       };
 
       sidebar = {
