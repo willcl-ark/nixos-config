@@ -23,6 +23,7 @@
   home.packages = with pkgs; [
     # Desktop GUI apps
     bitwarden
+    cider-2
     evince
     firefox
     keet
