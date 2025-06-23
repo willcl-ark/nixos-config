@@ -94,7 +94,7 @@ with lib; {
     };
   };
 
-  # Git configuration
+  # Git configuration - force rebuild
   programs.git = {
     enable = true;
     delta = {
@@ -152,6 +152,7 @@ with lib; {
       fix = "commit --amend --no-edit";
 
       # Custom scripts (platform-agnostic)
+      coauth = "!f() { git shortlog --summary --numbered --email --all | grep \"$1\" | sed 's/^[[:space:]]*[0-9]*[[:space:]]*/Co-authored-by: /'; }; f";
       files = "!f() { git diff-tree --no-commit-id --name-only -r HEAD; }; f";
       fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
       last = "log -1 HEAD";
