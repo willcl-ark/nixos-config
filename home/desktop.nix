@@ -730,7 +730,7 @@
     text = ''
       text/html; lynx -dump %s; nametemplate=%s.html; copiousoutput
       image/*; swayimg %s
-      application/pdf; zathura %s
+      application/pdf; evince %s
     '';
   };
 
