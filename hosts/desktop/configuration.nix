@@ -10,6 +10,7 @@ in {
   imports = [
     ../../modules/common.nix
     ../../modules/borg.nix
+    ../../modules/bgt-watch.nix
   ];
 
   # Host-specific config based on host params
@@ -60,6 +61,12 @@ in {
         "/home/${cfg.user}/.bitcoin/chainstate/*"
         "/home/${cfg.user}/.bitcoin/indexes/*"
       ];
+    };
+
+    # Enable BGT watcher service for automated Bitcoin Core builds
+    bgt = {
+      enable = true;
+      user = cfg.user;
     };
   };
   systemd.tmpfiles.rules = [

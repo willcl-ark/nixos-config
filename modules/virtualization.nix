@@ -49,7 +49,7 @@ in {
         };
       };
       users.groups.libvirtd = {};
-      environment.systemPackages = with pkgs; [ virt-manager spice-gtk ];
+      environment.systemPackages = with pkgs; [virt-manager spice-gtk];
     })
   ];
 }
