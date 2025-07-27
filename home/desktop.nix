@@ -546,11 +546,6 @@
 
       startup = [
         {
-          command = "dbus-update-activation-environment --all";
-          always = false;
-          notification = false;
-        }
-        {
           command = "${pkgs.xorg.xsetroot}/bin/xsetroot -solid '#282828'";
           always = false;
           notification = false;
