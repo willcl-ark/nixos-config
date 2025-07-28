@@ -795,6 +795,9 @@
       "application/pdf" = ["org.gnome.Evince.desktop"];
     };
   };
+  
+  # Force overwrite mimeapps.list to avoid backup conflicts
+  xdg.configFile."mimeapps.list".force = true;
 
   # Desktop-specific services
   services.gpg-agent = {
