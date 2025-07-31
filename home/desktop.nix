@@ -354,6 +354,7 @@
         query_command = "\"echo '' && notmuch address %s\"";
         query_format = "\"%4c %t %-70.70a %-70.70n %?e?(%e)?\"";
         sort_alias = "unsorted";
+        sendmail = "\"${pkgs.msmtp}/bin/msmtp -a will\"";
       };
 
       sidebar = {
@@ -369,30 +370,6 @@
 
         # Notmuch configuration
         set nm_default_uri = "notmuch:///home/will/.mail"
-
-        # Named mailboxes
-        named-mailboxes "Inbox" =Inbox
-        named-mailboxes "Archive" =Archive
-        named-mailboxes "OXTU" =Inbox/OXTU
-        named-mailboxes "Sent" =Sent
-        named-mailboxes "Trash" =Trash
-        named-mailboxes "bitcoin-dev" =Inbox/bitcoin-dev
-        named-mailboxes "Maed House" =Inbox/Maed\ House
-        named-mailboxes "Archive 2021" =Archive/2021
-        named-mailboxes "Archive 2022" =Archive/2022
-        named-mailboxes "Archive 2023" =Archive/2023
-        named-mailboxes "Archive 2024" =Archive/2024
-        named-mailboxes "Azores 2023" =Inbox/2023\ Azores
-        named-mailboxes "Barcelona 2023" =Inbox/2023\ Barcelona
-        named-mailboxes "Chaincode" =Chaincode
-        named-mailboxes "Costa Rica 2023" =Inbox/2023\ Costa\ Rica
-        named-mailboxes "Delving" =Inbox/Delving
-        named-mailboxes "Drafts" =Drafts
-        named-mailboxes "Free Rangers" =Inbox/Free\ rangers
-        named-mailboxes "Github" =Inbox/Github
-        named-mailboxes "Junk" =Junk
-        named-mailboxes "Oakfield Road" =Inbox/6\ Oakfield\ Road
-        named-mailboxes "Optech" =Inbox/Optech
 
         # GPG integration
         set crypt_use_gpgme = yes
@@ -767,7 +744,35 @@
 
       msmtp.enable = true;
       notmuch.enable = true;
-      neomutt.enable = true;
+      neomutt = {
+        enable = true;
+        sendMailCommand = "${pkgs.msmtp}/bin/msmtp -a will";
+        extraConfig = ''
+          # Named mailboxes
+          named-mailboxes "Inbox" =Inbox
+          named-mailboxes "Archive" =Archive
+          named-mailboxes "OXTU" =Inbox/OXTU
+          named-mailboxes "Sent" =Sent
+          named-mailboxes "Trash" =Trash
+          named-mailboxes "bitcoin-dev" =Inbox/bitcoin-dev
+          named-mailboxes "Maed House" =Inbox/Maed\ House
+          named-mailboxes "Archive 2021" =Archive/2021
+          named-mailboxes "Archive 2022" =Archive/2022
+          named-mailboxes "Archive 2023" =Archive/2023
+          named-mailboxes "Archive 2024" =Archive/2024
+          named-mailboxes "Azores 2023" =Inbox/2023\ Azores
+          named-mailboxes "Barcelona 2023" =Inbox/2023\ Barcelona
+          named-mailboxes "Chaincode" =Chaincode
+          named-mailboxes "Costa Rica 2023" =Inbox/2023\ Costa\ Rica
+          named-mailboxes "Delving" =Inbox/Delving
+          named-mailboxes "Drafts" =Drafts
+          named-mailboxes "Free Rangers" =Inbox/Free\ rangers
+          named-mailboxes "Github" =Inbox/Github
+          named-mailboxes "Junk" =Junk
+          named-mailboxes "Oakfield Road" =Inbox/6\ Oakfield\ Road
+          named-mailboxes "Optech" =Inbox/Optech
+        '';
+      };
 
       imapnotify = {
         enable = true;
