@@ -1,29 +1,25 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [ghostty];
+  programs.ghostty = {
+    enable = true;
+    package = pkgs.ghostty;
+    settings = {
+      font-family = "ComicCode Nerd Font";
+      font-size = 9;
+      font-feature = ["-calt" "-liga" "-dlig"];
 
-  home.file.".config/ghostty/config".text = ''
-    font-family = ComicCode Nerd Font
-    font-size = 9
-    font-feature = -calt
-    font-feature = -liga
-    font-feature = -dlig
+      cursor-style = "block";
 
-    cursor-style = block
+      mouse-hide-while-typing = true;
 
-    mouse-hide-while-typing = true
+      window-padding-x = 4;
+      window-padding-y = 4;
 
-    theme = catppuccin-macchiato
+      shell-integration = "fish";
+      shell-integration-features = "no-cursor";
 
-    window-padding-x = 4
-    window-padding-y = 4
+      macos-titlebar-style = "hidden";
 
-    shell-integration = fish
-    shell-integration-features = no-cursor
-
-    macos-titlebar-style = hidden
-    # window-decoration = false
-
-    # 10 MB
-    scrollback-limit = 10000
-  '';
+      scrollback-limit = 10000;
+    };
+  };
 }

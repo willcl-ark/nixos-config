@@ -19,6 +19,12 @@
     ./programs/ghostty.nix
   ];
 
+  # Enable Catppuccin theme globally
+  catppuccin = {
+    enable = true;
+    flavor = "macchiato";
+  };
+
   # Desktop-specific applications
   home.packages = with pkgs; [
     # Desktop GUI apps
@@ -78,6 +84,7 @@
       silent = true;
     };
     fzf.enable = true;
+    bat.enable = true;
 
     # i3status-rust for i3
     i3status-rust = {
@@ -387,78 +394,77 @@
         subscribe bitcoin-dev bitcoin-dev@lists.linuxfoundation.org
         subscribe lightning-dev lightning-dev@lists.linuxfoundation.org
 
-        # Color scheme (gruvbox-material)
-        # Colors for gruvbox-material dark theme
+        # Catppuccin Macchiato theme
         set color_directcolor = yes
-        color normal      "#d4be98" "#282828"
-        color attachment  "#7daea3" "#282828"
-        color bold        "#d4be98" "#282828"
-        color error       "#ea6962" "#282828"
-        color hdrdefault  "#927384" "#282828"
-        color indicator   "#ddc7a1" "#504945" # index row highlight
-        color markers     "#45403d" "#282828"
-        color normal      "#d4be98" "#282828"
-        color quoted      "#7daea3" "#282828" # blue
-        color quoted1     "#ea6926" "#282828" # red
-        color quoted2     "#89b482" "#282828" # aqua
-        color quoted3     "#e78a4e" "#282828" # orange
-        color quoted4     "#d3869b" "#282828" # purple
-        color quoted6     "#89b482" "#282828" # aqua
-        color search      "#282828" "#e78a4e"
-        color signature   "#89b482" "#282828"
-        color status      "#a9b665" "#282828"
-        color tilde       "#45403d" "#282828"
-        color tree        "#a9b665" "#282828"
-        color underline   "#d4be98" "#32302f"
+        color normal      "#cad3f5" "#24273a"  # text on base
+        color attachment  "#8aadf4" "#24273a"  # blue on base
+        color bold        "#cad3f5" "#24273a"  # text on base
+        color error       "#ed8796" "#24273a"  # red on base
+        color hdrdefault  "#c6a0f6" "#24273a"  # mauve on base
+        color indicator   "#cad3f5" "#363a4f"  # text on surface0
+        color markers     "#494d64" "#24273a"  # surface1 on base
+        color normal      "#cad3f5" "#24273a"  # text on base
+        color quoted      "#8aadf4" "#24273a"  # blue
+        color quoted1     "#ed8796" "#24273a"  # red
+        color quoted2     "#a6da95" "#24273a"  # green
+        color quoted3     "#f5a97f" "#24273a"  # peach
+        color quoted4     "#c6a0f6" "#24273a"  # mauve
+        color quoted6     "#a6da95" "#24273a"  # green
+        color search      "#24273a" "#f5a97f"  # base on peach
+        color signature   "#a6da95" "#24273a"  # green on base
+        color status      "#a6da95" "#363a4f"  # green on surface0
+        color tilde       "#494d64" "#24273a"  # surface1 on base
+        color tree        "#a6da95" "#24273a"  # green on base
+        color underline   "#cad3f5" "#363a4f"  # text on surface0
 
-        color sidebar_divider    "#7daea3" "#282828"
-        color sidebar_new        "#a9b665" "#282828"
-        color sidebar_unread     "#89b482" "#282828"
+        color sidebar_divider    "#8aadf4" "#24273a"  # blue on base
+        color sidebar_new        "#a6da95" "#24273a"  # green on base
+        color sidebar_unread     "#8bd5ca" "#24273a"  # teal on base
 
-        color index "#a9b665" "#282828" ~N
-        color index "#89b482" "#282828" ~O
-        color index "#7daea3" "#282828" ~P
-        color index "#d8a657" "#282828" ~F
-        color index "#d3869b" "#282828" ~Q
-        color index "#ea6962" "#282828" ~=
-        color index "#282828" "#d4be98" ~T
-        color index "#282828" "#ea6962" ~D
+        color index "#a6da95" "#24273a" ~N  # green on base (new)
+        color index "#8bd5ca" "#24273a" ~O  # teal on base (old)
+        color index "#8aadf4" "#24273a" ~P  # blue on base (from me)
+        color index "#eed49f" "#24273a" ~F  # yellow on base (flagged)
+        color index "#c6a0f6" "#24273a" ~Q  # mauve on base (replied)
+        color index "#ed8796" "#24273a" ~=  # red on base (duplicate)
+        color index "#24273a" "#cad3f5" ~T  # base on text (tagged)
+        color index "#24273a" "#ed8796" ~D  # base on red (deleted)
 
-        color header "#d8a657" "#282828" "^(To:|From:)"
-        color header "#a9b665" "#282828" "^Subject:"
-        color header "#89b482" "#282828" "^X-Spam-Status:"
-        color header "#89b482" "#282828" "^Received:"
+        color header "#eed49f" "#24273a" "^(To:|From:)"  # yellow
+        color header "#a6da95" "#24273a" "^Subject:"     # green
+        color header "#8bd5ca" "#24273a" "^X-Spam-Status:"  # teal
+        color header "#8bd5ca" "#24273a" "^Received:"    # teal
 
         # URLs and hostnames
-        color body "#a9b665" "#282828" "[a-z]{3,255}://[[:graph:]]*"
-        color body "#a9b665" "#282828" "([-[:alnum:]]+\\.)+([0-9]{1,3}|[-[:alpha:]]+)/[[:graph:]]*"
-        color body "#a9b665" "#282828" "([-[:alnum:]]+\\.){2,255}[-[:alpha:]]{2,10}"
+        color body "#a6da95" "#24273a" "[a-z]{3,255}://[[:graph:]]*"
+        color body "#a6da95" "#24273a" "([-[:alnum:]]+\\.)+([0-9]{1,3}|[-[:alpha:]]+)/[[:graph:]]*"
+        color body "#a6da95" "#24273a" "([-[:alnum:]]+\\.){2,255}[-[:alpha:]]{2,10}"
 
         # IP addresses
-        color body "#a9b665" "#282828" "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])"
+        color body "#a6da95" "#24273a" "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])"
 
         # Mail addresses and mailto URLs
-        color body "#e78a4e" "#282828" "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
-        color body "#e78a4e" "#282828" "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
+        color body "#f5a97f" "#24273a" "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+        color body "#f5a97f" "#24273a" "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
 
         # Smileys and formatting
-        color body "#282828" "#d8a657" "[;:]-*[)>(<lt;|]"
-        color body "#d4be98" "#282828" "\\*[- A-Za-z]+\\*"
+        color body "#24273a" "#eed49f" "[;:]-*[)>(<lt;|]"  # base on yellow
+        color body "#cad3f5" "#24273a" "\\*[- A-Za-z]+\\*"
 
         # GPG/PGP messages
-        color body "#d8a657" "#282828" "^-.*PGP.*-*"
-        color body "#a9b665" "#282828" "^gpg: Good signature from"
-        color body "#ea6962" "#282828" "^gpg: Can't.*$"
-        color body "#d8a657" "#282828" "^gpg: WARNING:.*$"
-        color body "#ea6962" "#282828" "^gpg: BAD signature from"
-        color body "#ea6962" "#282828" "^gpg: Note: This key has expired!"
+        color body "#eed49f" "#24273a" "^-.*PGP.*-*"
+        color body "#a6da95" "#24273a" "^gpg: Good signature from"
+        color body "#ed8796" "#24273a" "^gpg: Can't.*$"
+        color body "#eed49f" "#24273a" "^gpg: WARNING:.*$"
+        color body "#ed8796" "#24273a" "^gpg: BAD signature from"
+        color body "#ed8796" "#24273a" "^gpg: Note: This key has expired!"
 
         # Compose view
-        color compose header            "#d4be98" "#282828"
-        color compose security_encrypt  "#d3869b" "#282828"
-        color compose security_sign     "#7daea3" "#282828"
-        color compose security_both     "#a9b665" "#282828"
-        color compose security_none     "#e78a4e" "#282828"
+        color compose header            "#cad3f5" "#24273a"  # text on base
+        color compose security_encrypt  "#c6a0f6" "#24273a"  # mauve on base
+        color compose security_sign     "#8aadf4" "#24273a"  # blue on base
+        color compose security_both     "#a6da95" "#24273a"  # green on base
+        color compose security_none     "#f5a97f" "#24273a"  # peach on base
       '';
     };
 
@@ -523,7 +529,7 @@
 
       startup = [
         {
-          command = "${pkgs.xorg.xsetroot}/bin/xsetroot -solid '#282828'";
+          command = "${pkgs.xorg.xsetroot}/bin/xsetroot -solid '#24273a'";
           always = false;
           notification = false;
         }
@@ -563,7 +569,7 @@
           notification = false;
         }
         {
-          command = "${pkgs.hsetroot}/bin/hsetroot -solid '#282828'";
+          command = "${pkgs.hsetroot}/bin/hsetroot -solid '#24273a'";
           always = true;
           notification = false;
         }
@@ -673,25 +679,25 @@
 
       colors = {
         focused = {
-          border = "#4c7899";
-          background = "#285577";
-          text = "#ffffff";
-          indicator = "#2e9ef4";
-          childBorder = "#285577";
+          border = "#8aadf4";
+          background = "#24273a";
+          text = "#cad3f5";
+          indicator = "#f4dbd6";
+          childBorder = "#8aadf4";
         };
         focusedInactive = {
-          border = "#333333";
-          background = "#5f676a";
-          text = "#ffffff";
-          indicator = "#484e50";
-          childBorder = "#5f676a";
+          border = "#6e738d";
+          background = "#1e2030";
+          text = "#cad3f5";
+          indicator = "#6e738d";
+          childBorder = "#6e738d";
         };
         unfocused = {
-          border = "#333333";
-          background = "#222222";
-          text = "#888888";
-          indicator = "#292d2e";
-          childBorder = "#222222";
+          border = "#494d64";
+          background = "#181926";
+          text = "#a5adcb";
+          indicator = "#494d64";
+          childBorder = "#494d64";
         };
       };
     };
@@ -800,7 +806,7 @@
       "application/pdf" = ["org.gnome.Evince.desktop"];
     };
   };
-  
+
   # Force overwrite mimeapps.list to avoid backup conflicts
   xdg.configFile."mimeapps.list".force = true;
 

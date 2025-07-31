@@ -11,6 +11,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ned = {
       # url = "github:bitcoin-dev-tools/ned";
       url = "path:/home/will/src/bitcoin-dev-tools/ned";
@@ -23,6 +27,7 @@
     self,
     home-manager,
     sops-nix,
+    catppuccin,
     ...
   }: let
     supportedSystems = ["x86_64-linux" "aarch64-darwin"];
@@ -51,6 +56,7 @@
             ./hosts/default.nix # General host options
             ./hosts/${hostName}/default.nix # Host-specific config
 
+            catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -62,6 +68,7 @@
                 extraSpecialArgs = {inherit self;};
                 sharedModules = [
                   sops-nix.homeManagerModules.sops
+                  catppuccin.homeModules.catppuccin
                 ];
               };
             }
@@ -81,6 +88,7 @@
         modules = [
           configFile
           sops-nix.homeManagerModules.sops
+          catppuccin.homeModules.catppuccin
         ];
         extraSpecialArgs = {
           inherit self;
