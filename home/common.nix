@@ -7,7 +7,10 @@
 with lib; {
   # Common configuration shared between desktop and macbook
 
-  nix.settings.trusted-users = ["will"];
+  nix = {
+    package = lib.mkDefault pkgs.nix;
+    settings.trusted-users = ["will"];
+  };
 
   # Explicitly allow home-manager to use system packages
   home.enableNixpkgsReleaseCheck = false;

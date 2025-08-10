@@ -52,12 +52,12 @@ check-config hostname=host:
 # Rebuild user environment (home-manager standalone)
 [group('home')]
 update-home:
-    nix run nixpkgs#home-manager -- switch --flake .#{{user}}@{{os}}
+    nh home switch -c {{user}}@{{os}} .
 
 # Test rebuild user environment (home-manager build)
 [group('home')]
 build-home:
-    nix run nixpkgs#home-manager -- build --flake .#{{user}}@{{os}}
+    nh home build -c {{user}}@{{os}} .
 
 # Copy the current hardware configuration to the repo
 [group('system')]
