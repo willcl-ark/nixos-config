@@ -41,7 +41,7 @@ in {
     apcupsd.enable = true;
     printing = mkIf cfg.services.printing {
       enable = true;
-      drivers = [pkgs.gutenprint pkgs.cups-brother-hll3230cdw];
+      drivers = [pkgs.gutenprint];
     };
     avahi = {
       enable = true;
