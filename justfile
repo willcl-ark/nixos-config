@@ -47,7 +47,7 @@ update:
 # Check NixOS configuration for errors
 [group('check')]
 check-config hostname=host:
-    sudo nixos-rebuild dry-activate --flake .#{{hostname}}
+    nh os test --dry -H {{hostname}} .
 
 # Rebuild user environment (home-manager standalone)
 [group('home')]
