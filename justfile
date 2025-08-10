@@ -67,7 +67,7 @@ update-hardware:
 # nix-collect-garbage that also collects gcroots
 [group('maintenance')]
 clean:
-    nh clean all
+    nh clean all --ask
 
 # Build the new configuration and make it the boot default
 [group('build')]
