@@ -30,6 +30,13 @@ in {
 
   programs.fuse.userAllowOther = true;
 
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 5";
+    flake = "/home/will/src/nixos-config";
+  };
+
   hardware = {
     bluetooth.enable = true;
     acpilight.enable = true;
