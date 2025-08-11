@@ -25,6 +25,16 @@
     flavor = "macchiato";
   };
 
+  # Theme specialisations for light/dark mode switching
+  specialisation = {
+    light.configuration = {
+      catppuccin.flavor = lib.mkForce "latte";
+    };
+    dark.configuration = {
+      catppuccin.flavor = lib.mkForce "macchiato";
+    };
+  };
+
   # Desktop-specific applications
   home.packages = with pkgs; [
     # Desktop GUI apps
@@ -484,6 +494,21 @@
 
   # Services configuration
   services = {
+    # Darkman for automatic light/dark mode switching
+    darkman = {
+      enable = true;
+      settings = {
+        lat = 51.5074; # London
+        lng = -0.1278;
+      };
+      darkModeScripts.switch-theme = ''
+        ${config.home.profileDirectory}/specialisation/dark/activate
+      '';
+      lightModeScripts.switch-theme = ''
+        ${config.home.profileDirectory}/specialisation/light/activate
+      '';
+    };
+
     dunst = {
       enable = true;
       settings = {
