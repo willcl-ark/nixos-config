@@ -23,6 +23,7 @@ with lib; {
     dig
     eza
     fd
+    file
     fzf
     git
     htop
