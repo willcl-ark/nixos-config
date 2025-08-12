@@ -50,6 +50,7 @@
     networkmanagerapplet
     pwvucontrol
     signal-desktop
+    sparrow
     telegram-desktop
     tor-browser
     vlc
