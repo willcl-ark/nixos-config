@@ -18,7 +18,6 @@
     ned = {
       # url = "github:bitcoin-dev-tools/ned";
       url = "path:/home/will/src/bitcoin-dev-tools/ned";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
