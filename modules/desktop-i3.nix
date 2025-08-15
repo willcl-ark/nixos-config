@@ -23,6 +23,7 @@ in {
         picom
         playerctl
         rofi
+        udiskie
         xsel
       ];
     };

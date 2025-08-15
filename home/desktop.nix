@@ -575,6 +575,11 @@
           notification = false;
         }
         {
+          command = "${pkgs.udiskie}/bin/udiskie";
+          always = false;
+          notification = true;
+        }
+        {
           command = "${pkgs.gnome-keyring}/bin/gnome-keyring-daemon --start --components=secrets";
           always = false;
           notification = false;
