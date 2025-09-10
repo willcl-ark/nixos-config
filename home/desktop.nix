@@ -53,6 +53,7 @@
     sparrow
     telegram-desktop
     tor-browser
+    transmission_4-gtk
     vlc
     nzbget
 

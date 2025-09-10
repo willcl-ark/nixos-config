@@ -37,6 +37,7 @@ in {
           runroot = "/run/containers/storage";
         };
       };
+      environment.systemPackages = with pkgs; [podman-compose];
     })
 
     (mkIf cfg.enableKvm {
