@@ -13,9 +13,7 @@
   imports = [
     ./common.nix
     ./programs/tmux.nix
-    # TODO: revert
-    # Temporarily disable home-manager fish config to use system fish with existing dotfiles
-    # ./programs/fish.nix
+    ./programs/fish.nix
     ./programs/ghostty.nix
   ];
 

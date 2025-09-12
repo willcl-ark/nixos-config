@@ -59,7 +59,6 @@ in {
 
     programs.fish = mkIf cfg.enableFishShell {
       enable = true;
-      shellInit = ""; # Empty shellInit to avoid conflicts with dotfiles
     };
 
     # Setup non-login bash shells to exec into fish shell

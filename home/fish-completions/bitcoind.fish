@@ -1,0 +1,1 @@
+/home/will/src/core/bitcoin/contrib/completions/fish/bitcoind.fish
