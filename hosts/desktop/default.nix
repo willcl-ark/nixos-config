@@ -23,7 +23,7 @@
     services = {
       ssh = true;
       tailscale = true;
-      printing = true;
+      printing = false;
     };
   };
 }
