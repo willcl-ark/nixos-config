@@ -43,6 +43,7 @@
     keet
     kew
     ksnip
+    mpv
     mullvad
     museeks
     networkmanagerapplet
