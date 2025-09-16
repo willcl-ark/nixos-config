@@ -48,7 +48,10 @@ in {
       "git+https://github.com/"
       "git+ssh://github.com/"
     ];
-    nix.settings = { cores = 16; max-jobs = 1; };
+    nix.settings = {
+      cores = 16;
+      max-jobs = 1;
+    };
     services.hydra = {
       enable = true;
       hydraURL = "http://localhost:3000";

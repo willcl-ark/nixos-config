@@ -9,7 +9,6 @@ with lib; {
 
   nix = {
     package = lib.mkDefault pkgs.nix;
-    settings.trusted-users = ["will"];
   };
 
   # Explicitly allow home-manager to use system packages

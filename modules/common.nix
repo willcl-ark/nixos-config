@@ -13,6 +13,7 @@ with lib; {
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.trusted-users = ["will"];
 
   nixpkgs.config.allowUnfree = true;
 
