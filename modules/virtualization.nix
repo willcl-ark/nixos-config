@@ -19,6 +19,12 @@ in {
       default = false;
       description = "Whether to enable KVM virtualization";
     };
+
+    enableQemuUserEmulation = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to enable QEMU user emulation for multi-architecture containers";
+    };
   };
 
   config = mkMerge [
@@ -51,6 +57,24 @@ in {
       };
       users.groups.libvirtd = {};
       environment.systemPackages = with pkgs; [virt-manager spice-gtk];
+    })
+
+    (mkIf cfg.enableQemuUserEmulation {
+      # Enable binfmt emulation for multiple architectures
+      boot.binfmt.emulatedSystems = [
+        "aarch64-linux"
+        "armv7l-linux"
+        "riscv64-linux"
+      ];
+
+      # Install QEMU user emulation packages
+      environment.systemPackages = with pkgs; [
+        qemu
+        qemu-utils
+      ];
+
+      # Enable container runtime to use QEMU for cross-platform builds
+      virtualisation.containers.registries.search = ["docker.io"];
     })
   ];
 }

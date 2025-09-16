@@ -96,6 +96,7 @@ with lib; {
 
   virtualization.my = {
     enablePodman = true;
+    enableQemuUserEmulation = true;
   };
 
   # (do not change after deployment)
