@@ -21,6 +21,8 @@ in {
     })
   ];
 
+  boot.supportedFilesystems = ["fuse.sshfs"];
+
   environment.systemPackages = with pkgs; [
     apcupsd
     guix
@@ -79,13 +81,23 @@ in {
   systemd.tmpfiles.rules = [
     "d /mnt/seedbox 0755 ${cfg.user} users - -"
   ];
-  fileSystems."/mnt/seedbox" = {
-    device = "davidblaine@100.95.152.4:/home/davidblaine/";
-    fsType = "sshfs";
-    options = [
-      "IdentityFile=/home/${cfg.user}/.ssh/hetzner-temp"
-      "port=4747"
-      "allow_other"
-    ];
-  };
+
+  systemd.mounts = [
+    {
+      type = "fuse.sshfs";
+      what = "davidblaine@100.95.152.4:/home/davidblaine/";
+      where = "/mnt/seedbox";
+      options = "identityfile=/home/${cfg.user}/.ssh/hetzner-temp,port=4747,idmap=user,allow_other,_netdev,reconnect,ServerAliveInterval=15";
+    }
+  ];
+
+  systemd.automounts = [
+    {
+      wantedBy = ["multi-user.target"];
+      where = "/mnt/seedbox";
+      automountConfig = {
+        TimeoutIdleSec = "300";
+      };
+    }
+  ];
 }
