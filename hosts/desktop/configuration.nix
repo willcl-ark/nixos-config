@@ -78,6 +78,14 @@ in {
       user = cfg.user;
     };
   };
+
+  # Override virtualization settings for desktop - use Docker instead of Podman
+  virtualization.my = {
+    enablePodman = lib.mkForce false;
+    enableDocker = true;
+    enableQemuUserEmulation = true;
+  };
+
   systemd.tmpfiles.rules = [
     "d /mnt/seedbox 0755 ${cfg.user} users - -"
   ];

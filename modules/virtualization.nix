@@ -14,6 +14,12 @@ in {
       description = "Whether to enable Podman";
     };
 
+    enableDocker = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to enable Docker";
+    };
+
     enableKvm = mkOption {
       type = types.bool;
       default = false;
@@ -28,6 +34,26 @@ in {
   };
 
   config = mkMerge [
+    {
+      assertions = [
+        {
+          assertion = !(cfg.enableDocker && cfg.enablePodman);
+          message = "Cannot enable both Docker and Podman simultaneously. Please disable one of them.";
+        }
+      ];
+    }
+
+    (mkIf cfg.enableDocker {
+      virtualisation.docker = {
+        enable = true;
+        enableOnBoot = true;
+        autoPrune.enable = true;
+      };
+      users.groups.docker = {};
+      users.my.extraGroups = ["docker"];
+      environment.systemPackages = with pkgs; [docker-compose];
+    })
+
     (mkIf cfg.enablePodman {
       virtualisation.podman = {
         enable = true;
@@ -65,7 +91,9 @@ in {
         "aarch64-linux"
         "armv7l-linux"
         "riscv64-linux"
+        "s390x-linux"
       ];
+      boot.binfmt.preferStaticEmulators = true; # https://github.com/NixOS/nixpkgs/pull/334859
 
       # Install QEMU user emulation packages
       environment.systemPackages = with pkgs; [
