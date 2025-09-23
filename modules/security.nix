@@ -20,12 +20,6 @@ in {
       description = "Whether to enable keyd for keyboard remapping";
     };
 
-    remapCapsToEsc = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Whether to remap Caps Lock to Escape";
-    };
-
     gpg = {
       enable = mkOption {
         type = types.bool;
@@ -42,6 +36,12 @@ in {
   };
 
   config = {
+    # Enable sudo with wheel group
+    security.sudo = {
+      enable = true;
+      wheelNeedsPassword = true;
+    };
+
     # YubiKey support
     services.pcscd.enable = cfg.enableYubikey;
     environment.systemPackages = with pkgs;
@@ -69,19 +69,6 @@ in {
     ];
 
     # Keyboard remapping
-    services.keyd = mkIf cfg.enableKeyd {
-      enable = true;
-      keyboards = {
-        default = {
-          ids = ["*"]; # Apply to all keyboards
-          settings = {
-            main = mkIf cfg.remapCapsToEsc {
-              "capslock" = "esc";
-            };
-          };
-        };
-      };
-    };
 
     programs.gnupg.agent = mkIf cfg.gpg.enable {
       enable = true;

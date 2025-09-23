@@ -16,13 +16,13 @@ with lib; {
 
   # Common packages for all systems
   home.packages = with pkgs; [
-    # Misc packages
+    # Misc
     asciinema
     claude-code
     fastfetch
     tokei
 
-    # Basic CLI tools
+    # CLI tools
     curl
     git
     htop
@@ -31,11 +31,14 @@ with lib; {
     unzip
     wget
 
-    # Development tools
+    # Dev tools
     fd
     fzf
+    gh-dash
     jq
+    qemu
     ripgrep
+    uv
 
     # Languages and runtimes
     go
@@ -43,11 +46,6 @@ with lib; {
     python312
     rustup
     zig
-
-    # Development tools
-    gh-dash
-    qemu
-    uv
 
     # Build tools
     bash
@@ -69,7 +67,7 @@ with lib; {
     difftastic
     lazygit
 
-    # Email tools
+    # Email
     lynx
     notmuch-addrlookup
     ripmime
@@ -86,7 +84,6 @@ with lib; {
     yamllint
   ];
 
-  # GPG configuration
   programs.gpg = {
     enable = true;
     package = pkgs.gnupg;
@@ -96,7 +93,6 @@ with lib; {
     };
   };
 
-  # Git configuration - force rebuild
   programs.git = {
     enable = true;
     delta = {
@@ -180,7 +176,7 @@ with lib; {
   programs.ripgrep = {
     enable = true;
     arguments = [
-      "-uu"
+      "-u"
     ];
   };
 

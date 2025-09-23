@@ -35,7 +35,7 @@ in {
   programs.nh = {
     enable = true;
     clean.enable = true;
-    clean.extraArgs = "--keep-since 7d --keep 5";
+    clean.extraArgs = "--keep-since 10d --keep 10";
     flake = "/home/will/src/nixos-config";
   };
 
@@ -59,10 +59,8 @@ in {
     };
     guix.enable = true;
 
-    # Enable Borg backup with host-specific configuration
     my.borgbackup = {
       enable = true;
-      # Only specify host-specific excludes
       excludePaths = [
         # Standard excludes are inherited from the module
         # Host-specific excludes:
@@ -72,14 +70,12 @@ in {
       ];
     };
 
-    # Enable BGT watcher service for automated Bitcoin Core builds
     bgt = {
       enable = true;
       user = cfg.user;
     };
   };
 
-  # Override virtualization settings for desktop - use Docker instead of Podman
   virtualization.my = {
     enablePodman = lib.mkForce false;
     enableDocker = true;

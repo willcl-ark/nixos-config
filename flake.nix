@@ -19,6 +19,18 @@
       # url = "github:bitcoin-dev-tools/ned";
       url = "path:/home/will/src/bitcoin-dev-tools/ned";
     };
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dankMaterialShell = {
+      url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    matugen = {
+      url = "github:InioX/Matugen";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -27,6 +39,9 @@
     home-manager,
     sops-nix,
     catppuccin,
+    niri,
+    dankMaterialShell,
+    matugen,
     ...
   }: let
     supportedSystems = ["x86_64-linux" "aarch64-darwin"];
@@ -38,6 +53,7 @@
       import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = [ niri.overlays.niri ];
       });
 
     # Helper function to create host configurations
@@ -49,13 +65,17 @@
     }:
       nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit self;};
+        specialArgs = {inherit self niri dankMaterialShell matugen;};
         modules =
           [
             ./hosts/default.nix # General host options
             ./hosts/${hostName}/default.nix # Host-specific config
 
+            # Apply niri overlay to prevent mesa sync issues
+            { nixpkgs.overlays = [ niri.overlays.niri ]; }
+
             catppuccin.nixosModules.catppuccin
+            niri.nixosModules.niri
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -64,10 +84,11 @@
                 # Configure all users specified for this host
                 users = nixpkgs.lib.genAttrs userNames (user: import ./home/desktop.nix);
                 backupFileExtension = "backup";
-                extraSpecialArgs = {inherit self;};
+                extraSpecialArgs = {inherit self niri dankMaterialShell matugen;};
                 sharedModules = [
                   sops-nix.homeManagerModules.sops
                   catppuccin.homeModules.catppuccin
+                  dankMaterialShell.homeModules.dankMaterialShell
                 ];
               };
             }
@@ -90,7 +111,7 @@
           catppuccin.homeModules.catppuccin
         ];
         extraSpecialArgs = {
-          inherit self;
+          inherit self niri dankMaterialShell matugen;
         };
       };
   in {
@@ -100,7 +121,7 @@
         hostName = "desktop";
         userNames = ["will"];
         extraModules = [
-          ./modules/desktop-environment.nix
+          ./modules/desktop-niri.nix
         ];
       };
     };

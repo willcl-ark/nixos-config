@@ -30,7 +30,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Configure sops secret for GitHub token
     sops.secrets.github_bgt_token = {
       sopsFile = ../secrets/will.yaml;
       owner = cfg.user;

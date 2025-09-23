@@ -103,10 +103,6 @@
         name = "fzf-fish";
         src = pkgs.fishPlugins.fzf-fish.src;
       }
-      # {
-      #   name = "forgit";
-      #   src = pkgs.fishPlugins.forgit.src;
-      # }
     ];
   };
 

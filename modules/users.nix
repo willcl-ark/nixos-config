@@ -47,11 +47,10 @@ in {
   };
 
   config = {
-    # Create the default user
     users.users = mkIf cfg.createDefaultUser {
       ${cfg.defaultUser} = {
         isNormalUser = true;
-        extraGroups = cfg.extraGroups;
+        extraGroups = mkForce ["wheel" "networkmanager" "audio" "docker"];
         hashedPassword = cfg.hashedPassword;
         shell = cfg.defaultShell;
       };

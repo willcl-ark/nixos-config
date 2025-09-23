@@ -17,7 +17,6 @@ with lib; {
 
   nixpkgs.config.allowUnfree = true;
 
-  # Common system packages
   environment.systemPackages = with pkgs; [
     bat
     curl
@@ -31,6 +30,7 @@ with lib; {
     imagemagick
     jq
     just
+    keyd
     magic-wormhole
     mosh
     ncdu
@@ -50,7 +50,6 @@ with lib; {
     tree
     wget
 
-    # Specialized tools
     bitcoind
     borgbackup
     btop
@@ -58,8 +57,25 @@ with lib; {
     tor
   ];
 
-  # Enable firmware for all devices
   hardware.enableAllFirmware = true;
+
+  # Keyboard remapping
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      default = {
+        ids = ["*"]; # Apply to all keyboards
+        settings = {
+          main = {
+            # Remap Caps Lock to Escape
+            "capslock" = "esc";
+            # Remap XF86Launch6 (PrtSc) to Print for screenshot functionality
+            "f15" = "print";
+          };
+        };
+      };
+    };
+  };
 
   time.timeZone = "Europe/London";
   i18n.defaultLocale = "en_GB.UTF-8";
@@ -89,8 +105,6 @@ with lib; {
 
   security.my = {
     enableYubikey = true;
-    enableKeyd = true;
-    remapCapsToEsc = true;
     gpg.enable = true;
   };
 

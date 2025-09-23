@@ -50,7 +50,6 @@ in {
         autoPrune.enable = true;
       };
       users.groups.docker = {};
-      users.my.extraGroups = ["docker"];
       environment.systemPackages = with pkgs; [docker-compose];
     })
 
@@ -86,7 +85,6 @@ in {
     })
 
     (mkIf cfg.enableQemuUserEmulation {
-      # Enable binfmt emulation for multiple architectures
       boot.binfmt.emulatedSystems = [
         "aarch64-linux"
         "armv7l-linux"
@@ -95,13 +93,10 @@ in {
       ];
       boot.binfmt.preferStaticEmulators = true; # https://github.com/NixOS/nixpkgs/pull/334859
 
-      # Install QEMU user emulation packages
       environment.systemPackages = with pkgs; [
         qemu
         qemu-utils
       ];
-
-      # Enable container runtime to use QEMU for cross-platform builds
       virtualisation.containers.registries.search = ["docker.io"];
     })
   ];
