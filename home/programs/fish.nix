@@ -148,18 +148,18 @@
   # Custom functions and completions from dotfiles
   home.file = {
     ".config/fish/functions" = {
-      source = ../fish-functions;
+      source = ../fish/functions;
     };
     ".config/fish/completions" = {
-      source = ../fish-completions;
+      source = ../fish/completions;
     };
     # Note: conf.d files are handled by programs.fish.plugins above
     # Individual conf.d files that don't conflict with plugins:
     ".config/fish/conf.d/kubecolor.fish" = {
-      source = ../fish-conf.d/kubecolor.fish;
+      source = ../fish/conf.d/kubecolor.fish;
     };
     ".config/fish/conf.d/nix-env.fish" = {
-      source = ../fish-conf.d/nix-env.fish;
+      source = ../fish/conf.d/nix-env.fish;
     };
   };
 }
