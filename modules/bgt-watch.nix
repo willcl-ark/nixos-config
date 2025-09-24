@@ -61,8 +61,8 @@ in {
         ExecStop = "${pkgs.bash}/bin/bash -c '/home/${cfg.user}/.cargo/bin/bgt watch stop'";
         Restart = "on-failure";
         RestartSec = "30s";
-        StandardOutput = "file:/home/${cfg.user}/.config/bgt/watch.log";
-        StandardError = "file:/home/${cfg.user}/.config/bgt/watch.log";
+        StandardOutput = "journal";
+        StandardError = "journal";
 
         # Ensure access to required directories
         ReadWritePaths = [
