@@ -85,7 +85,7 @@
       mvd = "sudo tailscale set --exit-node=";
 
       # Applications
-      mutt = "pushd $HOME/Downloads/; neomutt; popd";
+      mutt = "pushd $HOME/Downloads/; TERM=xterm-direct neomutt; popd";
       todo = "nvim ~/todo.txt";
       vim = "nvim";
       pip = "uv pip";
