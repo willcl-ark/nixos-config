@@ -259,8 +259,8 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1758552677,
-        "narHash": "sha256-Zu5oZS+QprWId48FOl5AXc/piRCB7vMx/XOxaIZzKvE=",
+        "lastModified": 1758552880,
+        "narHash": "sha256-+5RKP1d5dLsQPCkqgeBctSlsVaH8qDpmCrgynyGH4PA=",
         "path": "/home/will/src/bitcoin-dev-tools/ned",
         "type": "path"
       },

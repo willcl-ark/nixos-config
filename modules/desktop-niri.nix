@@ -292,9 +292,19 @@ with lib; {
             "Mod+g".action.spawn = ["${homeDir}/.local/bin/gh-issue-open.sh"];
           };
 
-          window-rules = [{
-            clip-to-geometry = true;
-          }];
+          window-rules = [
+            {clip-to-geometry = true;}
+            {
+              matches = [
+                {
+                  app-id = "com.mitchellh.ghostty";
+                }
+              ];
+              default-column-width = {
+                proportion = 0.5;
+              };
+            }
+          ];
         };
       };
     }

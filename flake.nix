@@ -53,7 +53,7 @@
       import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ niri.overlays.niri ];
+        overlays = [niri.overlays.niri];
       });
 
     # Helper function to create host configurations
@@ -72,7 +72,7 @@
             ./hosts/${hostName}/default.nix # Host-specific config
 
             # Apply niri overlay to prevent mesa sync issues
-            { nixpkgs.overlays = [ niri.overlays.niri ]; }
+            {nixpkgs.overlays = [niri.overlays.niri];}
 
             catppuccin.nixosModules.catppuccin
             niri.nixosModules.niri
