@@ -20,7 +20,7 @@
     evince
     keet
     kew
-    ksnip
+    swayimg
     mpv
     mullvad
     museeks
@@ -333,6 +333,9 @@
         # Don't require confirmation to move mail
         unset confirmappend
 
+        # Mailcap configuration for attachment handling
+        set mailcap_path = "~/.mailcap"
+
         # Notmuch configuration
         set nm_default_uri = "notmuch:///home/will/.mail"
 
@@ -502,6 +505,7 @@
   home.file.".mailcap" = {
     text = ''
       text/html; lynx -dump %s; nametemplate=%s.html; copiousoutput
+      text/plain; nvim %s
       image/*; swayimg %s
       application/pdf; evince %s
     '';
@@ -594,9 +598,17 @@
     enable = true;
     associations.added = {
       "application/pdf" = ["org.gnome.Evince.desktop"];
+      "image/jpeg" = ["swayimg.desktop"];
+      "image/png" = ["swayimg.desktop"];
+      "image/gif" = ["swayimg.desktop"];
+      "image/webp" = ["swayimg.desktop"];
     };
     defaultApplications = {
       "application/pdf" = ["org.gnome.Evince.desktop"];
+      "image/jpeg" = ["swayimg.desktop"];
+      "image/png" = ["swayimg.desktop"];
+      "image/gif" = ["swayimg.desktop"];
+      "image/webp" = ["swayimg.desktop"];
     };
   };
 
