@@ -2,7 +2,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   home.username = "will";
   home.homeDirectory = "/home/will";
 
@@ -107,10 +108,19 @@
         preNew = "mbsync --all";
       };
       new = {
-        tags = ["unread" "inbox"];
-        ignore = [".mbsyncstate" ".uidvalidity"];
+        tags = [
+          "unread"
+          "inbox"
+        ];
+        ignore = [
+          ".mbsyncstate"
+          ".uidvalidity"
+        ];
       };
-      search.excludeTags = ["deleted" "spam"];
+      search.excludeTags = [
+        "deleted"
+        "spam"
+      ];
       maildir.synchronizeFlags = true;
     };
     neomutt = {
@@ -118,137 +128,158 @@
       binds = [
         # navigation
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "\\Cd";
           action = "half-down";
         }
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "\\Cu";
           action = "half-up";
         }
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "g";
           action = "noop";
         }
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "gg";
           action = "first-entry";
         }
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "G";
           action = "last-entry";
         }
         {
-          map = ["pager"];
+          map = [ "pager" ];
           key = "g";
           action = "noop";
         }
         {
-          map = ["pager"];
+          map = [ "pager" ];
           key = "gg";
           action = "top";
         }
         {
-          map = ["pager"];
+          map = [ "pager" ];
           key = "G";
           action = "bottom";
         }
 
         # Additional vim-like bindings
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "j";
           action = "next-entry";
         }
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "k";
           action = "previous-entry";
         }
         {
-          map = ["pager"];
+          map = [ "pager" ];
           key = "j";
           action = "next-line";
         }
         {
-          map = ["pager"];
+          map = [ "pager" ];
           key = "k";
           action = "previous-line";
         }
 
         # Sidebar nav
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "<down>";
           action = "sidebar-next";
         }
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "<up>";
           action = "sidebar-prev";
         }
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "<right>";
           action = "sidebar-open";
         }
 
         # Other
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "@";
           action = "compose-to-sender";
         }
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "R";
           action = "group-reply";
         }
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "D";
           action = "purge-message";
         }
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "<tab>";
           action = "sync-mailbox";
         }
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "<space>";
           action = "collapse-thread";
         }
         {
-          map = ["attach"];
+          map = [ "attach" ];
           key = "<return>";
           action = "view-mailcap";
         }
         {
-          map = ["editor"];
+          map = [ "editor" ];
           key = "<tab>";
           action = "complete-query";
         }
 
         # Drafts
         {
-          map = ["compose"];
+          map = [ "compose" ];
           key = "P";
           action = "postpone-message";
         }
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "p";
           action = "recall-message";
         }
 
         # Notmuch search
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "X";
           action = "vfolder-from-query";
         }
@@ -257,54 +288,69 @@
       macros = [
         # Archive message
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "A";
           action = "<save-message>=Archive<enter>";
         }
 
         # Sync email
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "O";
           action = "<shell-escape>mbsync -a<enter>";
         }
 
         # Mark as read
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "\\Cr";
           action = "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>";
         }
 
         # URL handling
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "\\cb";
           action = "<pipe-message> urlscan<Enter>";
         }
         {
-          map = ["attach" "compose"];
+          map = [
+            "attach"
+            "compose"
+          ];
           key = "\\cb";
           action = "<pipe-entry> urlscan<Enter>";
         }
 
         # Save all attachments
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "E";
           action = "<pipe-message>ripmime -i - -d ~/Downloads && rm ~/Downloads/textfile*";
         }
 
         # Search with notmuch
         {
-          map = ["index"];
+          map = [ "index" ];
           key = "\\\\";
           action = "<vfolder-from-query>";
         }
 
         # Save to folder
         {
-          map = ["index" "pager"];
+          map = [
+            "index"
+            "pager"
+          ];
           key = "S";
           action = "<save-message>?<enter>";
         }
@@ -499,7 +545,10 @@
 
   services.gnome-keyring = {
     enable = true;
-    components = ["secrets" "ssh"];
+    components = [
+      "secrets"
+      "ssh"
+    ];
   };
 
   home.file.".mailcap" = {
@@ -544,7 +593,7 @@
         enable = true;
         create = "both";
         expunge = "both";
-        patterns = ["*"];
+        patterns = [ "*" ];
       };
 
       msmtp.enable = true;
@@ -581,7 +630,7 @@
 
       imapnotify = {
         enable = true;
-        boxes = ["Inbox"];
+        boxes = [ "Inbox" ];
         onNotify = "${pkgs.isync}/bin/mbsync --quiet will:INBOX";
       };
     };
@@ -597,18 +646,18 @@
   xdg.mimeApps = {
     enable = true;
     associations.added = {
-      "application/pdf" = ["org.gnome.Evince.desktop"];
-      "image/jpeg" = ["swayimg.desktop"];
-      "image/png" = ["swayimg.desktop"];
-      "image/gif" = ["swayimg.desktop"];
-      "image/webp" = ["swayimg.desktop"];
+      "application/pdf" = [ "org.gnome.Evince.desktop" ];
+      "image/jpeg" = [ "swayimg.desktop" ];
+      "image/png" = [ "swayimg.desktop" ];
+      "image/gif" = [ "swayimg.desktop" ];
+      "image/webp" = [ "swayimg.desktop" ];
     };
     defaultApplications = {
-      "application/pdf" = ["org.gnome.Evince.desktop"];
-      "image/jpeg" = ["swayimg.desktop"];
-      "image/png" = ["swayimg.desktop"];
-      "image/gif" = ["swayimg.desktop"];
-      "image/webp" = ["swayimg.desktop"];
+      "application/pdf" = [ "org.gnome.Evince.desktop" ];
+      "image/jpeg" = [ "swayimg.desktop" ];
+      "image/png" = [ "swayimg.desktop" ];
+      "image/gif" = [ "swayimg.desktop" ];
+      "image/webp" = [ "swayimg.desktop" ];
     };
   };
 

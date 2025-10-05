@@ -1,11 +1,16 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.ghostty = {
     enable = true;
     package = pkgs.ghostty;
     settings = {
       font-family = "ComicCode Nerd Font";
       font-size = 12;
-      font-feature = ["-calt" "-liga" "-dlig"];
+      font-feature = [
+        "-calt"
+        "-liga"
+        "-dlig"
+      ];
 
       cursor-style = "block";
 

@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.services.bgt;
-in {
+in
+{
   options.services.bgt = {
     enable = mkEnableOption "BGT watcher service for automated Bitcoin Core builds";
 
@@ -24,7 +26,7 @@ in {
 
     extraFlags = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
       description = "Extra flags to pass to bgt watch start";
     };
   };
@@ -38,9 +40,12 @@ in {
 
     systemd.user.services.bgt = {
       description = "BGT watcher daemon for automated Bitcoin Core builds";
-      after = ["network-online.target" "gpg-agent.service"];
-      wants = ["network-online.target"];
-      wantedBy = ["default.target"];
+      after = [
+        "network-online.target"
+        "gpg-agent.service"
+      ];
+      wants = [ "network-online.target" ];
+      wantedBy = [ "default.target" ];
 
       environment = {
         HOME = "/home/${cfg.user}";
@@ -55,9 +60,11 @@ in {
 
       serviceConfig = {
         Type = "simple";
-        ExecStart = let
-          flags = [] ++ optional cfg.autoAttest "--auto" ++ cfg.extraFlags;
-        in "${pkgs.bash}/bin/bash -c 'export GITHUB_BGT_TOKEN=$(cat ${config.sops.secrets.github_bgt_token.path}) && /home/${cfg.user}/.cargo/bin/bgt watch start ${concatStringsSep " " flags}'";
+        ExecStart =
+          let
+            flags = [ ] ++ optional cfg.autoAttest "--auto" ++ cfg.extraFlags;
+          in
+          "${pkgs.bash}/bin/bash -c 'export GITHUB_BGT_TOKEN=$(cat ${config.sops.secrets.github_bgt_token.path}) && /home/${cfg.user}/.cargo/bin/bgt watch start ${concatStringsSep " " flags}'";
         ExecStop = "${pkgs.bash}/bin/bash -c '/home/${cfg.user}/.cargo/bin/bgt watch stop'";
         Restart = "on-failure";
         RestartSec = "30s";

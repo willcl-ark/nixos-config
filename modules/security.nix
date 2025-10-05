@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.security.my;
-in {
+in
+{
   options.security.my = {
     enableYubikey = mkOption {
       type = types.bool;
@@ -44,23 +46,26 @@ in {
 
     # YubiKey support
     services.pcscd.enable = cfg.enableYubikey;
-    environment.systemPackages = with pkgs;
+    environment.systemPackages =
+      with pkgs;
       (
-        if cfg.enableYubikey
-        then [
-          gnupg
-          yubikey-personalization
-          yubikey-manager
-          pcsclite
-        ]
-        else []
+        if cfg.enableYubikey then
+          [
+            gnupg
+            yubikey-personalization
+            yubikey-manager
+            pcsclite
+          ]
+        else
+          [ ]
       )
       ++ (
-        if cfg.enableKeyd
-        then [
-          keyd
-        ]
-        else []
+        if cfg.enableKeyd then
+          [
+            keyd
+          ]
+        else
+          [ ]
       );
 
     services.udev.packages = mkIf cfg.enableYubikey [

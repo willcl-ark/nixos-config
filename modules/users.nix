@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.users.my;
-in {
+in
+{
   options.users.my = {
     defaultUser = mkOption {
       type = types.str;
@@ -22,7 +24,12 @@ in {
 
     extraGroups = mkOption {
       type = types.listOf types.str;
-      default = ["wheel" "networkmanager" "audio" "docker"];
+      default = [
+        "wheel"
+        "networkmanager"
+        "audio"
+        "docker"
+      ];
       description = "Extra groups for the default user";
     };
 
@@ -50,7 +57,12 @@ in {
     users.users = mkIf cfg.createDefaultUser {
       ${cfg.defaultUser} = {
         isNormalUser = true;
-        extraGroups = mkForce ["wheel" "networkmanager" "audio" "docker"];
+        extraGroups = mkForce [
+          "wheel"
+          "networkmanager"
+          "audio"
+          "docker"
+        ];
         hashedPassword = cfg.hashedPassword;
         shell = cfg.defaultShell;
       };

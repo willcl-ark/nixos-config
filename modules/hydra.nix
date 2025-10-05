@@ -1,10 +1,16 @@
-{...}: {
+{ ... }:
+{
   nix.buildMachines = [
     {
       hostName = "localhost";
       protocol = null;
       system = "x86_64-linux";
-      supportedFeatures = ["kvm" "nixos-test" "big-parallel" "benchmark"];
+      supportedFeatures = [
+        "kvm"
+        "nixos-test"
+        "big-parallel"
+        "benchmark"
+      ];
       maxJobs = 1;
     }
   ];
@@ -24,7 +30,7 @@
     enable = true;
     hydraURL = "http://localhost:3000";
     notificationSender = "hydra@localhost";
-    buildMachinesFiles = [];
+    buildMachinesFiles = [ ];
     useSubstitutes = true;
   };
 }

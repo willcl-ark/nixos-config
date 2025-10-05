@@ -3,9 +3,11 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.networking.my;
-in {
+in
+{
   options.networking.my = {
     enableNetworkManager = mkOption {
       type = types.bool;
@@ -22,13 +24,13 @@ in {
     openPorts = {
       tcp = mkOption {
         type = types.listOf types.port;
-        default = [];
+        default = [ ];
         description = "List of TCP ports to open";
       };
 
       udp = mkOption {
         type = types.listOf types.port;
-        default = [];
+        default = [ ];
         description = "List of UDP ports to open";
       };
     };
@@ -61,10 +63,7 @@ in {
     services.tailscale = mkIf cfg.enableTailscale {
       enable = true;
       openFirewall = true;
-      useRoutingFeatures =
-        if cfg.tailscaleAsRouter
-        then "server"
-        else "client";
+      useRoutingFeatures = if cfg.tailscaleAsRouter then "server" else "client";
     };
 
     # We always want this available

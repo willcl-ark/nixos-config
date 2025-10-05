@@ -5,9 +5,11 @@
   self,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.services.my.borgbackup;
-in {
+in
+{
   options.services.my.borgbackup = {
     enable = mkEnableOption "BorgBackup service";
 
@@ -133,36 +135,41 @@ in {
 
     systemd.services.borgbackup = {
       description = "BorgBackup Service";
-      after = ["network.target" "local-fs.target"];
-      wants = ["network.target"];
-      script = let
-        borgCmd = "${pkgs.borgbackup}/bin/borg";
-        excludeArgs = concatMapStrings (path: "--exclude '${path}' \\\n        ") cfg.excludePaths;
-        includeArgs = concatStringsSep " " cfg.includePaths;
-      in ''
-        export BORG_PASSPHRASE=$(cat ${config.sops.secrets.borg_passphrase.path})
-        export BORG_REPO=${cfg.backupPath}/${cfg.repoName}
+      after = [
+        "network.target"
+        "local-fs.target"
+      ];
+      wants = [ "network.target" ];
+      script =
+        let
+          borgCmd = "${pkgs.borgbackup}/bin/borg";
+          excludeArgs = concatMapStrings (path: "--exclude '${path}' \\\n        ") cfg.excludePaths;
+          includeArgs = concatStringsSep " " cfg.includePaths;
+        in
+        ''
+          export BORG_PASSPHRASE=$(cat ${config.sops.secrets.borg_passphrase.path})
+          export BORG_REPO=${cfg.backupPath}/${cfg.repoName}
 
-        ${borgCmd} create \
-          --filter AME \
-          --show-rc \
-          --compression ${cfg.compression} \
-          --exclude-caches \
-          ${excludeArgs}::'{hostname}-{now}' \
-          ${includeArgs}
+          ${borgCmd} create \
+            --filter AME \
+            --show-rc \
+            --compression ${cfg.compression} \
+            --exclude-caches \
+            ${excludeArgs}::'{hostname}-{now}' \
+            ${includeArgs}
 
-        ${borgCmd} prune \
-          --list \
-          --show-rc \
-          --keep-hourly ${toString cfg.retention.hourly} \
-          --keep-daily ${toString cfg.retention.daily} \
-          --keep-weekly ${toString cfg.retention.weekly} \
-          --keep-monthly ${toString cfg.retention.monthly} \
-          --keep-yearly ${toString cfg.retention.yearly} \
-          --glob-archives='{hostname}-*'
+          ${borgCmd} prune \
+            --list \
+            --show-rc \
+            --keep-hourly ${toString cfg.retention.hourly} \
+            --keep-daily ${toString cfg.retention.daily} \
+            --keep-weekly ${toString cfg.retention.weekly} \
+            --keep-monthly ${toString cfg.retention.monthly} \
+            --keep-yearly ${toString cfg.retention.yearly} \
+            --glob-archives='{hostname}-*'
 
-        ${borgCmd} compact
-      '';
+          ${borgCmd} compact
+        '';
       serviceConfig = {
         Type = "oneshot";
         User = "root";
@@ -172,7 +179,7 @@ in {
 
     systemd.timers.borgbackup = {
       description = "Run BorgBackup Every ${toString cfg.schedule.hourly} Hours";
-      wantedBy = ["timers.target"];
+      wantedBy = [ "timers.target" ];
       timerConfig = {
         OnCalendar = "*-*-* 0/${toString cfg.schedule.hourly}:00:00";
         Persistent = true;

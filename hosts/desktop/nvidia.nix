@@ -5,17 +5,19 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.host;
   enableNvidia = cfg.gpu.type == "nvidia";
-in {
+in
+{
   # Enable OpenGL only if using NVIDIA
   hardware.graphics = mkIf enableNvidia {
     enable = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = mkIf enableNvidia ["nvidia"];
+  services.xserver.videoDrivers = mkIf enableNvidia [ "nvidia" ];
 
   hardware.nvidia = mkIf enableNvidia {
     # Modesetting is required.

@@ -4,7 +4,8 @@
   self,
   ...
 }:
-with lib; {
+with lib;
+{
   imports = [
     ./networking.nix
     ./security.nix
@@ -12,8 +13,11 @@ with lib; {
     ./virtualization.nix
   ];
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-  nix.settings.trusted-users = ["will"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+  nix.settings.trusted-users = [ "will" ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -64,7 +68,7 @@ with lib; {
     enable = true;
     keyboards = {
       default = {
-        ids = ["*"]; # Apply to all keyboards
+        ids = [ "*" ]; # Apply to all keyboards
         settings = {
           main = {
             # Remap Caps Lock to Escape

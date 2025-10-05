@@ -4,7 +4,8 @@
   pkgs,
   ...
 }:
-with lib; {
+with lib;
+{
   # Common configuration shared between desktop and macbook
 
   nix = {

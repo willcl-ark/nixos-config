@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.fish = {
     enable = true;
     package = pkgs.fish;
@@ -49,9 +50,12 @@
       # Bitcoin Core development
       bcli = "bitcoin-cli";
       electrumtunnel = "ssh nucremote -L 50001:localhost:50001 -N";
-      "fetch-master" = "git checkout master; and git fetch --all --tags --prune; and git merge upstream/master";
-      "guix-hashes" = "find guix-build-$(git rev-parse --short=12 HEAD)/output/ -type f -print0 | env LC_ALL=C sort -z | xargs -r0 sha256sum";
-      "genesis-block" = "bitcoin-cli getblockhash 0 | xargs -I {} bitcoin-cli getblock {} 0 | xxd -r -p | hexdump -v -C";
+      "fetch-master" =
+        "git checkout master; and git fetch --all --tags --prune; and git merge upstream/master";
+      "guix-hashes" =
+        "find guix-build-$(git rev-parse --short=12 HEAD)/output/ -type f -print0 | env LC_ALL=C sort -z | xargs -r0 sha256sum";
+      "genesis-block" =
+        "bitcoin-cli getblockhash 0 | xargs -I {} bitcoin-cli getblock {} 0 | xxd -r -p | hexdump -v -C";
       grc = "git rebase --continue";
       lcli = "lightning-cli";
       rba = "git rebase -i (git merge-base HEAD upstream/master)";

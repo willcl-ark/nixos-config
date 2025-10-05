@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.virtualization.my;
-in {
+in
+{
   options.virtualization.my = {
     enablePodman = mkOption {
       type = types.bool;
@@ -49,8 +51,8 @@ in {
         enableOnBoot = true;
         autoPrune.enable = true;
       };
-      users.groups.docker = {};
-      environment.systemPackages = with pkgs; [docker-compose];
+      users.groups.docker = { };
+      environment.systemPackages = with pkgs; [ docker-compose ];
     })
 
     (mkIf cfg.enablePodman {
@@ -68,7 +70,7 @@ in {
           runroot = "/run/containers/storage";
         };
       };
-      environment.systemPackages = with pkgs; [podman-compose];
+      environment.systemPackages = with pkgs; [ podman-compose ];
     })
 
     (mkIf cfg.enableKvm {
@@ -80,8 +82,11 @@ in {
           ovmf.enable = true;
         };
       };
-      users.groups.libvirtd = {};
-      environment.systemPackages = with pkgs; [virt-manager spice-gtk];
+      users.groups.libvirtd = { };
+      environment.systemPackages = with pkgs; [
+        virt-manager
+        spice-gtk
+      ];
     })
 
     (mkIf cfg.enableQemuUserEmulation {
@@ -97,7 +102,7 @@ in {
         qemu
         qemu-utils
       ];
-      virtualisation.containers.registries.search = ["docker.io"];
+      virtualisation.containers.registries.search = [ "docker.io" ];
     })
   ];
 }
