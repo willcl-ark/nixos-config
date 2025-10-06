@@ -53,6 +53,8 @@ in
       };
 
       path = with pkgs; [
+        bash
+        coreutils
         gnupg
         git
         openssh
