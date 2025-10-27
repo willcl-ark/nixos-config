@@ -24,7 +24,7 @@
 
       macos-titlebar-style = "hidden";
 
-      scrollback-limit = 500000;
+      scrollback-limit = 1000000000;
     };
   };
 }
