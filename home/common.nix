@@ -21,6 +21,7 @@ with lib;
     asciinema
     claude-code
     fastfetch
+    yt-dlp
     tokei
 
     # CLI tools
