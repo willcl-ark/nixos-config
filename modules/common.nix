@@ -105,6 +105,10 @@ with lib;
     enableNetworkManager = true;
     enableFirewall = true;
     enableTailscale = true;
+    openPorts.tcp = [
+      8000
+      2234
+    ];
   };
 
   security.my = {

@@ -85,7 +85,7 @@
       termbin = "nc termbin.com 9999";
 
       # VPN
-      mvc = "sudo tailscale set --exit-node=se-sto-wg-201.mullvad.ts.net";
+      mvc = "sudo tailscale set --exit-node=de-dus-wg-001.mullvad.ts.net";
       mvd = "sudo tailscale set --exit-node=";
 
       # Applications
