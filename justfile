@@ -10,7 +10,7 @@ default:
 # Build the new configuration
 [group('build')]
 build hostname=host:
-    nh os build -H {{hostname}} .
+    nh os build -H {{hostname}} . --show-trace
 
 # Build and activate the new configuration
 [group('build')]
