@@ -53,7 +53,7 @@
       "fetch-master" =
         "git checkout master; and git fetch --all --tags --prune; and git merge upstream/master";
       "guix-hashes" =
-        "find guix-build-$(git rev-parse --short=12 HEAD)/output/ -type f -print0 | env LC_ALL=C sort -z | xargs -r0 sha256sum";
+        "uname -m; find guix-build-$(git rev-parse --short=12 HEAD)/output/ -type f -print0 | env LC_ALL=C sort -z | xargs -r0 sha256sum";
       "genesis-block" =
         "bitcoin-cli getblockhash 0 | xargs -I {} bitcoin-cli getblock {} 0 | xxd -r -p | hexdump -v -C";
       grc = "git rebase --continue";
