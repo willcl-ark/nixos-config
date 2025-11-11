@@ -19,21 +19,22 @@
     bitwarden
     cider-2
     evince
+    haruna
     keet
     kew
-    swayimg
     mpv
     mullvad
     museeks
     networkmanagerapplet
+    nzbget
     pwvucontrol
     signal-desktop
     sparrow
+    swayimg
     telegram-desktop
     tor-browser
     transmission_4-gtk
     vlc
-    nzbget
 
     # Kubernetes tools (desktop-specific)
     kubectl
