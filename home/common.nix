@@ -157,7 +157,7 @@ with lib;
       fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
       last = "log -1 HEAD";
       pr = "!f() { git fetch $1 pull/$2/head:pr-$2 && git switch pr-$2; }; f";
-      prw = "!f() { git fetch $1 pull/$2/head:pr-$2 && mkdir -p ../worktrees && git worktree add ../worktrees/pr-$2 pr-$2; }; f";
+      prw = "!f() { git fetch $1 pull/$2/head:pr-$2 && mkdir -p ../worktrees && git worktree add ../worktrees/pr-$2 pr-$2; cd ../worktrees/pr-$2; }; f";
       pru = "!f() { git fetch --update-head-ok -f $1 pull/$2/head:pr-$2 && [ \"$(git branch --show-current)\" = \"pr-$2\" ] && git reset --hard HEAD || true; }; f";
       rb = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch); }; f";
       rba = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch) --autosquash; }; f";
