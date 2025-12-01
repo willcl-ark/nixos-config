@@ -42,7 +42,6 @@ with lib;
     nettools
     nfs-utils
     nh
-    pinentry
     pinentry-curses
     pinentry-gnome3
     pinentry-tty

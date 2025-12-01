@@ -16,7 +16,7 @@
 
   home.packages = with pkgs; [
     # GUI
-    bitwarden
+    bitwarden-desktop
     cider-2
     evince
     haruna
@@ -483,7 +483,7 @@
     };
 
     # Desktop-specific git aliases
-    git.aliases = {
+    git.settings.alias = {
       # Linux-specific clipboard command
       ack = "!f() { git rev-parse HEAD | tr -d '[:space:]' | wl-copy; }; f";
     };

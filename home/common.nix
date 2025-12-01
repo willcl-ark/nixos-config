@@ -80,7 +80,6 @@ with lib;
     gitlint
     lua54Packages.luacheck
     markdownlint-cli
-    nodePackages.jsonlint
     ruff
     shellcheck
     yamllint
@@ -97,28 +96,22 @@ with lib;
 
   programs.git = {
     enable = true;
-    delta = {
-      enable = true;
-      options = {
-        line-numbers = true;
-        conflict-style = "zdiff3";
-      };
-    };
-    userName = "will";
-    userEmail = "will@256k1.dev";
     signing = {
       key = "0xCE6EC49945C17EA6";
       signByDefault = true;
     };
-    extraConfig = {
+    settings = {
+      user = {
+        name = "will";
+        email = "will@256k1.dev";
+      };
       init.defaultBranch = "master";
       diff.algorithm = "patience";
       pull.rebase = true;
       push.autoSetupRemote = true;
       core.editor = "nvim";
       gpg.program = "${pkgs.gnupg}/bin/gpg2";
-    };
-    aliases = {
+      alias = {
       # Common commands
       a = "add .";
       b = "branch";
@@ -169,6 +162,16 @@ with lib;
       ddiff = "-c diff.external=${pkgs.difftastic}/bin/difft diff";
       dlog = "-c diff.external=${pkgs.difftastic}/bin/difft log --ext-diff";
       dshow = "-c diff.external=${pkgs.difftastic}/bin/difft show --ext-diff";
+      };
+    };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      line-numbers = true;
+      conflict-style = "zdiff3";
     };
   };
 
