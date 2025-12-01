@@ -112,56 +112,56 @@ with lib;
       core.editor = "nvim";
       gpg.program = "${pkgs.gnupg}/bin/gpg2";
       alias = {
-      # Common commands
-      a = "add .";
-      b = "branch";
-      cp = "cherry-pick";
-      cpcont = "cherry-pick --continue";
-      d = "difftool";
-      ds = "diff --staged";
-      f = "fetch --all --prune";
-      lo = "log --oneline -n 40";
-      m = "mergetool";
-      po = "push origin";
-      pu = "push upstream";
-      pushf = "push --force-with-lease";
-      r = "rebase";
-      ra = "rebase --abort";
-      rcont = "rebase --continue";
-      rd = "range-diff";
-      rem = "remote";
-      rh = "reset --hard";
-      s = "status";
+        # Common commands
+        a = "add .";
+        b = "branch";
+        cp = "cherry-pick";
+        cpcont = "cherry-pick --continue";
+        d = "difftool";
+        ds = "diff --staged";
+        f = "fetch --all --prune";
+        lo = "log --oneline -n 40";
+        m = "mergetool";
+        po = "push origin";
+        pu = "push upstream";
+        pushf = "push --force-with-lease";
+        r = "rebase";
+        ra = "rebase --abort";
+        rcont = "rebase --continue";
+        rd = "range-diff";
+        rem = "remote";
+        rh = "reset --hard";
+        s = "status";
 
-      # File Management
-      co = "checkout";
-      cob = "checkout -b";
-      un = "reset HEAD";
+        # File Management
+        co = "checkout";
+        cob = "checkout -b";
+        un = "reset HEAD";
 
-      # Commit Commands
-      amend = "commit --amend";
-      cm = "commit";
-      com = "commit -m";
-      fix = "commit --amend --no-edit";
+        # Commit Commands
+        amend = "commit --amend";
+        cm = "commit";
+        com = "commit -m";
+        fix = "commit --amend --no-edit";
 
-      # Custom scripts (platform-agnostic)
-      coauth = "!f() { git shortlog --summary --numbered --email --all | grep \"$1\" | sed 's/^[[:space:]]*[0-9]*[[:space:]]*/Co-authored-by: /'; }; f";
-      files = "!f() { git diff-tree --no-commit-id --name-only -r HEAD; }; f";
-      fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
-      last = "log -1 HEAD";
-      pr = "!f() { git fetch $1 pull/$2/head:pr-$2 && git switch pr-$2; }; f";
-      prw = "!f() { git fetch $1 pull/$2/head:pr-$2 && mkdir -p ../worktrees && git worktree add ../worktrees/pr-$2 pr-$2; cd ../worktrees/pr-$2; }; f";
-      pru = "!f() { git fetch --update-head-ok -f $1 pull/$2/head:pr-$2 && [ \"$(git branch --show-current)\" = \"pr-$2\" ] && git reset --hard HEAD || true; }; f";
-      rb = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch); }; f";
-      rba = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch) --autosquash; }; f";
-      review = "!f() { git -c sequence.editor='sed -i s/pick/edit/' rebase -i $(git merge-base master HEAD); }; f";
-      show-pr = "!f() { git log --merges --ancestry-path --oneline $1..HEAD | tail -n 1; }; f";
-      tags = "!sh -c 'git for-each-ref --sort=-taggerdate --format=\"%(refname:lstrip=2)\" refs/tags | fzf | xargs git checkout'";
+        # Custom scripts (platform-agnostic)
+        coauth = "!f() { git shortlog --summary --numbered --email --all | grep \"$1\" | sed 's/^[[:space:]]*[0-9]*[[:space:]]*/Co-authored-by: /'; }; f";
+        files = "!f() { git diff-tree --no-commit-id --name-only -r HEAD; }; f";
+        fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
+        last = "log -1 HEAD";
+        pr = "!f() { git fetch $1 pull/$2/head:pr-$2 && git switch pr-$2; }; f";
+        prw = "!f() { git fetch $1 pull/$2/head:pr-$2 && mkdir -p ../worktrees && git worktree add ../worktrees/pr-$2 pr-$2; cd ../worktrees/pr-$2; }; f";
+        pru = "!f() { git fetch --update-head-ok -f $1 pull/$2/head:pr-$2 && [ \"$(git branch --show-current)\" = \"pr-$2\" ] && git reset --hard HEAD || true; }; f";
+        rb = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch); }; f";
+        rba = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch) --autosquash; }; f";
+        review = "!f() { git -c sequence.editor='sed -i s/pick/edit/' rebase -i $(git merge-base master HEAD); }; f";
+        show-pr = "!f() { git log --merges --ancestry-path --oneline $1..HEAD | tail -n 1; }; f";
+        tags = "!sh -c 'git for-each-ref --sort=-taggerdate --format=\"%(refname:lstrip=2)\" refs/tags | fzf | xargs git checkout'";
 
-      # Difftastic aliases
-      ddiff = "-c diff.external=${pkgs.difftastic}/bin/difft diff";
-      dlog = "-c diff.external=${pkgs.difftastic}/bin/difft log --ext-diff";
-      dshow = "-c diff.external=${pkgs.difftastic}/bin/difft show --ext-diff";
+        # Difftastic aliases
+        ddiff = "-c diff.external=${pkgs.difftastic}/bin/difft diff";
+        dlog = "-c diff.external=${pkgs.difftastic}/bin/difft log --ext-diff";
+        dshow = "-c diff.external=${pkgs.difftastic}/bin/difft show --ext-diff";
       };
     };
   };

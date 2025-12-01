@@ -497,18 +497,20 @@
   # DankMaterialShell configuration for niri
   programs.dankMaterialShell = {
     enable = true;
-    enableKeybinds = false; # Disabled - we'll add keybinds manually to niri config
-    enableSpawn = false; # Disabled - we'll add spawn-at-startup manually to niri config
-    enableSystemd = false; # We'll use spawn-at-startup instead
-    # optional features
-    enableSystemMonitoring = true; # Requires dgop (will install from flake)
+    niri = {
+      enableKeybinds = false; # Disabled - we have custom keybinds in modules/desktop-niri.nix
+      enableSpawn = false; # Disabled - we spawn via niri config in modules/desktop-niri.nix
+    };
+    # Optional features
+    enableSystemMonitoring = true; # Requires dgop
     enableClipboard = true;
     enableVPN = true;
     enableBrightnessControl = true;
-    enableNightMode = true;
+    enableColorPicker = true;
     enableDynamicTheming = true;
     enableAudioWavelength = true;
     enableCalendarEvents = false;
+    enableSystemSound = true;
   };
 
   programs.firefox = {

@@ -55,7 +55,7 @@ with lib;
     xwayland-satellite # For X11 apps support
     libsecret
     playerctl
-    matugen.packages.${pkgs.system}.default # Material You color generation
+    matugen.packages.${pkgs.stdenv.hostPlatform.system}.default # Material You color generation
   ];
 
   programs.niri = {

@@ -23,9 +23,14 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     dankMaterialShell = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.dgop.follows = "dgop";
     };
     matugen = {
       url = "github:InioX/Matugen";
@@ -68,7 +73,6 @@
         {
           system ? "x86_64-linux",
           hostName,
-          userNames ? [ "will" ],
           extraModules ? [ ],
         }:
         nixpkgs.lib.nixosSystem {
@@ -95,8 +99,7 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                # Configure all users specified for this host
-                users = nixpkgs.lib.genAttrs userNames (user: import ./home/desktop.nix);
+                users.will.imports = [ ./home/desktop.nix ];
                 backupFileExtension = "backup";
                 extraSpecialArgs = {
                   inherit
@@ -109,7 +112,8 @@
                 sharedModules = [
                   sops-nix.homeManagerModules.sops
                   catppuccin.homeModules.catppuccin
-                  dankMaterialShell.homeModules.dankMaterialShell
+                  dankMaterialShell.homeModules.dankMaterialShell.default
+                  dankMaterialShell.homeModules.dankMaterialShell.niri
                 ];
               };
             }
@@ -147,7 +151,6 @@
       nixosConfigurations = {
         desktop = mkHost {
           hostName = "desktop";
-          userNames = [ "will" ];
           extraModules = [
             ./modules/desktop-niri.nix
           ];
