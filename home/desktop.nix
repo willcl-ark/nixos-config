@@ -503,14 +503,10 @@
     };
     # Optional features
     enableSystemMonitoring = true; # Requires dgop
-    enableClipboard = true;
     enableVPN = true;
-    enableBrightnessControl = true;
-    enableColorPicker = true;
     enableDynamicTheming = true;
     enableAudioWavelength = true;
     enableCalendarEvents = false;
-    enableSystemSound = true;
   };
 
   programs.firefox = {
