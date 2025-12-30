@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ ... }:
 {
   imports = [
     ./configuration.nix
     ./hardware-configuration.nix
-    ../../modules/hydra.nix
+    # ../../modules/hydra.nix
     ./nvidia.nix
   ];
 
