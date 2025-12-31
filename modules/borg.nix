@@ -182,7 +182,7 @@ in
       wantedBy = [ "timers.target" ];
       timerConfig = {
         OnCalendar = "*-*-* 0/${toString cfg.schedule.hourly}:00:00";
-        Persistent = true;
+        Persistent = false;
         RandomizedDelaySec = cfg.schedule.randomDelay;
       };
     };
