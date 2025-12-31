@@ -519,7 +519,7 @@
         "widget.use-xdg-desktop-portal.file-picker" = 1;
         "media.ffmpeg.vaapi.enabled" = true;
         "gfx.webrender.all" = true;
-        "layout.css.devPixelsPerPx" = 2.0;
+        "layout.css.devPixelsPerPx" = "-1.0"; # Auto-detect from compositor
 
         # Better integration
         "browser.display.use_system_colors" = true;
