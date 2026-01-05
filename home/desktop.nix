@@ -657,6 +657,10 @@
       "image/png" = [ "swayimg.desktop" ];
       "image/gif" = [ "swayimg.desktop" ];
       "image/webp" = [ "swayimg.desktop" ];
+      "x-scheme-handler/http" = [ "firefox.desktop" ];
+      "x-scheme-handler/https" = [ "firefox.desktop" ];
+      "text/html" = [ "firefox.desktop" ];
+      "application/xhtml+xml" = [ "firefox.desktop" ];
     };
   };
 
