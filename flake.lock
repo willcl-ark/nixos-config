@@ -231,6 +231,28 @@
         "type": "github"
       }
     },
+    "ndg": {
+      "inputs": {
+        "nixpkgs": [
+          "ned",
+          "nvf",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765720983,
+        "narHash": "sha256-tWtukpABmux6EC/FuCJEgA1kmRjcRPtED44N+GGPq+4=",
+        "owner": "feel-co",
+        "repo": "ndg",
+        "rev": "f399ace8bb8e1f705dd8942b24d207aa4d75c936",
+        "type": "github"
+      },
+      "original": {
+        "owner": "feel-co",
+        "repo": "ndg",
+        "type": "github"
+      }
+    },
     "ned": {
       "inputs": {
         "fff-nvim": "fff-nvim",
@@ -241,8 +263,8 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1764755035,
-        "narHash": "sha256-gHmpPqHRE+eSmWGSex+5MZRitNxthsSlrhwxEP5U7KY=",
+        "lastModified": 1767620441,
+        "narHash": "sha256-wW7NCzSgBCm10eze4Ccw3BLNX49X28+fJxCfB6MkGdo=",
         "path": "/home/will/src/bitcoin-dev-tools/ned",
         "type": "path"
       },
@@ -362,6 +384,7 @@
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts",
         "mnw": "mnw",
+        "ndg": "ndg",
         "nixpkgs": [
           "ned",
           "nixpkgs"
@@ -369,16 +392,15 @@
         "systems": "systems_4"
       },
       "locked": {
-        "lastModified": 1764300702,
-        "narHash": "sha256-JytizsFCUjx2U5dQYPuX59x7jcIwigGjBhrA3rZICCg=",
+        "lastModified": 1767369300,
+        "narHash": "sha256-QV+tdP2bS+PJBcp4YHhqpMTzcxsxGaS/d6cKMCJ4PnA=",
         "owner": "notashelf",
         "repo": "nvf",
-        "rev": "d5efd7cc1aaa3906537e92d35494e8b35aad778d",
+        "rev": "9c75c2a199af39fc95fb203636ce97d070ca3973",
         "type": "github"
       },
       "original": {
         "owner": "notashelf",
-        "ref": "v0.8",
         "repo": "nvf",
         "type": "github"
       }
