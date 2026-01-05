@@ -70,6 +70,7 @@ with lib;
 
   services.greetd = {
     enable = true;
+    useTextGreeter = true; # Prevents systemd messages from interrupting greeting
     settings = {
       default_session = {
         command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
