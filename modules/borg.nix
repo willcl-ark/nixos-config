@@ -33,10 +33,16 @@ in
     };
 
     schedule = {
-      hourly = mkOption {
-        type = types.int;
-        default = 3;
-        description = "Run backup every X hours";
+      onCalendar = mkOption {
+        type = types.listOf types.str;
+        default = [
+          "*-*-* 09:00:00"
+          "*-*-* 12:00:00"
+          "*-*-* 15:00:00"
+          "*-*-* 18:00:00"
+          "*-*-* 22:00:00"
+        ];
+        description = "List of systemd calendar expressions for when to run backups";
       };
 
       randomDelay = mkOption {
@@ -178,10 +184,10 @@ in
     };
 
     systemd.timers.borgbackup = {
-      description = "Run BorgBackup Every ${toString cfg.schedule.hourly} Hours";
+      description = "Run BorgBackup at scheduled times";
       wantedBy = [ "timers.target" ];
       timerConfig = {
-        OnCalendar = "*-*-* 0/${toString cfg.schedule.hourly}:00:00";
+        OnCalendar = cfg.schedule.onCalendar;
         Persistent = false;
         RandomizedDelaySec = cfg.schedule.randomDelay;
       };
