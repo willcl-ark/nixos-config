@@ -393,6 +393,8 @@
         set crypt_replysign = yes
         set crypt_replyencrypt = yes
         set crypt_replysignencrypted = yes
+        set pgp_default_key = "67AA5B46E7AF78053167FE343B8F814A784218F8"
+        set pgp_sign_as = "67AA5B46E7AF78053167FE343B8F814A784218F8"
 
         # HTML email handling
         auto_view text/html
