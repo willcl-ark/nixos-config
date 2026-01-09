@@ -49,6 +49,11 @@ in
   networking.hostName = cfg.name;
 
   services = {
+    journald.extraConfig = ''
+      SystemMaxUse=2G
+      MaxRetentionSec=1month
+    '';
+
     apcupsd.enable = true;
     printing = mkIf cfg.services.printing {
       enable = true;
