@@ -50,6 +50,7 @@ in
       environment = {
         HOME = "/home/${cfg.user}";
         GNUPGHOME = "/home/${cfg.user}/.gnupg";
+        SSH_AUTH_SOCK = "/run/user/1000/gnupg/S.gpg-agent";
       };
 
       path = with pkgs; [
@@ -78,6 +79,7 @@ in
           "/home/${cfg.user}/.config/bgt"
           "/home/${cfg.user}/.gnupg"
           "/run/secrets"
+          "/run/user/1000/gnupg/"
         ];
 
         # Security hardening
