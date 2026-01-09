@@ -67,7 +67,6 @@ in
             flags = [ ] ++ optional cfg.autoAttest "--auto" ++ cfg.extraFlags;
           in
           "${pkgs.bash}/bin/bash -c 'export GITHUB_BGT_TOKEN=$(cat ${config.sops.secrets.github_bgt_token.path}) && /home/${cfg.user}/.cargo/bin/bgt watch start ${concatStringsSep " " flags}'";
-        ExecStop = "${pkgs.bash}/bin/bash -c '/home/${cfg.user}/.cargo/bin/bgt watch stop'";
         Restart = "on-failure";
         RestartSec = "30s";
         StandardOutput = "journal";
