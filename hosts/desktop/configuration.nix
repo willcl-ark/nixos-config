@@ -4,9 +4,11 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.host;
-in {
+in
+{
   imports = [
     ../../modules/common.nix
     ../../modules/borg.nix
@@ -21,7 +23,7 @@ in {
     })
   ];
 
-  boot.supportedFilesystems = ["fuse.sshfs"];
+  boot.supportedFilesystems = [ "fuse.sshfs" ];
 
   environment.systemPackages = with pkgs; [
     apcupsd
@@ -50,7 +52,7 @@ in {
     apcupsd.enable = true;
     printing = mkIf cfg.services.printing {
       enable = true;
-      drivers = [pkgs.gutenprint];
+      drivers = [ pkgs.gutenprint ];
     };
     avahi = {
       enable = true;
@@ -98,7 +100,7 @@ in {
 
   systemd.automounts = [
     {
-      wantedBy = ["multi-user.target"];
+      wantedBy = [ "multi-user.target" ];
       where = "/mnt/seedbox";
       automountConfig = {
         TimeoutIdleSec = "300";

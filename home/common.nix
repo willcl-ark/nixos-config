@@ -106,6 +106,9 @@ with lib;
         name = "will";
         email = "will@256k1.dev";
       };
+      url."git@github.com:" = {
+        insteadOf = "https://github.com/";
+      };
       init.defaultBranch = "master";
       diff.algorithm = "patience";
       pull.rebase = true;
@@ -179,7 +182,7 @@ with lib;
     enable = true;
     gitCredentialHelper.enable = true;
     settings = {
-      git_protocol = "https";
+      git_protocol = "ssh";
       prompt = "enabled";
     };
   };
