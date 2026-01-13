@@ -114,13 +114,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      sops
-      borgbackup
-      gnupg
-      yubikey-personalization
-      pcsclite
-      ssh-to-age
+    environment.systemPackages = [
+      pkgs.sops
+      pkgs.borgbackup
+      pkgs.gnupg
+      pkgs.yubikey-personalization
+      pkgs.pcsclite
+      pkgs.ssh-to-age
     ];
 
     services.pcscd.enable = true;

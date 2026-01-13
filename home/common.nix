@@ -4,188 +4,86 @@
   pkgs,
   ...
 }:
-with lib;
 {
-  # Common configuration shared between desktop and macbook
+  imports = [
+    ./git.nix
+    ./gpg.nix
+  ];
 
   nix = {
     package = lib.mkDefault pkgs.nix;
   };
 
-  # Explicitly allow home-manager to use system packages
   home.enableNixpkgsReleaseCheck = false;
 
-  # Common packages for all systems
-  home.packages = with pkgs; [
+  home.packages = [
     # Misc
-    asciinema
-    claude-code
-    fastfetch
-    yt-dlp
-    tokei
+    pkgs.asciinema
+    pkgs.claude-code
+    pkgs.fastfetch
+    pkgs.yt-dlp
+    pkgs.tokei
 
     # CLI tools
-    curl
-    git
-    htop
-    rsync
-    tmux
-    unzip
-    wget
+    pkgs.curl
+    pkgs.git
+    pkgs.htop
+    pkgs.rsync
+    pkgs.tmux
+    pkgs.unzip
+    pkgs.wget
 
     # Dev tools
-    fd
-    fzf
-    gh-dash
-    jq
-    qemu
-    ripgrep
-    uv
+    pkgs.fd
+    pkgs.fzf
+    pkgs.gh-dash
+    pkgs.jq
+    pkgs.qemu
+    pkgs.ripgrep
+    pkgs.uv
 
     # Languages and runtimes
-    go
-    lua
-    python312
-    rustup
-    zig
+    pkgs.go
+    pkgs.lua
+    pkgs.python312
+    pkgs.rustup
+    pkgs.zig
 
     # Build tools
-    bash
-    clang_19
-    cmake
-    elfutils
-    findutils
-    gnugrep
-    gnumake
-    gnused
-    gnutar
-    mold
-    ninja
-    podman
-    sqlite
+    pkgs.bash
+    pkgs.clang_19
+    pkgs.cmake
+    pkgs.elfutils
+    pkgs.findutils
+    pkgs.gnugrep
+    pkgs.gnumake
+    pkgs.gnused
+    pkgs.gnutar
+    pkgs.mold
+    pkgs.ninja
+    pkgs.podman
+    pkgs.sqlite
 
     # Git-related
-    delta
-    difftastic
-    lazygit
+    pkgs.delta
+    pkgs.difftastic
+    pkgs.lazygit
 
     # Email
-    lynx
-    notmuch-addrlookup
-    ripmime
-    urlscan
+    pkgs.lynx
+    pkgs.notmuch-addrlookup
+    pkgs.ripmime
+    pkgs.urlscan
 
     # Linters
-    actionlint
-    gitlint
-    lua54Packages.luacheck
-    markdownlint-cli
-    ruff
-    shellcheck
-    yamllint
+    pkgs.actionlint
+    pkgs.gitlint
+    pkgs.lua54Packages.luacheck
+    pkgs.markdownlint-cli
+    pkgs.ruff
+    pkgs.shellcheck
+    pkgs.yamllint
   ];
-
-  programs.gpg = {
-    enable = true;
-    package = pkgs.gnupg;
-    homedir = "${config.home.homeDirectory}/.gnupg";
-    settings = {
-      use-agent = true;
-      default-key = "67AA5B46E7AF78053167FE343B8F814A784218F8";
-    };
-  };
-
-  programs.git = {
-    enable = true;
-    signing = {
-      key = "0xCE6EC49945C17EA6";
-      signByDefault = true;
-    };
-    settings = {
-      user = {
-        name = "will";
-        email = "will@256k1.dev";
-      };
-      url."git@github.com:" = {
-        insteadOf = "https://github.com/";
-      };
-      init.defaultBranch = "master";
-      diff.algorithm = "patience";
-      pull.rebase = true;
-      push.autoSetupRemote = true;
-      core.editor = "nvim";
-      gpg.program = "${pkgs.gnupg}/bin/gpg2";
-      alias = {
-        # Common commands
-        a = "add .";
-        b = "branch";
-        cp = "cherry-pick";
-        cpcont = "cherry-pick --continue";
-        d = "difftool";
-        ds = "diff --staged";
-        f = "fetch --all --prune";
-        lo = "log --oneline -n 40";
-        m = "mergetool";
-        po = "push origin";
-        pu = "push upstream";
-        pushf = "push --force-with-lease";
-        r = "rebase";
-        ra = "rebase --abort";
-        rcont = "rebase --continue";
-        rd = "range-diff";
-        rem = "remote";
-        rh = "reset --hard";
-        s = "status";
-
-        # File Management
-        co = "checkout";
-        cob = "checkout -b";
-        un = "reset HEAD";
-
-        # Commit Commands
-        amend = "commit --amend";
-        cm = "commit";
-        com = "commit -m";
-        fix = "commit --amend --no-edit";
-
-        # Custom scripts (platform-agnostic)
-        coauth = "!f() { git shortlog --summary --numbered --email --all | grep \"$1\" | sed 's/^[[:space:]]*[0-9]*[[:space:]]*/Co-authored-by: /'; }; f";
-        files = "!f() { git diff-tree --no-commit-id --name-only -r HEAD; }; f";
-        fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
-        last = "log -1 HEAD";
-        pr = "!f() { git fetch $1 pull/$2/head:pr-$2 && git switch pr-$2; }; f";
-        pru = "!f() { git fetch --update-head-ok -f $1 pull/$2/head:pr-$2 && [ \"$(git branch --show-current)\" = \"pr-$2\" ] && git reset --hard HEAD || true; }; f";
-        rb = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch); }; f";
-        rba = "!f() { default_branch=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@'); git rebase -i $(git merge-base HEAD upstream/$default_branch) --autosquash; }; f";
-        review = "!f() { git -c sequence.editor='sed -i s/pick/edit/' rebase -i $(git merge-base master HEAD); }; f";
-        show-pr = "!f() { git log --merges --ancestry-path --oneline $1..HEAD | tail -n 1; }; f";
-        tags = "!sh -c 'git for-each-ref --sort=-taggerdate --format=\"%(refname:lstrip=2)\" refs/tags | fzf | xargs git checkout'";
-
-        # Difftastic aliases
-        ddiff = "-c diff.external=${pkgs.difftastic}/bin/difft diff";
-        dlog = "-c diff.external=${pkgs.difftastic}/bin/difft log --ext-diff";
-        dshow = "-c diff.external=${pkgs.difftastic}/bin/difft show --ext-diff";
-      };
-    };
-  };
-
-  programs.delta = {
-    enable = true;
-    enableGitIntegration = true;
-    options = {
-      line-numbers = true;
-      conflict-style = "zdiff3";
-    };
-  };
-
-  programs.gh = {
-    enable = true;
-    gitCredentialHelper.enable = true;
-    settings = {
-      git_protocol = "ssh";
-      prompt = "enabled";
-    };
-  };
 
   programs.ripgrep = {
     enable = true;

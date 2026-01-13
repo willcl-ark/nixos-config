@@ -16,7 +16,7 @@
   ];
 
   # Macbook-specific packages
-  home.packages = with pkgs; [
+  home.packages = [
     # macOS-only pkgs
   ];
 

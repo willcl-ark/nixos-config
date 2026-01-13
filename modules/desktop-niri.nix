@@ -8,21 +8,20 @@
 with lib;
 {
   imports = [
-    ./common.nix
     matugen.nixosModules.default
   ];
 
   console.keyMap = "uk";
 
   fonts = {
-    packages = with pkgs; [
-      dejavu_fonts
-      font-awesome
-      nerd-fonts.droid-sans-mono
-      nerd-fonts.fira-code
-      nerd-fonts.jetbrains-mono
-      noto-fonts
-      noto-fonts-color-emoji
+    packages = [
+      pkgs.dejavu_fonts
+      pkgs.font-awesome
+      pkgs.nerd-fonts.droid-sans-mono
+      pkgs.nerd-fonts.fira-code
+      pkgs.nerd-fonts.jetbrains-mono
+      pkgs.noto-fonts
+      pkgs.noto-fonts-color-emoji
     ];
     fontconfig.defaultFonts = {
       monospace = [ "JetBrainsMono Nerd Font" ];
@@ -48,14 +47,14 @@ with lib;
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    ghostty
-    nautilus
-    mate.mate-polkit
-    xwayland-satellite # For X11 apps support
-    libsecret
-    playerctl
-    matugen.packages.${pkgs.stdenv.hostPlatform.system}.default # Material You color generation
+  environment.systemPackages = [
+    pkgs.ghostty
+    pkgs.nautilus
+    pkgs.mate.mate-polkit
+    pkgs.xwayland-satellite
+    pkgs.libsecret
+    pkgs.playerctl
+    matugen.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   programs.niri = {
@@ -83,13 +82,13 @@ with lib;
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome # Required for screencasting
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-gnome
     ];
-    configPackages = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
+    configPackages = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-gnome
     ];
   };
 

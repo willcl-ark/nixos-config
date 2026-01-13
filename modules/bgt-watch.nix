@@ -53,12 +53,12 @@ in
         SSH_AUTH_SOCK = "/run/user/1000/gnupg/S.gpg-agent";
       };
 
-      path = with pkgs; [
-        bash
-        coreutils
-        gnupg
-        git
-        openssh
+      path = [
+        pkgs.bash
+        pkgs.coreutils
+        pkgs.gnupg
+        pkgs.git
+        pkgs.openssh
       ];
 
       serviceConfig = {

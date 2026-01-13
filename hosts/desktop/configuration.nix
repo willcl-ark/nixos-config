@@ -10,12 +10,15 @@ let
 in
 {
   imports = [
-    ../../modules/common.nix
+    ../../modules/base.nix
+    ../../modules/networking.nix
+    ../../modules/security.nix
+    ../../modules/users.nix
+    ../../modules/virtualization.nix
     ../../modules/borg.nix
     ../../modules/bgt-watch.nix
   ];
 
-  # Host-specific config based on host params
   boot.loader = mkMerge [
     (mkIf (cfg.bootLoader.type == "systemd-boot") {
       systemd-boot.enable = true;
@@ -25,11 +28,11 @@ in
 
   boot.supportedFilesystems = [ "fuse.sshfs" ];
 
-  environment.systemPackages = with pkgs; [
-    apcupsd
-    guix
-    pwvucontrol
-    sshfs
+  environment.systemPackages = [
+    pkgs.apcupsd
+    pkgs.guix
+    pkgs.pwvucontrol
+    pkgs.sshfs
   ];
 
   programs.fuse.userAllowOther = true;
@@ -74,8 +77,6 @@ in
     my.borgbackup = {
       enable = true;
       excludePaths = [
-        # Standard excludes are inherited from the module
-        # Host-specific excludes:
         "/home/${cfg.user}/.bitcoin/blocks/*"
         "/home/${cfg.user}/.bitcoin/chainstate/*"
         "/home/${cfg.user}/.bitcoin/indexes/*"
@@ -87,12 +88,6 @@ in
       enable = true;
       user = cfg.user;
     };
-  };
-
-  virtualization.my = {
-    enablePodman = lib.mkForce false;
-    enableDocker = true;
-    enableQemuUserEmulation = true;
   };
 
   systemd.tmpfiles.rules = [
