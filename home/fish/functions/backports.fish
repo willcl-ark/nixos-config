@@ -51,6 +51,20 @@ function backports --argument-names base_branch
 
         echo "=== Reviewing $pr_group ==="
 
+        # Check for missing commits from original PR
+        set github_pull (echo $pr_group | sed 's/pr_//')
+        if test "$github_pull" != "$pr_group"
+            set original_pr_commits (gh pr view $github_pull --json commits -q '.commits[].oid')
+            for orig_commit in $original_pr_commits
+                if not contains $orig_commit $pr_originals
+                    echo '\n\n'
+                    echo "⚠️  Missing commit from original PR #$github_pull:"
+                    git log --oneline -1 $orig_commit
+                    echo '\n\n'
+                end
+            end
+        end
+
         if test (count $pr_commits) -eq 1
             # Single commit - use single commit range
             set original $pr_originals[1]
@@ -69,9 +83,9 @@ function backports --argument-names base_branch
         set github_pull (echo $pr_group | sed 's/pr_//')
         if test "$github_pull" != "$pr_group" -a -f doc/release-notes.md
             if grep -q "#$github_pull" doc/release-notes.md
-                echo "✓ PR #$github_pull is in release notes"
+                echo "✅ PR #$github_pull in release notes"
             else
-                echo "⚠ PR #$github_pull NOT found in release notes"
+                echo "❌ PR #$github_pull missing from release notes"
             end
         end
         echo "==========================="
@@ -105,4 +119,3 @@ function backports --argument-names base_branch
         set -e $pr_group"_originals"
     end
 end
-
