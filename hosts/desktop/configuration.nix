@@ -65,6 +65,11 @@ in
       openFirewall = true;
     };
     guix.enable = true;
+    tor = {
+      enable = true;
+      client.enable = true;
+      settings.ControlPort = 9051;
+    };
 
     my.borgbackup = {
       enable = true;

@@ -57,7 +57,6 @@ with lib;
     borgbackup
     btop
     cachix
-    tor
   ];
 
   hardware.enableAllFirmware = true;
