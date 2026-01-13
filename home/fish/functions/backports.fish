@@ -4,6 +4,13 @@ function backports --argument-names base_branch
         return 1
     end
 
+    set -l outfile (mktemp /tmp/backports.XXXXXX)
+
+    function __git_color
+        git -c color.ui=always $argv
+    end
+
+    echo "Fetching upstream..."
     git fetch upstream --tags --prune
 
     set merge_base (git merge-base HEAD $base_branch)
@@ -49,7 +56,10 @@ function backports --argument-names base_branch
         set pr_commits $$commits_var
         set pr_originals $$originals_var
 
-        echo "=== Reviewing $pr_group ==="
+        echo "" >> $outfile
+        echo "═══════════════════════════════════════════════════════════════" >> $outfile
+        echo "Reviewing $pr_group" >> $outfile
+        echo "═══════════════════════════════════════════════════════════════" >> $outfile
 
         # Check for missing commits from original PR
         set github_pull (echo $pr_group | sed 's/pr_//')
@@ -57,10 +67,10 @@ function backports --argument-names base_branch
             set original_pr_commits (gh pr view $github_pull --json commits -q '.commits[].oid')
             for orig_commit in $original_pr_commits
                 if not contains $orig_commit $pr_originals
-                    echo '\n\n'
-                    echo "⚠️  Missing commit from original PR #$github_pull:"
-                    git log --oneline -1 $orig_commit
-                    echo '\n\n'
+                    echo "" >> $outfile
+                    echo "⚠️  Missing commit from original PR #$github_pull:" >> $outfile
+                    __git_color log --oneline -1 $orig_commit >> $outfile
+                    echo "" >> $outfile
                 end
             end
         end
@@ -69,48 +79,40 @@ function backports --argument-names base_branch
             # Single commit - use single commit range
             set original $pr_originals[1]
             set backport $pr_commits[1]
-            git range-diff $original^..$original $backport^..$backport
+            __git_color range-diff $original^..$original $backport^..$backport >> $outfile 2>&1
         else
             # Multiple commits - use full range
             set first_original $pr_originals[1]
             set last_original $pr_originals[-1]
             set first_backport $pr_commits[1]
             set last_backport $pr_commits[-1]
-            git range-diff $first_original^..$last_original $first_backport^..$last_backport
+            __git_color range-diff $first_original^..$last_original $first_backport^..$last_backport >> $outfile 2>&1
         end
 
         # Check release notes
         set github_pull (echo $pr_group | sed 's/pr_//')
         if test "$github_pull" != "$pr_group" -a -f doc/release-notes.md
+            echo "" >> $outfile
             if grep -q "#$github_pull" doc/release-notes.md
-                echo "✅ PR #$github_pull in release notes"
+                echo "✅ PR #$github_pull in release notes" >> $outfile
             else
-                echo "❌ PR #$github_pull missing from release notes"
+                echo "❌ PR #$github_pull missing from release notes" >> $outfile
             end
         end
-        echo "==========================="
-
-        read -P "Continue? (y/n) " -n 1 response
-        if test "$response" != y -a "$response" != Y
-            return 0
-        end
-        echo
     end
 
     # Process non-backport commits
     for commit in $non_backports
-        echo "=== Non-backport: $commit ==="
-        if command -v difft >/dev/null
-            git -c diff.external=difft show --ext-diff $commit
-        else
-            git show $commit
-        end
+        echo "" >> $outfile
+        echo "═══════════════════════════════════════════════════════════════" >> $outfile
+        echo "Non-backport: $commit" >> $outfile
+        echo "═══════════════════════════════════════════════════════════════" >> $outfile
 
-        read -P "Continue? (y/n) " -n 1 response
-        if test "$response" != y -a "$response" != Y
-            return 0
+        if command -v difft >/dev/null
+            GIT_EXTERNAL_DIFF=difft __git_color show --ext-diff $commit >> $outfile 2>&1
+        else
+            __git_color show $commit >> $outfile 2>&1
         end
-        echo
     end
 
     # Cleanup global variables
@@ -118,4 +120,8 @@ function backports --argument-names base_branch
         set -e $pr_group"_commits"
         set -e $pr_group"_originals"
     end
+    functions -e __git_color
+
+    echo "Output written to $outfile"
+    less -R $outfile
 end
