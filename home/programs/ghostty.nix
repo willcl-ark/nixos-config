@@ -5,7 +5,7 @@
     package = pkgs.ghostty;
     settings = {
       font-family = "ComicCode Nerd Font";
-      font-size = 12;
+      font-size = 10;
       font-feature = [
         "-calt"
         "-liga"
