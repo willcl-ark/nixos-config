@@ -20,7 +20,7 @@
       window-padding-y = 4;
 
       shell-integration = "fish";
-      shell-integration-features = "no-cursor";
+      shell-integration-features = "no-cursor,ssh-terminfo,ssh-env";
 
       macos-titlebar-style = "hidden";
 
