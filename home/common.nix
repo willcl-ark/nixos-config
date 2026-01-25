@@ -20,6 +20,7 @@
     # Misc
     pkgs.asciinema
     pkgs.claude-code
+    pkgs.opencode
     pkgs.fastfetch
     pkgs.yt-dlp
     pkgs.tokei
