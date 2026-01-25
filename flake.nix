@@ -31,7 +31,6 @@
     dankMaterialShell = {
       url = "github:AvengeMedia/DankMaterialShell/stable";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.dgop.follows = "dgop";
     };
     matugen = {
       url = "github:InioX/Matugen";
@@ -113,8 +112,8 @@
                 sharedModules = [
                   sops-nix.homeManagerModules.sops
                   catppuccin.homeModules.catppuccin
-                  dankMaterialShell.homeModules.dankMaterialShell.default
-                  dankMaterialShell.homeModules.dankMaterialShell.niri
+                  dankMaterialShell.homeModules.dank-material-shell
+                  dankMaterialShell.homeModules.niri
                 ];
               };
             }
