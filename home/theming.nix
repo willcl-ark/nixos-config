@@ -40,6 +40,13 @@
     niri = {
       enableKeybinds = false;
       enableSpawn = false;
+      includes.filesToInclude = [
+        "alttab"
+        "binds"
+        "colors"
+        "layout"
+        "wpblur"
+      ];
     };
     enableSystemMonitoring = true;
     enableVPN = true;

@@ -59,6 +59,7 @@ with lib;
 
   programs.niri = {
     enable = true;
+    package = pkgs.niri-unstable;
   };
   programs.dconf.enable = true;
 
