@@ -51,6 +51,7 @@
     # Wayland/niri
     pkgs.gnome-keyring
     pkgs.fuzzel
+    pkgs.wl-clipboard
   ];
 
   home.file.".local/bin/gh-issue-open.sh" = {
