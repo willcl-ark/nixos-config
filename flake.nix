@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,7 +41,6 @@
   outputs =
     {
       nixpkgs,
-      nixpkgs-master,
       self,
       home-manager,
       sops-nix,
@@ -91,27 +89,8 @@
             ./hosts/default.nix # General host options
             ./hosts/${hostName}/default.nix # Host-specific config
 
-            # Apply overlays (remove when fixes land in unstable)
-            {
-              nixpkgs.overlays = [
-                niri.overlays.niri
-                (_: prev: {
-                  # guile-git test fix from master
-                  guile-git = nixpkgs-master.legacyPackages.${prev.system}.guile-git;
-                  # mdformat 1.0.0 for markdown-it-py 4.0.0 compat
-                  python3 = prev.python3.override {
-                    packageOverrides = _: pyPrev: {
-                      mdformat = nixpkgs-master.legacyPackages.${prev.system}.python3Packages.mdformat;
-                    };
-                  };
-                  python3Packages = prev.python3Packages.override {
-                    overrides = _: pyPrev: {
-                      mdformat = nixpkgs-master.legacyPackages.${prev.system}.python3Packages.mdformat;
-                    };
-                  };
-                })
-              ];
-            }
+            # Apply niri overlay to prevent mesa sync issues
+            { nixpkgs.overlays = [ niri.overlays.niri ]; }
 
             catppuccin.nixosModules.catppuccin
             niri.nixosModules.niri
