@@ -50,7 +50,8 @@ in
       environment = {
         HOME = "/home/${cfg.user}";
         GNUPGHOME = "/home/${cfg.user}/.gnupg";
-        SSH_AUTH_SOCK = "/run/user/1000/gnupg/S.gpg-agent";
+        SSH_AUTH_SOCK = "/run/user/1000/gnupg/S.gpg-agent.ssh";
+        GIT_SSH_COMMAND = "ssh -F /home/${cfg.user}/.ssh/config";
       };
 
       path = [
