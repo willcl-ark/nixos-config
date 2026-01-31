@@ -59,6 +59,8 @@ in
         pkgs.coreutils
         pkgs.gnupg
         pkgs.git
+        pkgs.gnumake
+        pkgs.guix
         pkgs.openssh
       ];
 
