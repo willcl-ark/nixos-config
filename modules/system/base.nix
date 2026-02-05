@@ -30,7 +30,6 @@ in
         pkgs.just
         pkgs.keyd
         pkgs.magic-wormhole
-        pkgs.mosh
         pkgs.ncdu
         ned.packages.${pkgs.stdenv.hostPlatform.system}.default
         pkgs.nettools
@@ -84,6 +83,8 @@ in
       };
 
       system.stateVersion = "25.05";
+
+      programs.mosh.enable = true;
 
       programs.nh = {
         enable = true;
