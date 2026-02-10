@@ -54,6 +54,7 @@ in
           path = with pkgs; [
             bash
             coreutils
+            getent
             gnupg
             git
             gnumake
