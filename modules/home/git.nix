@@ -5,6 +5,7 @@
     {
       programs.git = {
         enable = true;
+        attributes = [ "* merge=mergiraf" ];
         signing = {
           key = "0xCE6EC49945C17EA6";
           signByDefault = true;
@@ -17,6 +18,9 @@
           url."git@github.com:".insteadOf = "https://github.com/";
           init.defaultBranch = "master";
           diff.algorithm = "patience";
+          merge.conflictStyle = "diff3";
+          merge.mergiraf.name = "mergiraf";
+          merge.mergiraf.driver = "${pkgs.mergiraf}/bin/mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L";
           pull.rebase = true;
           push.autoSetupRemote = true;
           core.editor = "nvim";

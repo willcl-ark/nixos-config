@@ -37,6 +37,7 @@
         pkgs.lua54Packages.luacheck
         pkgs.lynx
         pkgs.markdownlint-cli
+        pkgs.mergiraf
         pkgs.mold
         pkgs.ninja
         pkgs.notmuch-addrlookup
