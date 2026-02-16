@@ -12,9 +12,7 @@
         pkgs.asciinema
         pkgs.bash
         pkgs.clang_19
-        pkgs.claude-code
         pkgs.cmake
-        pkgs.codex
         pkgs.curl
         pkgs.delta
         pkgs.difftastic
@@ -41,7 +39,6 @@
         pkgs.mold
         pkgs.ninja
         pkgs.notmuch-addrlookup
-        pkgs.opencode
         pkgs.podman
         pkgs.python312
         pkgs.qemu

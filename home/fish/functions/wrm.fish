@@ -14,10 +14,8 @@ function wrm --description 'Remove a git worktree (current, or choose from list)
     if test -n "$in_worktree"
         set -l target $in_worktree
         cd $main_worktree
-        git worktree remove $target
-        or return 1
-        echo "Removed worktree: $target"
-        return 0
+        __wrm_remove $target
+        return $status
     end
 
     if test (count $worktrees) -le 1
@@ -37,7 +35,27 @@ function wrm --description 'Remove a git worktree (current, or choose from list)
     end
 
     set -l target $worktrees[$choice]
-    git worktree remove $target
-    or return 1
-    echo "Removed worktree: $target"
+    __wrm_remove $target
+end
+
+function __wrm_remove
+    set -l target $argv[1]
+    if git worktree remove $target 2>/dev/null
+        echo "Removed worktree: $target"
+        return 0
+    end
+
+    echo "Worktree has modified or untracked files:"
+    git -C $target status --short
+    echo
+    read -P "Force remove? [y/N] " confirm
+    if string match -qi y $confirm
+        git worktree remove --force $target
+        or return 1
+        echo "Removed worktree: $target"
+        return 0
+    end
+
+    echo "Aborted."
+    return 1
 end
