@@ -21,13 +21,12 @@ function prw --description 'Fetch a PR and check it out in a new worktree'
     if test -d $worktree_path
         cd $worktree_path
         set -l old_head (git rev-parse HEAD)
-        git fetch $remote master "pull/$pr_num/head"
+        git fetch $remote "pull/$pr_num/head"
         or return 1
         set -l new_head (git rev-parse FETCH_HEAD)
         if test "$old_head" != "$new_head"
-            echo "git range-diff (git merge-base $remote/master $old_head)..$old_head (git merge-base $remote/master $new_head)..$new_head"
-            git range-diff (git merge-base $remote/master $old_head)..$old_head (git merge-base $remote/master $new_head)..$new_head
-            git reset --hard FETCH_HEAD
+            based-range-diff $remote $old_head $new_head
+            git reset --hard $new_head
         end
         return 0
     end
