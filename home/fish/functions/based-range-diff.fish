@@ -1,10 +1,10 @@
-function based-range-diff --description 'Range-diff two commits against their merge-bases with master'
+function based-range-diff --description 'Range-diff two commits against a remote master base'
     argparse h/help -- $argv
     or return
 
     if set -ql _flag_help
         echo "based-range-diff [-h|--help] <remote> <old-commit> <new-commit>"
-        echo "  Fetches remote master, then shows range-diff of both commits against their merge-base with master"
+        echo "  Fetches remote master, then shows range-diff of both commits against it"
         return 0
     end
 
@@ -19,8 +19,6 @@ function based-range-diff --description 'Range-diff two commits against their me
 
     git fetch $remote master:refs/remotes/$remote/master
 
-    set -l old_base (git merge-base $remote/master $old_commit)
-    set -l new_base (git merge-base $remote/master $new_commit)
-    echo "git range-diff $old_base..$old_commit $new_base..$new_commit"
-    git range-diff "$old_base..$old_commit" "$new_base..$new_commit"
+    echo "git range-diff $remote/master $old_commit $new_commit"
+    git range-diff $remote/master $old_commit $new_commit
 end
