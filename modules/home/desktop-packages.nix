@@ -2,6 +2,33 @@
 {
   flake.modules.homeManager.desktop =
     { config, pkgs, ... }:
+    let
+      wf-recorder-gui-src = pkgs.fetchFromGitHub {
+        owner = "ali205412";
+        repo = "wf-recorder-gui";
+        rev = "v0.4.0";
+        hash = "sha256-/7ZtklccG6mnx0h73Zy9QkQzOyhSBRMvjExzxlzuppY=";
+      };
+      wf-recorder-gui = (pkgs.callPackage "${wf-recorder-gui-src}/package.nix" { }).overrideAttrs (old: {
+        cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+          inherit (old) src;
+          hash = "sha256-rZOv00udcaNDmfv9ScYPf0nfFvBoi+gce2RAvCakx50=";
+        };
+        postFixup = (old.postFixup or "") + ''
+          wrapProgram $out/bin/wf-recorder-gui \
+            --prefix LD_LIBRARY_PATH : ${
+              pkgs.lib.makeLibraryPath (
+                with pkgs;
+                [
+                  wayland
+                  libxkbcommon
+                  vulkan-loader
+                ]
+              )
+            }
+        '';
+      });
+    in
     {
       home.username = "will";
       home.homeDirectory = "/home/will";
@@ -38,6 +65,9 @@
         gnome-keyring
         fuzzel
         wl-clipboard
+
+        wf-recorder
+        wf-recorder-gui
       ];
 
       home.file.".local/bin/gh-issue-open.sh" = {
