@@ -21,6 +21,8 @@
           merge.conflictStyle = "diff3";
           merge.mergiraf.name = "mergiraf";
           merge.mergiraf.driver = "${pkgs.mergiraf}/bin/mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L";
+          rerere.enabled = true;
+          rerere.autoUpdate = true;
           pull.rebase = true;
           push.autoSetupRemote = true;
           core.editor = "nvim";
