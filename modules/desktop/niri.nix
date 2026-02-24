@@ -34,7 +34,7 @@ in
       environment.systemPackages = [
         pkgs.ghostty
         pkgs.nautilus
-        pkgs.mate.mate-polkit
+        pkgs.mate-polkit
         pkgs.xwayland-satellite
         pkgs.libsecret
         pkgs.playerctl
@@ -63,7 +63,7 @@ in
               "wl-paste --watch cliphist store &"
             ];
           }
-          { command = [ "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1" ]; }
+          { command = [ "${pkgs.mate-polkit}/libexec/polkit-mate-authentication-agent-1" ]; }
           {
             command = [
               "dms"
