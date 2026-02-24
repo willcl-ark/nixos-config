@@ -58,6 +58,7 @@ in
 
         shellAbbrs = {
           bcli = "bitcoin-cli";
+          cc = "claude";
           electrumtunnel = "ssh nucremote -L 50001:localhost:50001 -N";
           "fetch-master" =
             "git checkout master; and git fetch --all --tags --prune; and git merge upstream/master";
