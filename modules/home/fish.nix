@@ -146,6 +146,9 @@ in
         ".config/fish/completions".source = "${inputs.self}/home/fish/completions";
         ".config/fish/conf.d/kubecolor.fish".source = "${inputs.self}/home/fish/conf.d/kubecolor.fish";
         ".config/fish/conf.d/nix-env.fish".source = "${inputs.self}/home/fish/conf.d/nix-env.fish";
+        ".config/fish/conf.d/00-hm-session-vars.fish".text = ''
+          set -e __HM_SESS_VARS_SOURCED
+        '';
       };
     };
 }
