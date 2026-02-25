@@ -122,6 +122,7 @@ in
 
       home.sessionVariables = {
         BASH = "${pkgs.bash}/bin/bash";
+        CCACHE_BASEDIR = "$HOME";
         CCACHE_DIR = "$HOME/.ccache";
         CCACHE_MAXSIZE = "25G";
         EDITOR = "nvim";
