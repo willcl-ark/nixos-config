@@ -46,6 +46,7 @@
         networkmanagerapplet
         nzbget
         pwvucontrol
+        satty
         signal-desktop
         sparrow
         swayimg
