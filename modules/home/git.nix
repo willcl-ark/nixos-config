@@ -15,7 +15,6 @@
             name = "will";
             email = "will@256k1.dev";
           };
-          url."git@github.com:".insteadOf = "https://github.com/";
           init.defaultBranch = "master";
           diff.algorithm = "patience";
           merge.conflictStyle = "diff3";
