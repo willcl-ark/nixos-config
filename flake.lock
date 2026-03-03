@@ -200,11 +200,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1771944434,
-        "narHash": "sha256-xJOtVIQ52zM9EZeUHKKJ+aGhn1svUTkJI3S8s445NFc=",
+        "lastModified": 1772528279,
+        "narHash": "sha256-luMRdkwi5O4Rh5rBE8Q+WqCH77UuU8HPwD46rtdti0E=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "aba9382852d7757b45147deee70e464b58e3bd7c",
+        "rev": "2b4f0083184382bcff7096d7121ab2524c6e7a0b",
         "type": "github"
       },
       "original": {
@@ -281,8 +281,8 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1770630357,
-        "narHash": "sha256-TjGU+XjwKN3iGt0JN4EnWOiSM/lM6X3E3Oscr/kGMDI=",
+        "lastModified": 1772118231,
+        "narHash": "sha256-KkkWlqoPPAz5VNfmJAKOcBBU8ww6cTZT0PKo9yYYabQ=",
         "path": "/home/will/src/bitcoin-dev-tools/ned",
         "type": "path"
       },

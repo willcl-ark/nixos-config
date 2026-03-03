@@ -46,7 +46,9 @@
         networkmanagerapplet
         nzbget
         pwvucontrol
+        grim
         satty
+        slurp
         signal-desktop
         sparrow
         swayimg

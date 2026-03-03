@@ -166,10 +166,17 @@ in
           "Mod+Shift+slash".action.show-hotkey-overlay = { };
 
           "Mod+Return".action.spawn = "ghostty";
-          "Print".action.screenshot-screen = { };
-          "Shift+Print".action.screenshot = { };
+          "Print".action.spawn = [
+            "bash"
+            "-c"
+            "grim - | satty --filename -"
+          ];
+          "Shift+Print".action.spawn = [
+            "bash"
+            "-c"
+            "grim -g \"$(slurp)\" - | satty --filename -"
+          ];
           "Alt+Print".action.screenshot-window = { };
-          "Ctrl+Print".action.screenshot-screen = { };
 
           "Mod+Space".action.spawn = [
             "dms"
