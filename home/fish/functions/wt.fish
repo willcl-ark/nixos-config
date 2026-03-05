@@ -5,6 +5,8 @@ function wt --description 'Worktree manager'
     end
 
     switch $argv[1]
+        case new
+            __wt_new $argv[2..]
         case pr
             __wt_pr $argv[2..]
         case rm
@@ -26,10 +28,42 @@ function __wt_usage
     echo "Usage: wt <command> [args]"
     echo
     echo "Commands:"
+    echo "  new <branch>          Create a new branch worktree from upstream/master"
     echo "  pr <remote> <pr-num>  Fetch a PR and check it out in a worktree"
     echo "  rm                    Remove a worktree (current, or choose from list)"
     echo "  mv                    Move current branch into a worktree"
     echo "  ls                    List worktrees"
+end
+
+function __wt_new
+    if test (count $argv) -lt 1
+        echo "Usage: wt new <branch-name>"
+        return 1
+    end
+
+    set -l branch_name $argv[1]
+    set -l worktree_path "../worktrees/$branch_name"
+
+    if test -d $worktree_path
+        echo "Worktree already exists at $worktree_path"
+        cd $worktree_path
+        return 0
+    end
+
+    if git remote | string match -q upstream
+        set base upstream/master
+    else
+        set base origin/master
+    end
+
+    git fetch (string split / -- $base)[1]
+    or return 1
+
+    mkdir -p ../worktrees
+    git worktree add -b $branch_name $worktree_path $base
+    or return 1
+
+    cd $worktree_path
 end
 
 function __wt_pr
