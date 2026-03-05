@@ -42,7 +42,7 @@ function __wt_new
     end
 
     set -l branch_name $argv[1]
-    set -l worktree_path "../worktrees/$branch_name"
+    set -l worktree_path ".worktrees/$branch_name"
 
     if test -d $worktree_path
         echo "Worktree already exists at $worktree_path"
@@ -59,7 +59,7 @@ function __wt_new
     git fetch (string split / -- $base)[1]
     or return 1
 
-    mkdir -p ../worktrees
+    mkdir -p .worktrees
     git worktree add -b $branch_name $worktree_path $base
     or return 1
 
@@ -75,7 +75,7 @@ function __wt_pr
     set -l remote $argv[1]
     set -l pr_num $argv[2]
     set -l branch_name "pr-$pr_num"
-    set -l worktree_path "../worktrees/$branch_name"
+    set -l worktree_path ".worktrees/$branch_name"
 
     if test -d $worktree_path
         cd $worktree_path
@@ -93,7 +93,7 @@ function __wt_pr
     git fetch $remote "+pull/$pr_num/head:$branch_name"
     or return 1
 
-    mkdir -p ../worktrees
+    mkdir -p .worktrees
     git worktree add $worktree_path $branch_name
     or return 1
 
@@ -179,7 +179,7 @@ function __wt_mv
         return 1
     end
 
-    set -l worktree_path "../worktrees/$branch"
+    set -l worktree_path ".worktrees/$branch"
 
     if test -d "$worktree_path"
         echo "Worktree already exists at $worktree_path"
@@ -190,7 +190,7 @@ function __wt_mv
     git switch $default_branch
     or return 1
 
-    mkdir -p ../worktrees
+    mkdir -p .worktrees
     git worktree add $worktree_path $branch
     or return 1
 

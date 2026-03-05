@@ -5,6 +5,7 @@
     {
       programs.git = {
         enable = true;
+        ignores = [ ".worktrees" ];
         attributes = [ "* merge=mergiraf" ];
         signing = {
           key = "0xCE6EC49945C17EA6";
