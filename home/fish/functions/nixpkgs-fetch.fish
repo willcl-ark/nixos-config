@@ -1,4 +1,4 @@
-function nixpkgs-hydra
+function nixpkgs-fetch
     set -l rev (curl -sL "https://monitoring.nixos.org/prometheus/api/v1/query?query=channel_revision" \
         | jq -r '.data.result[] | select(.metric.channel=="nixos-unstable") | .metric.revision')
 
@@ -7,16 +7,7 @@ function nixpkgs-hydra
         return 1
     end
 
+    mkdir -p ~/.config
+    echo $rev >~/.config/nixpkgs-rev
     echo $rev
-
-    if not test -f flake.nix
-        return 0
-    end
-
-    if not grep -q 'nixos/nixpkgs/nixos-unstable' flake.nix
-        return 0
-    end
-
-    echo "Updating nixpkgs to $rev..."
-    nix flake lock --override-input nixpkgs "github:nixos/nixpkgs/$rev"
 end
