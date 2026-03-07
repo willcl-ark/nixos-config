@@ -20,7 +20,7 @@
         pkgs.fd
         pkgs.findutils
         pkgs.fzf
-        pkgs.gh-dash
+
         pkgs.git
         pkgs.gitlint
         pkgs.gnugrep
