@@ -15,6 +15,8 @@ function wt --description 'Worktree manager'
             __wt_mv $argv[2..]
         case ls
             __wt_ls $argv[2..]
+        case clean
+            __wt_clean $argv[2..]
         case -h --help
             __wt_usage
         case '*'
@@ -33,6 +35,7 @@ function __wt_usage
     echo "  rm                    Remove a worktree (current, or choose from list)"
     echo "  mv                    Move current branch into a worktree"
     echo "  ls                    List worktrees"
+    echo "  clean                 Remove ./build from all worktrees"
 end
 
 function __wt_new
@@ -199,4 +202,14 @@ end
 
 function __wt_ls
     git worktree list $argv
+end
+
+function __wt_clean
+    set -l worktrees (git worktree list --porcelain | string match --regex '(?<=^worktree ).+')
+    for w in $worktrees[2..]
+        if test -d "$w/build" -a -f "$w/build/CMakeCache.txt"
+            echo "Removing $w/build"
+            rm -rf "$w/build"
+        end
+    end
 end
