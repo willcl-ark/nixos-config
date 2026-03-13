@@ -65,9 +65,9 @@
             review = "!f() { git -c sequence.editor='sed -i s/pick/edit/' rebase -i $(git merge-base master HEAD); }; f";
             show-pr = "!f() { git log --merges --ancestry-path --oneline $1..HEAD | tail -n 1; }; f";
             tags = "!sh -c 'git for-each-ref --sort=-taggerdate --format=\"%(refname:lstrip=2)\" refs/tags | fzf | xargs git checkout'";
-            ddiff = "-c diff.external=${pkgs.difftastic}/bin/difft diff";
+            ddiff = "-c diff.external='${pkgs.difftastic}/bin/difft --display inline' diff";
             dlog = "-c diff.external=${pkgs.difftastic}/bin/difft log --ext-diff";
-            dshow = "-c diff.external=${pkgs.difftastic}/bin/difft show --ext-diff";
+            dshow = "-c diff.external='${pkgs.difftastic}/bin/difft --display inline' show --ext-diff";
           };
         };
       };
