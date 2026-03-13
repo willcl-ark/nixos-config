@@ -1,8 +1,9 @@
 { ... }:
 {
   flake.modules.nixos.desktop =
-    { ... }:
+    { pkgs, ... }:
     {
+      environment.systemPackages = [ pkgs.sox ];
       security.rtkit.enable = true;
       services.pipewire = {
         enable = true;
