@@ -33,11 +33,10 @@ in
           fish_add_path $HOME/.cargo/bin
         '';
 
-        loginShellInit = ''
-          set -gx GPG_TTY (tty)
-        '';
-
         interactiveShellInit = ''
+          set -gx GPG_TTY (tty)
+          gpg-connect-agent updatestartuptty /bye >/dev/null 2>/dev/null
+
           set -g fish_greeting
 
           fish_vi_key_bindings

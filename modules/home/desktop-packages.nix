@@ -123,7 +123,7 @@
         enableExtraSocket = true;
         extraConfig = ''
           allow-loopback-pinentry
-          pinentry-program /run/current-system/sw/bin/pinentry-gnome3
+          pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
         '';
       };
 
