@@ -48,12 +48,13 @@ in
           environment = {
             HOME = "/home/${cfg.user}";
             GNUPGHOME = "/home/${cfg.user}/.gnupg";
-            SSH_AUTH_SOCK = "/run/user/1000/gnupg/S.gpg-agent.ssh";
+            SSH_AUTH_SOCK = "%t/gnupg/S.gpg-agent.ssh";
             GIT_SSH_COMMAND = "ssh -F /home/${cfg.user}/.ssh/config";
           };
           path = with pkgs; [
             bash
             coreutils
+            curl
             getent
             gnupg
             git
@@ -77,7 +78,7 @@ in
               "/home/${cfg.user}/.config/bgt"
               "/home/${cfg.user}/.gnupg"
               "/run/secrets"
-              "/run/user/1000/gnupg/"
+              "%t/gnupg/"
             ];
             PrivateTmp = true;
             ProtectSystem = "strict";
