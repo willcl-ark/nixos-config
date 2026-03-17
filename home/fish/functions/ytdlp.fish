@@ -14,11 +14,11 @@ function ytdlp
         yt-dlp -f $format $url \
             --embed-thumbnail \
             --restrict-filenames \
-            --cookies-from-browser firefox:/home/will/snap/firefox/common/.mozilla/firefox/b2pboypq.default-release
+            --cookies-from-browser firefox
     else
         yt-dlp -f $format $url \
             --restrict-filenames \
-            --cookies-from-browser firefox:/home/will/snap/firefox/common/.mozilla/firefox/b2pboypq.default-release
+            --cookies-from-browser firefox
     end
 
     # Remove the trap
