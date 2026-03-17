@@ -75,6 +75,7 @@ in
             StandardError = "journal";
             ReadWritePaths = [
               "/home/${cfg.user}/.local/state/guix-builds"
+              "/home/${cfg.user}/.cache/guix"
               "/home/${cfg.user}/.config/bgt"
               "/home/${cfg.user}/.gnupg"
               "/run/secrets"
