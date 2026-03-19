@@ -35,7 +35,7 @@ function __wt_usage
     echo "  rm                    Remove a worktree (current, or choose from list)"
     echo "  mv                    Move current branch into a worktree"
     echo "  ls                    List worktrees"
-    echo "  clean                 Remove ./build from all worktrees"
+    echo "  clean                 Remove build/ and guix* from all worktrees"
 end
 
 function __wt_base
@@ -222,6 +222,12 @@ function __wt_clean
         if test -d "$w/build" -a -f "$w/build/CMakeCache.txt"
             echo "Removing $w/build"
             rm -rf "$w/build"
+        end
+        for g in $w/guix*
+            if test -e "$g"
+                echo "Removing $g"
+                rm -rf "$g"
+            end
         end
     end
 end
