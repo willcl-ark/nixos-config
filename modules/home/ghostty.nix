@@ -23,6 +23,7 @@
           macos-titlebar-style = "hidden";
           scrollback-limit = 1000000000;
           window-inherit-working-directory = true;
+          clipboard-paste-protection = false;
         };
       };
     };
