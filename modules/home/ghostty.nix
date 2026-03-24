@@ -7,7 +7,7 @@
         enable = true;
         package = pkgs.ghostty;
         settings = {
-          font-family = "ComicCode Nerd Font";
+          font-family = "Comic Code";
           font-size = 10;
           font-feature = [
             "-calt"
