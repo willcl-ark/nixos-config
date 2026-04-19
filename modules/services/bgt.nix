@@ -73,17 +73,6 @@ in
             RestartSec = "30s";
             StandardOutput = "journal";
             StandardError = "journal";
-            ReadWritePaths = [
-              "/home/${cfg.user}/.local/state/guix-builds"
-              "/home/${cfg.user}/.cache/guix"
-              "/home/${cfg.user}/.config/bgt"
-              "/home/${cfg.user}/.gnupg"
-              "/run/secrets"
-              "%t/gnupg/"
-            ];
-            PrivateTmp = true;
-            ProtectSystem = "strict";
-            ProtectHome = "read-only";
             NoNewPrivileges = true;
           };
         };
