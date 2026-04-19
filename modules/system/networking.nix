@@ -20,6 +20,9 @@
         useRoutingFeatures = "client";
       };
 
-      services.openssh.enable = true;
+      services.openssh = {
+        enable = true;
+        extraConfig = "StreamLocalBindUnlink yes";
+      };
     };
 }
