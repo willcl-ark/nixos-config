@@ -89,7 +89,7 @@ in
       programs.nh = {
         enable = true;
         clean.enable = true;
-        clean.extraArgs = "--keep-since 10d --keep 10";
+        clean.extraArgs = "--keep-since 60d --keep 10";
         flake = "/home/${username}/src/nixos-config";
       };
     };
