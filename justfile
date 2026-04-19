@@ -10,7 +10,7 @@ default:
 # Build the new configuration
 [group('build')]
 build hostname=host:
-    nh os build -H {{hostname}} . --show-trace
+    nh os build -H {{hostname}} . --show-trace --diff always
 
 # Build and activate the new configuration
 [group('build')]
@@ -21,18 +21,17 @@ test hostname=host:
 [group('build')]
 [no-exit-message]
 switch hostname=host:
-    nh os switch -H {{hostname}} .
+    nh os switch --ask -H {{hostname}} .
 
-# Build a VM for testing
+# Build a VM for testing (pass -r style flag handled by nh)
 [group('test')]
 build-vm hostname=host:
-    nixos-rebuild build-vm --flake .#{{hostname}}
+    nh os build-vm --ask -r -H {{hostname}} .
 
 # Show what would change without build
 [group('test')]
 dry-run hostname=host:
     nh os switch --dry -H {{hostname}} .
-    # nixos-rebuild dry-run --flake .#{{hostname}}
 
 # Show what would change without build
 [group('test')]
@@ -64,10 +63,25 @@ build-home:
 update-hardware:
     sudo cp /etc/nixos/hardware-configuration.nix hosts/desktop/hardware-configuration.nix
 
-# nix-collect-garbage that also collects gcroots
+# nix-collect-garbage that also collects gcroots (matches auto-clean service)
 [group('maintenance')]
 clean:
-    nh clean all --ask
+    nh clean all --ask --keep-since 60d --keep 10
+
+# Clean only the current user's profiles and gcroots (direnv etc., no sudo)
+[group('maintenance')]
+clean-user:
+    nh clean user --ask --keep-since 60d --keep 10
+
+# Aggressive trim of system generations only (leaves user/direnv gcroots alone)
+[group('maintenance')]
+clean-system:
+    nh clean profile /nix/var/nix/profiles/system --ask --keep-since 30d --keep 10 --no-gcroots
+
+# Search nixpkgs (defaults to nixos-unstable)
+[group('info')]
+search +query:
+    nh search {{query}}
 
 # Build the new configuration and make it the boot default
 [group('build')]
@@ -77,4 +91,19 @@ boot hostname=host:
 # List system generations
 [group('info')]
 generations:
-    sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+    nh os info
+
+# Rollback to the previous generation (or pass a specific gen id)
+[group('build')]
+rollback to="":
+    nh os rollback --ask {{ if to != "" { "--to " + to } else { "" } }}
+
+# Open the NixOS configuration in a Nix REPL
+[group('info')]
+repl hostname=host:
+    nh os repl -H {{hostname}} .
+
+# Open the home-manager configuration in a Nix REPL
+[group('info')]
+repl-home:
+    nh home repl -c {{user}}@{{os}} .
