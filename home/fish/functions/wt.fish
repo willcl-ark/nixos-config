@@ -71,7 +71,7 @@ function __wt_new
     or return 1
 
     mkdir -p $wt_base
-    git worktree add -b $branch_name $worktree_path $base
+    git worktree add --no-track -b $branch_name $worktree_path $base
     or return 1
 
     cd $worktree_path
