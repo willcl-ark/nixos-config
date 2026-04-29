@@ -35,9 +35,7 @@ in
 
         interactiveShellInit = ''
           set -gx GPG_TTY (tty)
-          if not set -q SSH_CONNECTION
-              gpg-connect-agent updatestartuptty /bye >/dev/null 2>/dev/null
-          end
+          gpg-connect-agent updatestartuptty /bye >/dev/null 2>/dev/null
 
           set -g fish_greeting
 
