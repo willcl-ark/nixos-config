@@ -118,6 +118,12 @@
         ];
       };
 
+      services.udiskie = {
+        enable = true;
+        automount = true;
+        notify = true;
+      };
+
       services.gpg-agent = {
         enable = true;
         enableExtraSocket = true;
