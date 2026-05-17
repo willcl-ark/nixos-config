@@ -15,11 +15,19 @@
     { pkgs, ... }:
     let
       llm-agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+      codexPkg = llm-agents.codex;
+      codexSafe = pkgs.writeShellScriptBin "codex" ''
+        exec ${codexPkg}/bin/codex --sandbox workspace-write --ask-for-approval on-request "$@"
+      '';
+      codexUnsafe = pkgs.writeShellScriptBin "codex-unsafe" ''
+        exec ${codexPkg}/bin/codex --sandbox danger-full-access --ask-for-approval never "$@"
+      '';
     in
     {
       home.packages = [
         llm-agents.claude-code
-        llm-agents.codex
+        codexSafe
+        codexUnsafe
         llm-agents.opencode
         pkgs.bubblewrap # For codex
       ];
