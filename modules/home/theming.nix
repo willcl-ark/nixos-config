@@ -10,8 +10,11 @@
 
       programs.firefox = {
         enable = true;
-        profiles.default = {
+        package = pkgs.firefox-devedition;
+        configPath = ".mozilla/firefox";
+        profiles.dev-edition-default = {
           isDefault = true;
+          path = "ac0mwoe8.dev-edition-default";
           extensions.force = true;
           settings = {
             "widget.use-xdg-desktop-portal.file-picker" = 1;
@@ -22,6 +25,7 @@
             "widget.disable-swipe-tracker" = false;
             "privacy.donottrackheader.enabled" = true;
             "privacy.trackingprotection.enabled" = true;
+            "xpinstall.signatures.required" = false;
           };
         };
       };
@@ -43,10 +47,10 @@
           "image/png" = [ "swayimg.desktop" ];
           "image/gif" = [ "swayimg.desktop" ];
           "image/webp" = [ "swayimg.desktop" ];
-          "x-scheme-handler/http" = [ "firefox.desktop" ];
-          "x-scheme-handler/https" = [ "firefox.desktop" ];
-          "text/html" = [ "firefox.desktop" ];
-          "application/xhtml+xml" = [ "firefox.desktop" ];
+          "x-scheme-handler/http" = [ "firefox-devedition.desktop" ];
+          "x-scheme-handler/https" = [ "firefox-devedition.desktop" ];
+          "text/html" = [ "firefox-devedition.desktop" ];
+          "application/xhtml+xml" = [ "firefox-devedition.desktop" ];
         };
       };
 

@@ -77,7 +77,7 @@
         text = ''
           #!/usr/bin/env bash
           issue=$(echo "" | ${pkgs.fuzzel}/bin/fuzzel --dmenu --prompt "Bitcoin Issue #: ")
-          [ -n "$issue" ] && ${pkgs.firefox}/bin/firefox --new-tab "https://github.com/bitcoin/bitcoin/issues/$issue"
+          [ -n "$issue" ] && ${pkgs.firefox-devedition}/bin/firefox-devedition --new-tab "https://github.com/bitcoin/bitcoin/issues/$issue"
         '';
         executable = true;
       };
