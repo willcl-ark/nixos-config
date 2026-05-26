@@ -23,8 +23,15 @@ in
         "/home/${username}/.bitcoin/indexes/*"
         "/home/${username}/src/**/.direnv/*"
         "/home/${username}/src/**/build/*"
+        "/home/${username}/src/**/build-*/*"
         "/home/${username}/src/**/node_modules/*"
         "/home/${username}/src/**/target/*"
+        "/home/${username}/src/core/**/.pytest_cache/*"
+        "/home/${username}/src/core/**/__pycache__/*"
+        "/home/${username}/src/core/**/depends/*-*/*"
+        "/home/${username}/src/core/**/depends/built/*"
+        "/home/${username}/src/core/**/depends/sources/*"
+        "/home/${username}/src/core/**/depends/work/*"
       ];
     };
 
