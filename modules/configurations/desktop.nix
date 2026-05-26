@@ -21,6 +21,10 @@ in
         "/home/${username}/.bitcoin/blocks/*"
         "/home/${username}/.bitcoin/chainstate/*"
         "/home/${username}/.bitcoin/indexes/*"
+        "/home/${username}/src/**/.direnv/*"
+        "/home/${username}/src/**/build/*"
+        "/home/${username}/src/**/node_modules/*"
+        "/home/${username}/src/**/target/*"
       ];
     };
 

@@ -12,6 +12,17 @@ in
     }:
     let
       cfg = config.services.my.borgbackup;
+      defaultExcludePaths = [
+        "/home/*/.cache/*"
+        "/home/*/.cargo/registry/cache/*"
+        "/home/*/.ccache/*"
+        "/home/*/.local/share/containers/*"
+        "/home/*/.rustup/toolchains/*"
+        "/nix/*"
+        "/var/cache/*"
+        "/var/log/journal/*"
+        "/var/tmp/*"
+      ];
     in
     {
       options.services.my.borgbackup = {
@@ -66,17 +77,7 @@ in
         };
         excludePaths = lib.mkOption {
           type = lib.types.listOf lib.types.str;
-          default = [
-            "/home/*/.cache/*"
-            "/home/*/.cargo/registry/cache/*"
-            "/home/*/.ccache/*"
-            "/home/*/.local/share/containers/*"
-            "/home/*/.rustup/toolchains/*"
-            "/nix/*"
-            "/var/cache/*"
-            "/var/log/journal/*"
-            "/var/tmp/*"
-          ];
+          default = [ ];
         };
         includePaths = lib.mkOption {
           type = lib.types.listOf lib.types.str;
@@ -122,7 +123,9 @@ in
           script =
             let
               borgCmd = "${pkgs.borgbackup}/bin/borg";
-              excludeArgs = lib.concatMapStrings (path: "--exclude '${path}' \\\n        ") cfg.excludePaths;
+              excludeArgs = lib.concatMapStrings (
+                path: "--exclude '${path}' \\\n        "
+              ) (defaultExcludePaths ++ cfg.excludePaths);
               includeArgs = lib.concatStringsSep " " cfg.includePaths;
             in
             ''
