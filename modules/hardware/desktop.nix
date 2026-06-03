@@ -49,6 +49,11 @@
         fsType = "ext4";
         options = [ "defaults" ];
       };
+      fileSystems."/mnt/nvme0" = {
+        device = "/dev/disk/by-uuid/0a0a6df9-bb5e-45ae-818c-e7d6716ceeb7";
+        fsType = "ext4";
+        options = [ "defaults" ];
+      };
 
       swapDevices = [ ];
 
