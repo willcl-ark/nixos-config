@@ -14,6 +14,9 @@ in
       nix.settings.trusted-users = [ username ];
 
       nixpkgs.config.allowUnfree = true;
+      nixpkgs.config.ccache = true;
+
+      programs.ccache.enable = true;
 
       environment.systemPackages = [
         pkgs.bat
