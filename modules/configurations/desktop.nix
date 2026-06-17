@@ -14,6 +14,9 @@ in
     nixpkgs.hostPlatform = "x86_64-linux";
     nixpkgs.config.allowUnfree = true;
     nixpkgs.overlays = [ inputs.niri.overlays.niri ];
+    nixpkgs.config.permittedInsecurePackages = [
+      "electron-39.8.10"
+    ];
 
     services.my.borgbackup = {
       enable = true;
