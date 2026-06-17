@@ -20,3 +20,41 @@ The Firefox Home Manager config path explicitly stays on `.mozilla/firefox`
 because Firefox Developer Edition is reading that legacy profile registry at
 runtime. This also silences the Home Manager 26.05 XDG migration warning while
 preserving the working profile layout.
+
+Borg backup trim
+
+The borg module now applies its baseline cache/generated-data exclusions inside
+the generated service script instead of relying on the `excludePaths` option
+default. The desktop host sets `excludePaths`, and Nix option defaults are
+overridden by that host definition, so the old default cache exclusions were not
+present in the effective desktop backup command.
+
+The desktop host adds source-tree exclusions for common rebuildable development
+outputs under `~/src`: `.direnv`, `build`, `node_modules`, and `target`.
+Project sources and VCS metadata are still included.
+
+A follow-up pass over `/home/will/src/core` found that ccache is already covered:
+`/home/will/.ccache` is large, but the service excludes `/home/*/.ccache/*`;
+the newer default `~/.cache/ccache` location is also covered by
+`/home/*/.cache/*`.
+
+The desktop host now also excludes `build-*` directories, Python cache
+directories under `/home/will/src/core`, and generated Bitcoin Core
+`depends` outputs. The `depends` rule keeps source-like directories such as
+`packages`, `patches`, `hosts`, and `builders`, while dropping host-prefix
+output directories plus `built`, `sources`, and `work`.
+
+Contributor check fish function
+
+Added an autoloaded `contributor-check` fish function for bitcoin/bitcoin
+contributor review. It intentionally hard-codes the repository to bitcoin/bitcoin
+and requires exactly one GitHub username, then labels and runs the four existing
+`gh search` queries for authored PRs, authored issues, commented issues/PRs, and
+reviewed PRs.
+
+DeepSeek API key shell export
+
+Added a Home Manager SOPS secret declaration for `deepseek_api_key` in the LLM
+module and export `DEEPSEEK_API_KEY` from fish interactive startup by reading
+the decrypted runtime secret file. This keeps the secret value out of the Nix
+store while making it available to terminal-launched LLM tooling.

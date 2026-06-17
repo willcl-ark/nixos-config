@@ -12,7 +12,7 @@
     };
 
   flake.modules.homeManager.base =
-    { pkgs, ... }:
+    { config, lib, pkgs, ... }:
     let
       llm-agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
       codexPkg = llm-agents.codex;
@@ -24,6 +24,17 @@
       '';
     in
     {
+      sops.secrets.deepseek_api_key = {
+        sopsFile = "${inputs.self}/secrets/will.yaml";
+        path = "${config.home.homeDirectory}/.secrets/deepseek_api_key";
+      };
+
+      programs.fish.interactiveShellInit = lib.mkAfter ''
+        if test -r ${config.sops.secrets.deepseek_api_key.path}
+          set -gx DEEPSEEK_API_KEY (${pkgs.coreutils}/bin/cat ${config.sops.secrets.deepseek_api_key.path})
+        end
+      '';
+
       home.packages = [
         llm-agents.claude-code
         codexSafe
