@@ -44,6 +44,7 @@
         mullvad
         museeks
         networkmanagerapplet
+        nix-output-monitor
         nzbget
         pwvucontrol
         grim
