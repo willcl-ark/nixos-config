@@ -24,7 +24,14 @@
           scrollback-limit = 1000000000;
           window-inherit-working-directory = true;
           clipboard-paste-protection = false;
+
+          quit-after-last-window-closed = true;
+          quit-after-last-window-closed-delay = "5m";
+
         };
       };
+
+      xdg.configFile."systemd/user/default.target.wants/app-com.mitchellh.ghostty.service".source =
+        "${pkgs.ghostty}/share/systemd/user/app-com.mitchellh.ghostty.service";
     };
 }

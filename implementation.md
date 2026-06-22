@@ -58,3 +58,18 @@ Added a Home Manager SOPS secret declaration for `deepseek_api_key` in the LLM
 module and export `DEEPSEEK_API_KEY` from fish interactive startup by reading
 the decrypted runtime secret file. This keeps the secret value out of the Nix
 store while making it available to terminal-launched LLM tooling.
+
+Ghostty systemd/D-Bus launch
+
+Changed the Niri `Mod+Return` terminal binding from launching `ghostty` directly
+to running `ghostty +new-window`. Ghostty documents this command as the fast
+D-Bus path: it asks an existing Ghostty instance to open a window, or lets D-Bus
+activation start the Ghostty user systemd service first. The Ghostty package is
+still installed through the existing NixOS/Home Manager configuration so its
+desktop, D-Bus, and user systemd files remain package-owned.
+
+Added a Home Manager `xdg.configFile` entry for
+`systemd/user/default.target.wants/app-com.mitchellh.ghostty.service`, pointing
+at the unit shipped by `pkgs.ghostty`. This records the equivalent of
+`systemctl enable --user app-com.mitchellh.ghostty.service` declaratively while
+keeping the service definition itself owned by the Ghostty package.

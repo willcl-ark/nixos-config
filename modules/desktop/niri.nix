@@ -163,7 +163,10 @@ in
           "Ctrl+Alt+Delete".action.quit = { };
           "Mod+Shift+slash".action.show-hotkey-overlay = { };
 
-          "Mod+Return".action.spawn = "ghostty";
+          "Mod+Return".action.spawn = [
+            "ghostty"
+            "+new-window"
+          ];
           "Print".action.spawn = [
             "bash"
             "-c"
