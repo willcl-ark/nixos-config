@@ -107,3 +107,10 @@ repl hostname=host:
 [group('info')]
 repl-home:
     nh home repl -c {{user}}@{{os}} .
+
+# Update llm-agents and switch
+llm:
+    nix flake update llm-agents
+    git add flake.lock
+    git commit -m "bump llm-agents"
+    just switch
