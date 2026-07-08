@@ -48,6 +48,7 @@
         nzbget
         pwvucontrol
         grim
+        rssguard
         satty
         slurp
         signal-desktop
