@@ -55,6 +55,7 @@ in
             bash
             coreutils
             curl
+            diffutils
             getent
             gnupg
             git
