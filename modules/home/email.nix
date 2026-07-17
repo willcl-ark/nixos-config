@@ -187,7 +187,7 @@
             {
               map = [ "index" ];
               key = "O";
-              action = "<shell-escape>mbsync -a<enter>";
+              action = "<shell-escape>notmuch new<enter>";
             }
             {
               map = [ "index" ];
@@ -396,7 +396,7 @@
           imapnotify = {
             enable = true;
             boxes = [ "Inbox" ];
-            onNotify = "${pkgs.isync}/bin/mbsync --quiet will:INBOX";
+            onNotify = "${pkgs.notmuch}/bin/notmuch new";
           };
         };
       };
