@@ -10,33 +10,33 @@ default:
 # Build the new configuration
 [group('build')]
 build hostname=host:
-    nh os build -H {{hostname}} . --show-trace --diff always
+    nh os build --accept-flake-config -H {{hostname}} . --show-trace --diff always
 
 # Build and activate the new configuration
 [group('build')]
 test hostname=host:
-    nh os test -H {{hostname}} .
+    nh os test --accept-flake-config -H {{hostname}} .
 
 # Build and activate the new configuration, and make it the boot default
 [group('build')]
 [no-exit-message]
 switch hostname=host:
-    nh os switch --ask -H {{hostname}} .
+    nh os switch --accept-flake-config --ask -H {{hostname}} .
 
 # Build a VM for testing (pass -r style flag handled by nh)
 [group('test')]
 build-vm hostname=host:
-    nh os build-vm --ask -r -H {{hostname}} .
+    nh os build-vm --accept-flake-config --ask -r -H {{hostname}} .
 
 # Show what would change without build
 [group('test')]
 dry-run hostname=host:
-    nh os switch --dry -H {{hostname}} .
+    nh os switch --accept-flake-config --dry -H {{hostname}} .
 
 # Show what would change without build
 [group('test')]
 dry-run-guest hostname=host:
-    nix-shell -p nixos-anywhere nixos-rebuild --command "nixos-rebuild dry-run --flake .#{{hostname}}"
+    nix-shell -p nixos-anywhere nixos-rebuild --command "nixos-rebuild dry-run --accept-flake-config --flake .#{{hostname}}"
 
 # Update system and home-manager inputs
 [group('maintenance')]
@@ -46,17 +46,17 @@ update:
 # Check NixOS configuration for errors
 [group('check')]
 check-config hostname=host:
-    nh os test --dry -H {{hostname}} .
+    nh os test --accept-flake-config --dry -H {{hostname}} .
 
 # Rebuild user environment (home-manager standalone)
 [group('home')]
 update-home:
-    nh home switch -c {{user}}@{{os}} .
+    nh home switch --accept-flake-config -c {{user}}@{{os}} .
 
 # Test rebuild user environment (home-manager build)
 [group('home')]
 build-home:
-    nh home build -c {{user}}@{{os}} .
+    nh home build --accept-flake-config -c {{user}}@{{os}} .
 
 # Copy the current hardware configuration to the repo
 [group('system')]
@@ -86,7 +86,7 @@ search +query:
 # Build the new configuration and make it the boot default
 [group('build')]
 boot hostname=host:
-    nh os boot  -H {{hostname}} .
+    nh os boot --accept-flake-config -H {{hostname}} .
 
 # List system generations
 [group('info')]
@@ -101,12 +101,12 @@ rollback to="":
 # Open the NixOS configuration in a Nix REPL
 [group('info')]
 repl hostname=host:
-    nh os repl -H {{hostname}} .
+    nh os repl --accept-flake-config -H {{hostname}} .
 
 # Open the home-manager configuration in a Nix REPL
 [group('info')]
 repl-home:
-    nh home repl -c {{user}}@{{os}} .
+    nh home repl --accept-flake-config -c {{user}}@{{os}} .
 
 # Update llm-agents and switch
 llm:
