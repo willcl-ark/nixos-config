@@ -2,6 +2,9 @@
 {
   flake.modules.homeManager.base =
     { lib, pkgs, ... }:
+    let
+      cmake4_4 = pkgs.callPackage ../../packages/cmake4.4.nix { };
+    in
     {
       nix.package = lib.mkDefault pkgs.nix;
 
@@ -13,6 +16,7 @@
         pkgs.bash
         pkgs.clang_19
         pkgs.cmake
+        cmake4_4
         pkgs.curl
         pkgs.delta
         pkgs.difftastic
