@@ -3,13 +3,10 @@
   flake.modules.nixos.desktop-services =
     { pkgs, ... }:
     {
-      virtualisation.docker = {
+      virtualisation.podman = {
         enable = true;
-        enableOnBoot = true;
         autoPrune.enable = true;
       };
-
-      users.groups.docker = { };
 
       virtualisation.containers = {
         enable = true;
@@ -17,7 +14,7 @@
       };
 
       environment.systemPackages = [
-        pkgs.docker-compose
+        pkgs.podman-compose
         pkgs.qemu
         pkgs.qemu-utils
       ];

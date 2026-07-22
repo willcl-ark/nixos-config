@@ -12,7 +12,6 @@ in
           "wheel"
           "networkmanager"
           "audio"
-          "docker"
         ];
         hashedPassword = "$y$j9T$JV/cbQ/2QXvnouRK.3UPT0$9ZE12JKYtJPuQEfqHeEgl072NxE.VoTov2F/u7tyxD5";
       };
