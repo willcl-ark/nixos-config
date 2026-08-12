@@ -48,7 +48,7 @@ in
         pkgs.time
         pkgs.tree
         pkgs.wget
-        pkgs.bitcoind
+        pkgs.bitcoin
         pkgs.borgbackup
         pkgs.btop
         pkgs.cachix
