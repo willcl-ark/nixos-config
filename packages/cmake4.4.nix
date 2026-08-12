@@ -34,4 +34,5 @@ runCommand "cmake4.4-${cmake4_4.version}"
   ''
     mkdir -p $out/bin
     ln -s ${lib.getExe cmake4_4} $out/bin/cmake4.4
+    ln -s ${lib.getExe' cmake4_4 "ctest"} $out/bin/ctest4.4
   ''
