@@ -40,7 +40,15 @@
         codexSafe
         codexUnsafe
         llm-agents.opencode
+        llm-agents.herdr
         pkgs.bubblewrap # For codex
       ];
+
+      xdg.configFile."herdr/config.toml".text = ''
+        onboarding = false
+
+        [keys]
+        prefix = "ctrl+a"
+      '';
     };
 }
