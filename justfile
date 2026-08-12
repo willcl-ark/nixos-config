@@ -76,7 +76,7 @@ clean-user:
 # Aggressive trim of system generations only (leaves user/direnv gcroots alone)
 [group('maintenance')]
 clean-system:
-    nh clean profile /nix/var/nix/profiles/system --ask --keep-since 30d --keep 10 --no-gcroots
+    sudo nh clean profile /nix/var/nix/profiles/system --ask --keep-since 30d --keep 10 --no-gcroots
 
 # Search nixpkgs (defaults to nixos-unstable)
 [group('info')]
