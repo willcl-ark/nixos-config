@@ -70,6 +70,7 @@ function contributor-check --argument-names username --description 'Summarize bi
         }'
         set now_iso (date -u +%Y-%m-%dT%H:%M:%SZ)
         set review_prs (gh api graphql --paginate -f login=$username -f from=$since_iso -f to=$now_iso -f query="$review_query" --jq '.data.user.contributionsCollection.pullRequestReviewContributions.nodes[] | select(.repository.nameWithOwner == "bitcoin/bitcoin") | .pullRequest.number')
+        set review_comment_filter "$review_comment_filter | [.created_at[0:10], .html_url] | @tsv"
         for pr in $review_prs
             gh api --paginate "repos/bitcoin/bitcoin/pulls/$pr/comments?per_page=100&since=$since_iso" --jq $review_comment_filter
         end
