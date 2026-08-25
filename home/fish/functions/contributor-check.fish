@@ -44,12 +44,32 @@ function contributor-check --argument-names username --description 'Summarize bi
 
     echo ""
     echo "Pull request reviews submitted by $username"
-    set review_filter ".[] | select(.user.login == \"$username\" and .submitted_at != null)"
     if test $all = false
-        set review_filter "$review_filter | select(.submitted_at >= \"$since_iso\")"
-    end
-    set review_filter "$review_filter | [.submitted_at[0:10], .state, .html_url] | @tsv"
-    for pr in (gh search prs --repo bitcoin/bitcoin --reviewed-by $username --limit 1000 --json number --jq '.[].number')
-        gh api --paginate "repos/bitcoin/bitcoin/pulls/$pr/reviews" --jq $review_filter
+        set now_iso (date -u +%Y-%m-%dT%H:%M:%SZ)
+        set review_query 'query($login: String!, $from: DateTime!, $to: DateTime!, $endCursor: String) {
+            user(login: $login) {
+                contributionsCollection(from: $from, to: $to) {
+                    pullRequestReviewContributions(first: 100, after: $endCursor) {
+                        nodes {
+                            occurredAt
+                            repository { nameWithOwner }
+                            pullRequest { url }
+                            pullRequestReview { state }
+                        }
+                        pageInfo { hasNextPage endCursor }
+                    }
+                }
+            }
+        }'
+        gh api graphql --paginate --slurp \
+            -f login=$username -f from=$since_iso -f to=$now_iso \
+            -f query="$review_query" \
+            --jq '.[].data.user.contributionsCollection.pullRequestReviewContributions.nodes[] | select(.repository.nameWithOwner == "bitcoin/bitcoin") | [.occurredAt[0:10], .pullRequestReview.state, .pullRequest.url] | @tsv'
+    else
+        set review_filter ".[] | select(.user.login == \"$username\" and .submitted_at != null)"
+        set review_filter "$review_filter | [.submitted_at[0:10], .state, .html_url] | @tsv"
+        for pr in (gh search prs --repo bitcoin/bitcoin --reviewed-by $username --limit 1000 --json number --jq '.[].number')
+            gh api --paginate "repos/bitcoin/bitcoin/pulls/$pr/reviews" --jq $review_filter
+        end
     end
 end
