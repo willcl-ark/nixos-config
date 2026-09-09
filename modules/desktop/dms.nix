@@ -1,7 +1,7 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.modules.homeManager.desktop =
-    { ... }:
+    { pkgs, ... }:
     {
       home.file.".config/DankMaterialShell/catppuccin-macchiato.json" = {
         text = builtins.toJSON {
@@ -31,6 +31,9 @@
 
       programs.dank-material-shell = {
         enable = true;
+        package = (inputs.dankMaterialShell.lib.mkDmsShell pkgs).overrideAttrs (_: {
+          vendorHash = "sha256-Ls6Dquwt0fzDCEjZ6FfTsZTXDI8408mFdByv/OWHVgI=";
+        });
         niri = {
           enableKeybinds = false;
           enableSpawn = false;
