@@ -44,10 +44,10 @@ in
       user = username;
     };
 
-    services.journald.extraConfig = ''
-      SystemMaxUse=2G
-      MaxRetentionSec=1month
-    '';
+    services.journald.settings.Journal = {
+      SystemMaxUse = "2G";
+      MaxRetentionSec = "1month";
+    };
 
     services.avahi = {
       enable = true;
