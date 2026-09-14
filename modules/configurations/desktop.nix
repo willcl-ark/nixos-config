@@ -13,7 +13,18 @@ in
     ];
     nixpkgs.hostPlatform = "x86_64-linux";
     nixpkgs.config.allowUnfree = true;
-    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
+    nixpkgs.overlays = [
+      inputs.niri.overlays.niri
+      (
+        final: prev:
+        {
+          libcap_ng = prev.libcap_ng.overrideAttrs (_: {
+            # Static builds cannot link the file_caps_test xattr mocks with musl.
+            doCheck = !final.stdenv.hostPlatform.isStatic;
+          });
+        }
+      )
+    ];
     nixpkgs.config.permittedInsecurePackages = [
       "electron-39.8.10"
     ];
