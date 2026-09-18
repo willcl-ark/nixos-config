@@ -36,7 +36,6 @@
           enableSpawn = false;
           includes.filesToInclude = [
             "alttab"
-            "binds"
             "colors"
             "layout"
             "wpblur"

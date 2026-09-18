@@ -160,7 +160,13 @@ in
           "Mod+Shift+v".action.switch-layout = "next";
 
           "Mod+Shift+e".action.quit = { };
-          "Ctrl+Alt+Delete".action.quit = { };
+          "Ctrl+Alt+Delete".action.spawn = [
+            "dms"
+            "ipc"
+            "call"
+            "processlist"
+            "toggle"
+          ];
           "Mod+Shift+slash".action.show-hotkey-overlay = { };
 
           "Mod+Return".action.spawn = [
@@ -213,6 +219,20 @@ in
             "call"
             "notepad"
             "toggle"
+          ];
+          "Mod+y".action.spawn = [
+            "dms"
+            "ipc"
+            "call"
+            "dankdash"
+            "wallpaper"
+          ];
+          "Mod+Alt+l".action.spawn = [
+            "dms"
+            "ipc"
+            "call"
+            "lock"
+            "lock"
           ];
           "Mod+x".action.spawn = [
             "bash"
@@ -292,7 +312,7 @@ in
             "dms"
             "ipc"
             "call"
-            "night"
+            "notepad"
             "toggle"
           ];
           "Mod+g".action.spawn = [ "${homeDir}/.local/bin/gh-issue-open.sh" ];
