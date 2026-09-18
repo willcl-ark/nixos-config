@@ -55,17 +55,29 @@
         enable = true;
         package = pkgs.voxtype-vulkan;
         loadModels = [ "large-v3-turbo" ];
+        environment = {
+          PATH = lib.makeBinPath [
+            pkgs.coreutils
+            pkgs.which
+            pkgs.wl-clipboard
+            pkgs.wtype
+            pkgs.quickshell
+            pkgs.voxtype-vulkan
+          ];
+          VOXTYPE_OSD_QML_PATH = "${pkgs.voxtype-vulkan.src}/quickshell";
+        };
         settings = {
           engine = "whisper";
           hotkey = {
             enabled = true;
-            key = "V";
+            key = "EVTEST_47";
             modifiers = [ "LEFTMETA" ];
           };
           output = {
             fallback_to_clipboard = true;
             mode = "type";
           };
+          osd.frontend = "quickshell";
           whisper = {
             language = "en";
             model = "large-v3-turbo";
