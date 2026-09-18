@@ -186,13 +186,6 @@ in
             "spotlight"
             "toggle"
           ];
-          "Mod+v".action.spawn = [
-            "dms"
-            "ipc"
-            "call"
-            "clipboard"
-            "toggle"
-          ];
           "Mod+m".action.spawn = [
             "dms"
             "ipc"

@@ -49,6 +49,7 @@
 
         wf-recorder
         wf-recorder-gui
+        wtype
       ];
 
       home.file.".local/bin/gh-issue-open.sh" = {

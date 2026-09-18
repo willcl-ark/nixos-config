@@ -50,5 +50,27 @@
         [keys]
         prefix = "ctrl+a"
       '';
+
+      services.voxtype = {
+        enable = true;
+        package = pkgs.voxtype-vulkan;
+        loadModels = [ "large-v3-turbo" ];
+        settings = {
+          engine = "whisper";
+          hotkey = {
+            enabled = true;
+            key = "V";
+            modifiers = [ "LEFTMETA" ];
+          };
+          output = {
+            fallback_to_clipboard = true;
+            mode = "type";
+          };
+          whisper = {
+            language = "en";
+            model = "large-v3-turbo";
+          };
+        };
+      };
     };
 }
