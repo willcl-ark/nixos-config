@@ -47,7 +47,8 @@ function backports --argument-names base_branch
     set -l remote (string split '/' -- $base_branch)[1]
     set -l branch (string join '/' -- (string split '/' -- $base_branch)[2..])
     echo "Fetching $base_branch..."
-    git fetch $remote $branch:refs/remotes/$remote/$branch
+    git fetch $remote $branch:refs/remotes/$remote/$branch master:refs/remotes/$remote/master
+    or return 1
 
     set commits (git rev-list $base_branch..HEAD)
 
@@ -104,15 +105,91 @@ function backports --argument-names base_branch
         end
     end
 
+    # A backport's Github-Pull may name the backport PR rather than the original.
+    function __backports_pr_data --argument-names pr_id original destination
+        set -l pr_commits (gh pr view $pr_id --json commits -q '.commits[].oid')
+        or return 1
+        if not contains -- $original $pr_commits
+            set -l repository bitcoin/bitcoin
+            if string match -q 'https://github.com/*' -- $pr_id
+                set repository (string replace -r '^https://github.com/([^/]+/[^/]+)/pull/.*$' '$1' -- $pr_id)
+            end
+            set -l original_pr (gh api repos/$repository/commits/$original/pulls --jq '.[] | select(.base.ref == "master") | .html_url')
+            or return 1
+            if test (count $original_pr) -ne 1
+                echo "Cannot identify original PR for $original" >&2
+                return 1
+            end
+            set pr_id $original_pr[1]
+            set pr_commits (gh pr view $pr_id --json commits -q '.commits[].oid')
+            or return 1
+            if not contains -- $original $pr_commits
+                echo "Original commit $original missing from $pr_id" >&2
+                return 1
+            end
+        end
+        printf '%s\n' $pr_id >$destination.id
+        printf '%s\n' $pr_commits >$destination
+    end
+
     # Pre-fetch PR commit data in parallel
     set -l tmpdir (mktemp -d /tmp/backports_gh.XXXXXX)
     echo "Fetching commit data for "(count $pr_ids)" PRs..."
     for idx in (seq (count $pr_ids))
         if test -n "$pr_ids[$idx]"
-            gh pr view $pr_ids[$idx] --json commits -q '.commits[].oid' >$tmpdir/$idx 2>/dev/null &
+            set -l originals_var $pr_groups[$idx]"_originals"
+            set -l originals $$originals_var
+            __backports_pr_data $pr_ids[$idx] $originals[1] $tmpdir/$idx &
         end
     end
     wait
+
+    functions -e __backports_pr_data
+
+    # Validate metadata and objects before writing a review.
+    for idx in (seq (count $pr_groups))
+        set -l originals_var $pr_groups[$idx]"_originals"
+        set -l originals $$originals_var
+        if test -n "$pr_ids[$idx]"
+            if not test -s $tmpdir/$idx
+                echo "Could not fetch original PR data for $pr_ids[$idx]" >&2
+                rm -rf $tmpdir
+                return 1
+            end
+            set pr_ids[$idx] (cat $tmpdir/$idx.id)
+            set -l pr_commits (cat $tmpdir/$idx)
+            for original in $originals
+                if not contains -- $original $pr_commits
+                    echo "Original commit $original does not belong to $pr_ids[$idx]" >&2
+                    rm -rf $tmpdir
+                    return 1
+                end
+            end
+            set -a originals $pr_commits
+        end
+        for original in $originals
+            if not git cat-file -e $original^ 2>/dev/null
+                if test -n "$pr_ids[$idx]"
+                    set -l pr_url $pr_ids[$idx]
+                    if not string match -q 'https://*' -- $pr_url
+                        set pr_url https://github.com/bitcoin/bitcoin/pull/$pr_url
+                    end
+                    set -l repository_url (string replace -r '/pull/.*$' '' -- $pr_url)
+                    set -l pr_number (string split / -- $pr_url)[-1]
+                    git fetch $repository_url refs/pull/$pr_number/head
+                    or begin
+                        rm -rf $tmpdir
+                        return 1
+                    end
+                end
+                if not git cat-file -e $original^ 2>/dev/null
+                    echo "Original commit or parent unavailable: $original" >&2
+                    rm -rf $tmpdir
+                    return 1
+                end
+            end
+        end
+    end
 
     # Process PR groups
     for idx in (seq (count $pr_groups))
@@ -151,7 +228,8 @@ function backports --argument-names base_branch
 
         if test -n "$pr_id" -a -f doc/release-notes.md
             echo "" >> $outfile
-            if grep -q "$pr_id" doc/release-notes.md
+            set -l pr_number (string split / -- $pr_id)[-1]
+            if grep -q "$pr_number" doc/release-notes.md
                 echo "✅ PR $pr_id in release notes" >> $outfile
             else
                 echo "❌ PR $pr_id missing from release notes" >> $outfile
