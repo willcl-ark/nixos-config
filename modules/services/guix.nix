@@ -2,7 +2,7 @@
 let
   guixOverride = builtins.fetchGit {
     url = "file:///home/will/src/nixpkgs";
-    rev = "6a795af40b85e05dfd8450f77cea3de67726c1dc";
+    rev = "19719478cef1378b8623bebdf03cc5d5941aebbf";
     ref = "guix-unprivileged";
     shallow = true;
   };
