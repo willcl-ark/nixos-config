@@ -8,6 +8,7 @@
         enable = true;
         allowedTCPPorts = [
           8833 # Bitcoin Core
+          38333
           8000
           2234 # nicotine+
         ];
