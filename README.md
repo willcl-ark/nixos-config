@@ -26,3 +26,24 @@ modules/
   integrations/     # home-manager, sops, catppuccin wiring
 secrets/            # encrypted secrets (sops-nix)
 ```
+
+## mod-bot
+
+The desktop starts `mod-bot.service` at boot using the committed source in
+`/home/will/src/core/mod-bot`. It records manual bans and posts confirmed LLM
+reports; banning and unblocking stay manual.
+
+Run `sops secrets/will.yaml` and add these top-level keys:
+
+```yaml
+github_mod_bot_token: YOUR_GITHUB_TOKEN
+telegram_mod_bot_token: YOUR_TELEGRAM_BOT_TOKEN
+```
+
+The GitHub token needs discussion posting access to `bitcoin-core/meta`.
+Sops-nix renders a root-only environment file and restarts the service when its
+credentials change. The operator ID is configured in `modules/services/mod-bot.nix`.
+
+Apply with `just switch`. Stop any bot running in a terminal before activation
+so only one process polls Telegram. View logs with `journalctl -u mod-bot -f`.
+After committing bot changes, run `nix flake update mod-bot` here and rebuild.

@@ -35,6 +35,10 @@
       url = "path:/home/will/src/bitcoin-dev-tools/ned";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mod-bot = {
+      url = "git+file:///home/will/src/core/mod-bot";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     niri = {
       url = "github:epireyn/niri-flake";
     };
