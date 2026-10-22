@@ -17,6 +17,7 @@ in
       nixpkgs.config.ccache = true;
 
       programs.ccache.enable = true;
+      security.wrappers.nix-ccache.enable = false; # Temporary workaround for nixpkgs#575747
 
       environment.systemPackages = [
         pkgs.bat
