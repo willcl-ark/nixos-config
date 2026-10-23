@@ -20,7 +20,6 @@ in
         "/home/*/.rustup/toolchains/*"
         "/nix/*"
         "/var/cache/*"
-        "/var/log/journal/*"
         "/var/tmp/*"
       ];
     in
@@ -85,7 +84,6 @@ in
             "/etc/nixos"
             "/root"
             "/var/lib"
-            "/var/log"
           ];
         };
       };
