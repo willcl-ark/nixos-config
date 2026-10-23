@@ -42,6 +42,7 @@ in
         "/home/${username}/src/**/guix-build-*/*"
         "/home/${username}/src/**/node_modules/*"
         "/home/${username}/src/**/target/*"
+        "/home/${username}/src/core/bitcoin/worktrees/*"
         "/home/${username}/src/core/qa-assets/*"
         "/home/${username}/src/core/**/.pytest_cache/*"
         "/home/${username}/src/core/**/__pycache__/*"
