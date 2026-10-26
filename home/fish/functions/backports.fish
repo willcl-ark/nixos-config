@@ -217,13 +217,13 @@ function backports --argument-names base_branch
         if test (count $pr_commits) -eq 1
             set original $pr_originals[1]
             set backport $pr_commits[1]
-            __git_color range-diff $original^..$original $backport^..$backport >> $outfile 2>&1
+            __git_color range-diff --creation-factor=100 $original^..$original $backport^..$backport >> $outfile 2>&1
         else
             set first_original $pr_originals[1]
             set last_original $pr_originals[-1]
             set first_backport $pr_commits[1]
             set last_backport $pr_commits[-1]
-            __git_color range-diff $first_original^..$last_original $first_backport^..$last_backport >> $outfile 2>&1
+            __git_color range-diff --creation-factor=100 $first_original^..$last_original $first_backport^..$last_backport >> $outfile 2>&1
         end
 
         if test -n "$pr_id" -a -f doc/release-notes.md
