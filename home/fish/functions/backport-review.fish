@@ -10,7 +10,7 @@ function backport-review --description 'Check out a Bitcoin Core backport PR and
 
     cd /home/will/src/core/bitcoin/worktrees/backports
     or return
-    gh pr checkout "$argv[1]"
+    gh pr checkout --force "$argv[1]"
     or return
     codex --model gpt-6.1-sol --config 'model_reasoning_effort="low"' '$backport-check Review the checked-out PR in the current worktree. Infer its base branch from GitHub PR metadata.'
 end
