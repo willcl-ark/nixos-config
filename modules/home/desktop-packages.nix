@@ -10,6 +10,9 @@
       home.homeDirectory = "/home/will";
 
       home.packages = with pkgs; [
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.t3code
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.t3code-desktop
+
         bitwarden-desktop
         cider-2
         evince
