@@ -9,7 +9,7 @@
         notmuch = {
           enable = true;
           hooks.preNew = "mbsync --all";
-          new = {
+          settings.new = {
             tags = [
               "unread"
               "inbox"
@@ -19,11 +19,11 @@
               ".uidvalidity"
             ];
           };
-          search.excludeTags = [
+          settings.search.exclude_tags = [
             "deleted"
             "spam"
           ];
-          maildir.synchronizeFlags = true;
+          settings.maildir.synchronize_flags = true;
         };
         neomutt = {
           enable = true;
