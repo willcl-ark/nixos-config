@@ -28,7 +28,6 @@
         pwvucontrol
         grim
         rssguard
-        satty
         slurp
         signal-desktop
         sparrow
@@ -65,6 +64,15 @@
       };
 
       programs = {
+        satty = {
+          enable = true;
+          settings.general = {
+            output-filename = "~/Pictures/Screenshots/Screenshot-%Y-%m-%d %H-%M-%S.png";
+            save-after-copy = true;
+            actions-on-enter = [ "save-to-clipboard" ];
+          };
+        };
+
         direnv = {
           enable = true;
           package = pkgs.direnv;
