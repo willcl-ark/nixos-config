@@ -86,6 +86,7 @@ in
 
         layout = {
           always-center-single-column = true;
+          border.enable = false;
           preset-column-widths = [
             { proportion = 0.33333; }
             { proportion = 0.5; }
