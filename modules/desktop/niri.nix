@@ -175,16 +175,26 @@ in
             "+new-window"
           ];
           "Print".action.spawn = [
-            "bash"
-            "-c"
-            "grim - | satty --filename -"
+            "dms"
+            "ipc"
+            "call"
+            "niri"
+            "screenshotScreen"
           ];
           "Shift+Print".action.spawn = [
-            "bash"
-            "-c"
-            "grim -g \"$(slurp)\" - | satty --filename -"
+            "dms"
+            "ipc"
+            "call"
+            "niri"
+            "screenshot"
           ];
-          "Alt+Print".action.screenshot-window = { };
+          "Alt+Print".action.spawn = [
+            "dms"
+            "ipc"
+            "call"
+            "niri"
+            "screenshotWindow"
+          ];
 
           "Mod+Space".action.spawn = [
             "dms"
