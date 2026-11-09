@@ -9,7 +9,6 @@ in
     {
       imports = [
         inputs.niri.nixosModules.niri
-        inputs.matugen.nixosModules.default
       ];
 
       console.keyMap = "uk";
@@ -37,15 +36,12 @@ in
         pkgs.xwayland-satellite
         pkgs.libsecret
         pkgs.playerctl
-        inputs.matugen.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
       programs.niri = {
         enable = true;
         package = pkgs.niri-unstable;
       };
-
-      programs.matugen.enable = true;
     };
 
   flake.modules.homeManager.desktop =

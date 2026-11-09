@@ -186,7 +186,7 @@
     },
     "flake-utils": {
       "inputs": {
-        "systems": "systems_3"
+        "systems": "systems_2"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -204,7 +204,7 @@
     },
     "flake-utils_2": {
       "inputs": {
-        "systems": "systems_4"
+        "systems": "systems_3"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -274,27 +274,6 @@
       "original": {
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "type": "github"
-      }
-    },
-    "matugen": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": "systems_2"
-      },
-      "locked": {
-        "lastModified": 1791473094,
-        "narHash": "sha256-MEyqLTD2jbRdbh9PQMe/ORdX5XUrczOEHIpzDh74Wqs=",
-        "owner": "InioX",
-        "repo": "Matugen",
-        "rev": "9f8c7fd583e44310a642772ff8f13b693949baf2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "InioX",
-        "repo": "Matugen",
         "type": "github"
       }
     },
@@ -521,7 +500,6 @@
         "home-manager": "home-manager",
         "import-tree": "import-tree",
         "llm-agents": "llm-agents",
-        "matugen": "matugen",
         "mod-bot": "mod-bot",
         "ned": "ned",
         "niri": "niri",
@@ -587,21 +565,6 @@
     },
     "systems_2": {
       "locked": {
-        "lastModified": 1689347949,
-        "narHash": "sha256-12tWmuL2zgBgZkdoB6qXZsgJEH9LR3oUgpaQq2RbI80=",
-        "owner": "nix-systems",
-        "repo": "default-linux",
-        "rev": "31732fcf5e8fea42e59c2488ad31a0e651500f68",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default-linux",
-        "type": "github"
-      }
-    },
-    "systems_3": {
-      "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
         "owner": "nix-systems",
@@ -615,7 +578,7 @@
         "type": "github"
       }
     },
-    "systems_4": {
+    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",

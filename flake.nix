@@ -50,10 +50,6 @@
       url = "github:AvengeMedia/DankMaterialShell/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    matugen = {
-      url = "github:InioX/Matugen";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
     };
