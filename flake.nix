@@ -28,7 +28,6 @@
     };
     catppuccin = {
       url = "github:catppuccin/nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     ned = {
       # url = "github:bitcoin-dev-tools/ned";
