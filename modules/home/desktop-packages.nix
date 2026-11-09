@@ -2,9 +2,6 @@
 {
   flake.modules.homeManager.desktop =
     { config, pkgs, ... }:
-    let
-      wf-recorder-gui = pkgs.callPackage ../../packages/wf-recorder-gui.nix { };
-    in
     {
       home.username = "will";
       home.homeDirectory = "/home/will";
@@ -50,7 +47,7 @@
         wl-clipboard
 
         wf-recorder
-        wf-recorder-gui
+        kooha
         wtype
       ];
 
