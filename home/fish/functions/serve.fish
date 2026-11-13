@@ -1,13 +1,19 @@
 function serve --description 'Share a file, live log, or Herdr session through Tailscale Funnel'
     if contains -- --help $argv
-        printf '%s\n' 'serve: choose a live log, static file, or Herdr session to share publicly.' \
+        printf '%s\n' 'serve [query]: choose a live log, static file, or Herdr session to share publicly.' \
+            'Files are searched under your home directory; query prefills the file picker.' \
             'The URL stays active while this command runs. Ctrl-C stops sharing.' \
             'Uses HTTPS port 8443; refuses to replace an existing service on that port.'
         return
     end
-    if test (count $argv) -ne 0
-        echo 'Usage: serve [--help]' >&2
+    if test (count $argv) -gt 1
+        echo 'Usage: serve [query] [--help]' >&2
         return 2
+    end
+
+    set -l query ''
+    if set -q argv[1]
+        set query $argv[1]
     end
 
     set -l kind (printf '%s\n' 'Stream log' 'Static file' 'Herdr terminal' | fzf --height=8 --reverse --prompt='Share: ')
@@ -17,9 +23,12 @@ function serve --description 'Share a file, live log, or Herdr session through T
     set -l file
     switch $kind
         case 'Stream log' 'Static file'
-            read --prompt-str='File path: ' file
-            or return 130
-            set file (path resolve -- "$file")
+            set file (command fd --type f --hidden --exclude .git --color never --print0 --base-directory "$HOME" |
+                fzf --read0 --print0 --height=80% --reverse --prompt='File ~/ > ' --query="$query" | string split0)
+            if test (count $file) -ne 1
+                return 130
+            end
+            set file "$HOME/$file"
             if not test -f "$file"; or not test -r "$file"
                 echo 'Choose a readable file.' >&2
                 return 1
