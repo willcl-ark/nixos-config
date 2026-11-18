@@ -37,7 +37,9 @@ Plex's NixOS `dataDir` is the parent `/home/will/plex`; its module appends
 `Plex Media Server`. The old Debian symlink under `/var/lib/plexmediaserver`
 is not needed. Media group GID 1002 and dataaccess GID 1004 are retained.
 Plex and the Arr services need access under `/home`, so their default
-`ProtectHome` restriction is disabled. Validate NAS permissions and download
+`ProtectHome` restriction is disabled. Will's `homeMode` is explicitly `755`,
+matching Debian; NixOS otherwise changes it to `700` and blocks traversal by
+the media users. Validate NAS permissions and download
 imports, including the Arr modules' user-namespace hardening, in a restore test.
 
 Keep `/data/plex/{tv,kids_tv,movies,kids_movies,documentaries}` unchanged.
@@ -77,7 +79,7 @@ The ZIP/database archives do not include the actual media or downloaded files.
   same identity. A historical database backup is not a live channel backup.
 - Tailscale Serve on 50001/plain and 50002/TLS; the custom Caddy updater is
   currently retained but its service is disabled.
-- NZBGet, Soju, Nostr, DrahtBot, Tor onion identity, UPS handling, NFS exports,
+- NZBGet, Soju, Tor onion identity, UPS handling, NFS exports,
   dynamic DNS, scheduled jobs, certificates and any remaining required services.
 - Secrets provisioning, application package pins, Plex hardware transcoding and
   the full networking/firewall policy. Disabled legacy services need an explicit
@@ -85,3 +87,81 @@ The ZIP/database archives do not include the actual media or downloaded files.
 
 Only static Nix parsing is permitted at this stage. Build, deployment and disk
 installation require a later explicit request.
+
+## Runtime audit and decisions, 2026-11-18
+
+- Radarr was upgraded on Debian from 5.11.0.9244 to the pinned Nix version,
+  6.4.4.10685. Its API reported no health issues and retained all 279 movies.
+  The migrated database passed SQLite quick_check; fresh application-generated
+  and stopped-state backups are in the private backup directory. Radarr is
+  stopped again, alongside Plex and Sonarr. All three remain enabled for boot.
+- Sonarr 4.0.20.3014 and Plex 1.43.5.11079-b3b13e506 already match the flake pin.
+  Sonarr and Radarr use `/sonarr/` and `/radarr/` URL bases. Both use NZBGet at
+  localhost:6789 with `tv` and `movies` categories; NZBGet must be ported before
+  downloads work. Indexer and client credentials remain in the backed-up DBs.
+- NZBGet 21.1 runs as plex:plex from `/home/will/nzbget/nzbget`. Preserve its
+  queue, completed/incomplete paths, CA bundle and EMail.py/Logger.py scripts.
+  Downloads are not included in the off-host configuration backup.
+- Nostr and DrahtBot were explicitly retired: their services are stopped and
+  disabled. Do not restore their enablement from the historical `/etc` archive.
+  Their source/data/backups are retained, but neither belongs in the NixOS host.
+  Old Python environments will not be migrated; create flakes when needed.
+  General C/C++ build tools and Python are included in the draft.
+- Tailscale currently provides SSH and advertises both default routes as an
+  exit node. Restoring login state alone does not configure NixOS forwarding;
+  port the exit-node routing settings and SSH preference explicitly if retained.
+- Soju 0.9.0 binds specifically to 100.104.49.27:6667. Preserve that identity/IP,
+  add the tailnet firewall allowance and order startup after Tailscale is ready.
+  Preserve both its database and message-history files.
+- Bitcoin RPC also binds to that Tailscale IP. Preserve its whitebind download
+  exemption, indexes, REST access for electrs and ZMQ endpoint. Require the
+  external block mount before starting Core so an absent disk cannot result in
+  writes to the root filesystem. Electrs must start after Core is available.
+- Core/Lightning use Tor at 127.0.0.1:9050 and Lightning uses the control port
+  9051. The current bitcoin user belongs to debian-tor for control-cookie access;
+  arrange the NixOS equivalent. Preserve Tor's onion identity. Lightning also
+  has a hard-coded announced public address to review.
+- Core, electrs and Lightning binaries use Debian's ELF loader. Their backups
+  are recovery artifacts, not directly usable NixOS packages. Lightning is a
+  custom v23.11.2 build with plugins; its source is under
+  `/home/bitcoin/src/lightning` at 6f9356fb9, with modified submodule revisions.
+  That source tree is outside the current off-host backup. Preserve it before
+  rebuilding, and reproduce or deliberately retire each plugin.
+- The NUC reexports the NAS-mounted `/data` over NFS to LAN and tailnet clients.
+  The draft only mounts it; determine whether clients still need the exports.
+- ddclient updates Namecheap dynamic DNS. apcupsd provides actual USB UPS
+  shutdown handling at 5% battery or 5 minutes remaining. Both need ports if
+  retained; their private configuration is in the `/etc` backup.
+- Review Certbot's old elec.256k1.dev DNS renewal separately from Tailscale's
+  managed Electrum certificate. Its manual DNS hook and credentials are not a
+  replacement for the tailnet certificate. Caddy remains disabled.
+- Avahi discovery, fail2ban, local mail and vnstat need retain-or-retire decisions.
+  Historical vnstat data is not in the current backup. No active containers or
+  custom user timers were found.
+
+## Tailscale secret and installer access
+
+`secrets/nuc.yaml` is encrypted to the NUC's existing SSH Ed25519 host identity,
+Will's age identity and the YubiKey recipient. Edit it with `sops secrets/nuc.yaml`
+and replace the explicit placeholder `tailscale_auth_key` before deployment.
+The draft passes the root-only decrypted file to `services.tailscale.authKeyFile`.
+Do not put the plaintext auth key in Nix expressions or Git.
+
+The original `/etc/ssh/ssh_host_ed25519_key` must exist before first activation.
+Preserve it with nixos-anywhere's `--copy-host-keys` or restore it privately before
+installation. Generating a different host key will not decrypt this file; fetching
+the identity after deployment would be too late. Preserve `/var/lib/tailscale`
+at the final stopped-service cutover to retain the existing IP and name. A fresh
+auth-key enrollment can create a different device identity.
+
+nixos-anywhere can skip its disk phase with `--phases`, or use a mount-only Disko
+configuration with `--disko-mode mount`. Its default disk phase destroys the
+specified layout. We have not prepared or tested an installer command. Reusing
+filesystems requires mounting the intended target layout before installation;
+the draft's `fileSystems` options are not themselves an installer mount script.
+Plan LAN SSH and console access: the stock kexec installer does not preserve the
+running Tailscale session. Use the LAN address, not the tailnet SSH alias, for
+that installation path. No disk operations are authorized at this stage.
+
+References: [nixos-anywhere CLI](https://github.com/nix-community/nixos-anywhere/blob/main/docs/cli.md),
+[Tailscale auth keys](https://tailscale.com/docs/features/access-control/auth-keys).
