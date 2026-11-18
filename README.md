@@ -47,3 +47,11 @@ credentials change. The operator ID is configured in `modules/services/mod-bot.n
 Apply with `just switch`. Stop any bot running in a terminal before activation
 so only one process polls Telegram. View logs with `journalctl -u mod-bot -f`.
 After committing bot changes, run `nix flake update mod-bot` here and rebuild.
+
+## NUC migration draft
+
+`nixosConfigurations.nuc` is a draft for migrating the Debian NUC. It is not an
+installation-ready replacement for all of the current services. See
+[the migration notes](docs/nuc-migration.md) for preserved storage, backup restore
+requirements and services still to port. Do not deploy it until those steps have
+been reviewed. The initial addition has only been checked statically, not built.
