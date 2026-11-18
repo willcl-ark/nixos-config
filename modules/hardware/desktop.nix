@@ -36,8 +36,12 @@
         "sd_mod"
       ];
       boot.initrd.kernelModules = [ ];
-      boot.kernelModules = [ "kvm-intel" ];
-      boot.extraModulePackages = [ ];
+      boot.kernelModules = [
+        "kvm-intel"
+        "it87"
+      ];
+      # The motherboard's IT8689E needs the extended ITE monitoring driver.
+      boot.extraModulePackages = [ config.boot.kernelPackages.it87 ];
 
       # Apply the Kraken pump curve on boot and USB reconnection.
       # Write the curve points before switching to curve control (pwm1_enable=2).
