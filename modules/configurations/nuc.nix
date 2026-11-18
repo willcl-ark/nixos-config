@@ -60,6 +60,8 @@ in
       users.groups.dataaccess.gid = 1004;
       users.users.will = {
         isNormalUser = true;
+        # Media services traverse this home to reach their existing state/downloads.
+        homeMode = "755";
         uid = 1000;
         group = "will";
         extraGroups = [
@@ -81,10 +83,22 @@ in
       security.sudo.wheelNeedsPassword = true;
 
       environment.systemPackages = with pkgs; [
+        autoconf
+        automake
+        binutils
+        cmake
+        gcc
+        gdb
         git
+        gnumake
         htop
         jq
+        libtool
         lvm2
+        ninja
+        patch
+        pkg-config
+        python3
         ripgrep
         rsync
         smartmontools
