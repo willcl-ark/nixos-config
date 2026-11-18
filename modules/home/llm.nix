@@ -16,6 +16,10 @@
     let
       llm-agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
       codexPkg = llm-agents.codex;
+      # Voxtype 1.1.1 links SQLite, but its nixpkgs recipe omits the library.
+      voxtype = pkgs.voxtype-vulkan.overrideAttrs (old: {
+        buildInputs = old.buildInputs ++ [ pkgs.sqlite ];
+      });
       codexSafe = pkgs.writeShellScriptBin "codex" ''
         exec ${codexPkg}/bin/codex --sandbox workspace-write "$@"
       '';
@@ -53,7 +57,7 @@
 
       services.voxtype = {
         enable = true;
-        package = pkgs.voxtype-vulkan;
+        package = voxtype;
         loadModels = [ "large-v3-turbo" ];
         environment = {
           PATH = lib.makeBinPath [
@@ -62,9 +66,9 @@
             pkgs.wl-clipboard
             pkgs.wtype
             pkgs.quickshell
-            pkgs.voxtype-vulkan
+            voxtype
           ];
-          VOXTYPE_OSD_QML_PATH = "${pkgs.voxtype-vulkan.src}/quickshell";
+          VOXTYPE_OSD_QML_PATH = "${voxtype.src}/quickshell";
         };
         settings = {
           engine = "whisper";
