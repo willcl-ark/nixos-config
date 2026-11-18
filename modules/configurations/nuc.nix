@@ -1,15 +1,16 @@
-{ config, ... }:
+{ config, inputs, ... }:
 let
   inherit (config.flake.modules) nixos;
 in
 {
   # Migration draft; prerequisites and unported services are in docs/nuc-migration.md.
   configurations.nixos.nuc.module =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       imports = [
         nixos.nuc-hardware
         nixos.nuc-media
+        inputs.sops-nix.nixosModules.sops
       ];
 
       nixpkgs.hostPlatform = "x86_64-linux";
@@ -51,7 +52,11 @@ in
       services.tailscale = {
         enable = true;
         openFirewall = true;
+        authKeyFile = config.sops.secrets.tailscale_auth_key.path;
       };
+      sops.defaultSopsFile = ../../secrets/nuc.yaml;
+      sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+      sops.secrets.tailscale_auth_key = { };
 
       programs.fish.enable = true;
       users.groups.will.gid = 1000;
