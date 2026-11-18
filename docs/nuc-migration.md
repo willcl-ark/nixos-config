@@ -142,8 +142,10 @@ installation require a later explicit request.
 ## Tailscale secret and installer access
 
 `secrets/nuc.yaml` is encrypted to the NUC's existing SSH Ed25519 host identity,
-Will's age identity and the YubiKey recipient. Edit it with `sops secrets/nuc.yaml`
-and replace the explicit placeholder `tailscale_auth_key` before deployment.
+Will's age identity and the YubiKey recipient. The supplied `tailscale_auth_key`
+decrypts locally and has the expected format; edit it with `sops secrets/nuc.yaml`.
+It has not been consumed for a test enrollment. Check its expiry and any tags or
+device-approval requirements before the actual installation.
 The draft passes the root-only decrypted file to `services.tailscale.authKeyFile`.
 Do not put the plaintext auth key in Nix expressions or Git.
 
@@ -153,6 +155,8 @@ installation. Generating a different host key will not decrypt this file; fetchi
 the identity after deployment would be too late. Preserve `/var/lib/tailscale`
 at the final stopped-service cutover to retain the existing IP and name. A fresh
 auth-key enrollment can create a different device identity.
+The draft explicitly enables Tailscale SSH on startup, including fresh enrollment;
+tailnet SSH policy must still authorize the resulting device and user.
 
 nixos-anywhere can skip its disk phase with `--phases`, or use a mount-only Disko
 configuration with `--disko-mode mount`. Its default disk phase destroys the
@@ -165,3 +169,21 @@ that installation path. No disk operations are authorized at this stage.
 
 References: [nixos-anywhere CLI](https://github.com/nix-community/nixos-anywhere/blob/main/docs/cli.md),
 [Tailscale auth keys](https://tailscale.com/docs/features/access-control/auth-keys).
+
+## SSH and user-job audit
+
+Direct LAN SSH to 10.0.0.88 reached the Debian SSH server, verified its host key
+against the trusted tailnet connection, and received acceptance of Will's public
+key. The test timed out waiting for local SSH-agent signing, so a complete LAN
+login remains to be demonstrated with the agent unlocked. The existing authorized
+keys include both keys offered by the local agent. Preserve the host private key
+and `/home/will/.ssh/authorized_keys`; the draft allows port 22 on Ethernet and
+Tailscale, prohibits root login and requires a password for sudo. The sudo password
+hash file is still an explicit provisioning prerequisite, separate from Tailscale.
+
+Only Will has an active user manager, with D-Bus and PulseAudio services. No user
+timers, lingering users, custom user-unit files, root/user crontabs, at jobs,
+running tmux/screen servers or detached custom applications were found. Processes
+outside service units were interactive shells and a root journalctl session.
+System cron entries were packaged housekeeping. There are no additional custom
+user jobs to port based on this audit.

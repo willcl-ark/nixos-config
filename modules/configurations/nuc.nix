@@ -53,6 +53,7 @@ in
         enable = true;
         openFirewall = true;
         authKeyFile = config.sops.secrets.tailscale_auth_key.path;
+        extraSetFlags = [ "--ssh" ];
       };
       sops.defaultSopsFile = ../../secrets/nuc.yaml;
       sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
