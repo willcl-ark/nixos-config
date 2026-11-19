@@ -1,8 +1,9 @@
 # NUC migration draft
 
 `nixosConfigurations.nuc` is an initial draft for the existing `will-NUC`.
-Nothing has been built or deployed. It is not yet a complete replacement for
-Debian. The host does not import the desktop `base` slice.
+The complete system now builds. The first installation attempt reached the
+temporary installer but stopped during its local build, before disk formatting.
+The host does not import the desktop `base` slice.
 
 The private backup and inventory are on this computer at
 `/home/will/nuc-backup-data/`. Read its README for capture times, verification
@@ -395,3 +396,13 @@ NZBGet downloads/queue or automatically import the reference-only GPG/dotfiles.
 
 Recipe expansion and shell syntax were checked without running the installer.
 No build or deployment has been performed.
+
+## First installation attempt and build fix
+
+Observed the user-run deployment through Herdr. The NUC entered the temporary
+installer and SSH reconnected over LAN. The build then failed before Disko:
+electrs 0.12.0's zstd-sys build could not find pkg-config. A narrow package override
+adds pkg-config to native build inputs and zstd to build inputs, retaining the
+pinned nixpkgs electrs version/source. Electrs then built and passed all nine
+unit tests; the complete NUC system build succeeded. Rerun `just deploy-nuc` to
+continue from the temporary installer. No retry was launched by the assistant.

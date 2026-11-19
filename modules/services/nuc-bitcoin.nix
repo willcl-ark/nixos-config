@@ -7,10 +7,17 @@
       pkgs,
       ...
     }:
+    let
+      # The pinned package omits dependencies needed by zstd-sys's pkg-config probe.
+      electrs = pkgs.electrs.overrideAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.zstd ];
+      });
+    in
     {
       environment.systemPackages = [
         pkgs.bitcoind
-        pkgs.electrs
+        electrs
       ];
 
       services.tor = {
@@ -99,7 +106,7 @@
           WorkingDirectory = "/home/bitcoin/electrs";
           # Live Debian uses 0.12.1; the flake pin currently supplies 0.12.0.
           # Confirm index compatibility before deployment; use nixpkgs as requested.
-          ExecStart = "${pkgs.electrs}/bin/electrs --skip-default-conf-files --log-filters INFO --network bitcoin --db-dir /home/bitcoin/electrs/db-v0.12 --daemon-dir /home/bitcoin/.bitcoin --daemon-rpc-addr 127.0.0.1:8332 --electrum-rpc-addr 127.0.0.1:50001";
+          ExecStart = "${electrs}/bin/electrs --skip-default-conf-files --log-filters INFO --network bitcoin --db-dir /home/bitcoin/electrs/db-v0.12 --daemon-dir /home/bitcoin/.bitcoin --daemon-rpc-addr 127.0.0.1:8332 --electrum-rpc-addr 127.0.0.1:50001";
           Restart = "always";
           RestartSec = 60;
           TimeoutStopSec = 600;
