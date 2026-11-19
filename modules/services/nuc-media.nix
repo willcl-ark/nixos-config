@@ -38,6 +38,7 @@
         extraGroups = [ "dataaccess" ];
       };
       users.users.radarr = {
+        isSystemUser = true;
         uid = lib.mkForce 1002;
         extraGroups = [ "dataaccess" ];
       };

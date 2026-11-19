@@ -10,6 +10,8 @@ in
       imports = [
         nixos.nuc-hardware
         nixos.nuc-media
+        nixos.nuc-bitcoin
+        nixos.nuc-utilities
         inputs.sops-nix.nixosModules.sops
       ];
 
@@ -46,7 +48,7 @@ in
         settings = {
           PasswordAuthentication = false;
           KbdInteractiveAuthentication = false;
-          PermitRootLogin = "no";
+          PermitRootLogin = "prohibit-password";
         };
       };
       services.tailscale = {
@@ -58,6 +60,10 @@ in
       sops.defaultSopsFile = ../../secrets/nuc.yaml;
       sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       sops.secrets.tailscale_auth_key = { };
+
+      users.users.root.openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH988C5DbEPHfoCphoW23MWq9M6fmA4UTXREiZU0J7n0 will.hetzner@temp.com"
+      ];
 
       programs.fish.enable = true;
       users.groups.will.gid = 1000;
@@ -75,8 +81,7 @@ in
           "dataaccess"
         ];
         shell = pkgs.fish;
-        # Provision privately before activation; never put a password hash in Git.
-        hashedPasswordFile = "/var/lib/nuc-secrets/will-password";
+        # Administration uses root's SSH key; no password secret is required.
         # OpenSSH also reads the preserved /home/will/.ssh/authorized_keys.
       };
       users.users.bitcoin = {
