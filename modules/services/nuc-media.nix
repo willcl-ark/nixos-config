@@ -44,15 +44,20 @@
       };
 
       # The NAS parent was root:root 0770, blocking access to its media-owned
-      # children. Repair only this directory, after mounting the actual NAS.
+      # children. Repair the parent and grant service ACL access after mounting.
       systemd.services.nas-download-permissions = {
         description = "Set shared NAS download directory permissions";
         unitConfig.RequiresMountsFor = [ "/data" ];
         serviceConfig.Type = "oneshot";
-        path = [ pkgs.coreutils ];
+        path = [
+          pkgs.coreutils
+          pkgs.acl
+        ];
         script = ''
           chgrp media /data/downloads
           chmod 2770 /data/downloads
+          # The NAS has existing ACLs; group/mode alone does not grant these users access.
+          setfacl -m u:998:rwx,u:119:rwx /data/downloads /data/downloads/tv /data/downloads/movies
         '';
       };
 

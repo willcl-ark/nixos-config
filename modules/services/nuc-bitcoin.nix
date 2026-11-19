@@ -71,7 +71,7 @@
         # not silently change the RPC endpoint expected by existing clients.
         preStart = ''
           ${pkgs.iproute2}/bin/ip -4 address show dev tailscale0 |
-            ${pkgs.gnugrep}/bin/grep -Fq 'inet 100.104.49.27/'
+            ${pkgs.gnugrep}/bin/grep -Fq 'inet 100.123.104.64/'
         '';
         serviceConfig = {
           User = "bitcoin";

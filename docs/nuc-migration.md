@@ -1,9 +1,9 @@
 # NUC migration draft
 
-`nixosConfigurations.nuc` is an initial draft for the existing `will-NUC`.
-The complete system now builds. The first installation attempt reached the
-temporary installer but stopped during its local build, before disk formatting.
-The host does not import the desktop `base` slice.
+`nixosConfigurations.nuc` is installed on `will-nuc`. The user completed the
+internal-disk wipe and installation. Application data has been restored and the
+retained services are running; Bitcoin is rebuilding from external block files
+and electrs is waiting for Core. The host does not import the desktop `base` slice.
 
 The private backup and inventory are on this computer at
 `/home/will/nuc-backup-data/`. Read its README for capture times, verification
@@ -406,3 +406,50 @@ adds pkg-config to native build inputs and zstd to build inputs, retaining the
 pinned nixpkgs electrs version/source. Electrs then built and passed all nine
 unit tests; the complete NUC system build succeeded. Rerun `just deploy-nuc` to
 continue from the temporary installer. No retry was launched by the assistant.
+
+## Application restoration, 2026-11-19
+
+Kept the newly enrolled Tailscale identity at `100.123.104.64`, as requested.
+MagicDNS remains `will-nuc.tail1977.ts.net`. Updated Core's private rpcbind and its
+Nix pre-start address check; the old Tailscale state was not restored.
+
+Stopped all affected services before restoring Plex, the complete stopped Sonarr
+and Radarr data directories, NZBGet installation/config, Core config/wallets/debug
+logs and the Tor onion identity. Restored recorded service ownership. Excluded
+retired applications, reference-only GPG/dotfiles and discarded NZBGet queue,
+history and downloads. The local backup remains intact.
+
+A restore error initially copied staging-directory ownership/modes onto system
+parents. Root SSH was rejected; after the user's first sudo chown succeeded,
+root SSH was recovered and modes repaired. `/`, `/home`, `/var` and `/var/lib`
+are root:root 0755; `/home/will` is 1000:1000 0755. User SSH and sudo availability
+were verified afterwards. Subsequent copies targeted individual application
+directories. Never rsync a user-owned staging tree onto `/` with metadata enabled.
+
+Boot logs confirmed DHCPv6 marked networking ready five seconds before the IPv4
+lease, causing the initial IPv4 NAS mount failure. Added `dhcpcd.wait = "ipv4"`.
+The NAS's existing ACLs also prevented Plex/Sonarr access despite group/mode
+changes. Added explicit user ACL entries for UID998 and UID119 on downloads,
+downloads/tv and downloads/movies, without recursion. The Nix service applies
+them on startup. Create/write/remove checks passed as Plex, Sonarr and Radarr
+in both download directories. These fixes and the new IP check were built and
+activated remotely; a further reboot test has not been performed.
+
+Application checks:
+
+- Sonarr 4.0.20.3014: 25 series restored, health checks empty, NZBGet test HTTP200.
+- Radarr 6.4.4.10685: 279 movies restored, NZBGet test HTTP200. Only health warning
+  is an available version7 update; no upgrade was attempted.
+- Plex: authenticated library API returns five sections.
+- NZBGet21.1: running with empty queue and no post-processing jobs.
+- Tor: original onion identity restored and service active.
+- Core: one-time `-reindex` started against preserved external blk files because
+  internal indexes/chainstate were not backed up. Removed the runtime startup
+  override after launch so subsequent starts resume normally. Electrs is active
+  and waits for IBD; Electrum is not yet ready for wallet use.
+- Tailscale Serve: tailnet-only TCP50001 and TLS50002 configured for the current
+  identity. Media download clients use localhost, so required no IP changes.
+- No failed systemd units at verification time.
+
+The desktop Halloy configuration still references the old Soju endpoint; Soju
+was not included among the retained NUC services and was not restored here.

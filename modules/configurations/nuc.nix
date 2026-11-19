@@ -41,6 +41,8 @@ in
       networking.hostName = "will-nuc";
       networking.useDHCP = false;
       networking.interfaces.eno1.useDHCP = true;
+      # The NAS uses IPv4; an IPv6 router advertisement is not sufficient.
+      networking.dhcpcd.wait = "ipv4";
       networking.firewall = {
         enable = true;
         interfaces.tailscale0.allowedTCPPorts = [
