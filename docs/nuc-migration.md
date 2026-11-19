@@ -232,9 +232,13 @@ The original directory remains intact. Bitcoin and electrs were not restarted.
 
 The block SSD at `/mnt/data` is a boot mount with `nofail`, not an on-demand
 systemd automount. Core's explicit mount requirement prevents startup without
-it. The NAS at `/data` is also a boot mount (`_netdev`, NFSv3, `noatime`), without
-`x-systemd.automount`; its dependent media services require it. No automount
-conversion has been applied.
+it. The NAS at `/data` uses `x-systemd.automount` with `nofail`, NFSv3 and a
+30-second mount-attempt timeout. Access triggers mounting; an unavailable NAS
+does not hold up the filesystem boot target. Media services still explicitly
+require the mount, so starting them also requests it. If their startup fails
+because the NAS is offline, restart those services once it is available.
+Normal NFS hard-mount behaviour is retained for an outage after mounting; the
+30-second timeout does not limit application I/O on an established mount.
 
 The separate `/home` LV can be reused without formatting, but the installer
 procedure has not been authored or tested. The application backup is not a
@@ -253,3 +257,10 @@ and fixed Radarr's UID1002 needing an explicit `isSystemUser = true` declaration
 Rendered units confirm block/NAS mount dependencies, runtime Bitcoin config,
 loopback electrs, key-only root SSH, UPS shutdown and logrotate home access.
 This does not validate boot, application restores or any disk installation steps.
+
+The upstream [mount-only guide](https://github.com/nix-community/nixos-anywhere/blob/main/docs/howtos/disko-modes.md)
+confirms that `--disko-mode mount` boots the installer, mounts existing filesystems,
+installs and reboots without the formatting phase. It is still a real installation,
+not a dry run. The current flake has runtime `fileSystems` definitions but no Disko
+mapping of the existing partitions/LVs; that mapping and its generated mount script
+must be prepared and inspected before using this workflow.

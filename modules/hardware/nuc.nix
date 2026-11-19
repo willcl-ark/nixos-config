@@ -60,6 +60,9 @@
         fsType = "nfs";
         options = [
           "_netdev"
+          "nofail"
+          "x-systemd.automount"
+          "x-systemd.mount-timeout=30s"
           "vers=3"
           "noatime"
         ];
