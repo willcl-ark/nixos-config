@@ -371,35 +371,27 @@ existing authorized key; where needed set `NIX_SSHOPTS` with the SSH config,
 identity file and IdentitiesOnly options. Recipe expansion was checked with
 `just --dry-run`; remote activation has not been tested.
 
-The first Debian-to-NixOS install is separate and uses nixos-anywhere, not the
-switch recipe. Its CLI supports `--copy-host-keys`, `--extra-files` and numeric
-`--chown` for staging identities and application data, or separate phases to
-restore into the new root before reboot. Do not issue the default all-phases
-command until the private restore tree and ownership mapping are prepared and
-checked. The preserved host key must precede activation for SOPS, and Tailscale
-state must precede service start to retain the address Core requires. Full build
-and restore testing remain outstanding; evaluation alone does not establish
-installation readiness.
+The first Debian-to-NixOS install uses `just deploy-nuc`. This runs:
 
-### First-install recipe
+```sh
+nix run github:nix-community/nixos-anywhere -- --flake .#nuc --target-host root@10.0.0.88 -i ~/.ssh/hetzner-temp --copy-host-keys
+```
 
-`just deploy-nuc /absolute/path/to/nuc-restore` runs nixos-anywhere for `.#nuc`
-over LAN SSH to `root@10.0.0.88`, using `~/.ssh/hetzner-temp` by default. A second
-argument selects another private key. This is a destructive first-install recipe,
-not the remote update recipe. It requires typing `WIPE-NUC` before invocation.
+It wipes the configured internal NVMe, installs NixOS and reboots using the default
+nixos-anywhere phases. The external Bitcoin block disk and NAS are not Disko
+formatting targets. Original SSH host keys are copied before activation so SOPS
+can decrypt the host's secrets. No restore directory or additional wrapper is
+required. nixos-anywhere is fetched from its upstream flake when invoked.
 
-The argument must be a prepared root-shaped restore tree, containing selected
-`home/` and `var/lib/` contents, not the backup directory of tar/ZIP archives.
-The recipe checks required paths, copies original SSH host keys for SOPS and
-sets recorded numeric ownership on application directories. It builds locally
-and runs kexec, Disko and installation, leaving the installer running with the
-installed root at `/mnt`. Inspect restored files and modes there before reboot.
-The restore tree still needs preparing and verifying; presence checks do not
-validate databases, permissions, or freshness. Do not include the reference-only
-GPG/dotfile archive, discarded NZBGet downloads/queue, or an unpacked Debian /etc.
+The user chose manual restoration after installation. This supersedes the earlier
+requirement to stage application files before installation/first boot. Connect over
+LAN as root, stop the affected services, rsync the selected backups into their
+recorded locations, restore numeric ownership, and restart/verify those services.
+Some services will fail or initialize empty state before restoration; stop them
+before replacing their files. Preserve the old Tor identity from backup. Fresh
+Tailscale enrollment may change the address, so restore its identity or reconcile
+the fixed address used by Core before starting Bitcoin. Do not restore discarded
+NZBGet downloads/queue or automatically import the reference-only GPG/dotfiles.
 
-Validation used shell syntax checks and a stub installer: missing restore data
-and declined confirmation stop the recipe; the accepted path passes LAN target,
-host-key preservation and non-reboot phases. No build, SSH or disk operation was
-performed during those tests. nixos-anywhere is fetched from its upstream flake
-when invoked; it is not currently pinned in this repository.
+Recipe expansion and shell syntax were checked without running the installer.
+No build or deployment has been performed.
