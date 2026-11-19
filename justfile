@@ -28,6 +28,34 @@ switch hostname=host:
 switch-remote hostname target:
     nh os switch --accept-flake-config --ask -H {{quote(hostname)}} --target-host {{quote(target)}} .
 
+# First NUC installation: wipes its internal SSD; leaves installer running for checks
+[group('deploy')]
+deploy-nuc restore-dir identity=(env_var('HOME') / '.ssh/hetzner-temp'):
+    #!/usr/bin/env bash
+    set -euo pipefail
+    restore_dir={{quote(restore-dir)}}
+    test -r {{quote(identity)}}
+    for path in home/will/plex home/will/nzbget home/bitcoin/.bitcoin var/lib/sonarr var/lib/radarr var/lib/tor var/lib/tailscale; do
+        test -d "$restore_dir/$path" || { echo "Missing restore directory: $path" >&2; exit 1; }
+    done
+    for path in home/bitcoin/.bitcoin/bitcoin.conf home/will/nzbget/nzbget.conf var/lib/tailscale/tailscaled.state var/lib/tor/bitcoind/hs_ed25519_secret_key; do
+        test -s "$restore_dir/$path" || { echo "Missing restore file: $path" >&2; exit 1; }
+    done
+    read -r -p 'Wipe the internal SSD on NUC 10.0.0.88 and restore this directory? Type WIPE-NUC: ' answer
+    test "$answer" = WIPE-NUC
+    nix run github:nix-community/nixos-anywhere -- \
+        --flake .#nuc --target-host root@10.0.0.88 -i {{quote(identity)}} \
+        --copy-host-keys --extra-files "$restore_dir" \
+        --chown /home/will/plex 998:998 \
+        --chown /home/will/nzbget 998:998 \
+        --chown /home/bitcoin 1001:1001 \
+        --chown /var/lib/sonarr 119:1002 \
+        --chown /var/lib/radarr 1002:1002 \
+        --chown /var/lib/tor 117:123 \
+        --chown /var/lib/tailscale 0:0 \
+        --build-on local --phases kexec,disko,install
+    echo 'Installed without rebooting. Verify restored data and permissions under /mnt before reboot.'
+
 # Build a VM for testing (pass -r style flag handled by nh)
 [group('test')]
 build-vm hostname=host:

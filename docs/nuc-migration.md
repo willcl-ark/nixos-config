@@ -380,3 +380,26 @@ checked. The preserved host key must precede activation for SOPS, and Tailscale
 state must precede service start to retain the address Core requires. Full build
 and restore testing remain outstanding; evaluation alone does not establish
 installation readiness.
+
+### First-install recipe
+
+`just deploy-nuc /absolute/path/to/nuc-restore` runs nixos-anywhere for `.#nuc`
+over LAN SSH to `root@10.0.0.88`, using `~/.ssh/hetzner-temp` by default. A second
+argument selects another private key. This is a destructive first-install recipe,
+not the remote update recipe. It requires typing `WIPE-NUC` before invocation.
+
+The argument must be a prepared root-shaped restore tree, containing selected
+`home/` and `var/lib/` contents, not the backup directory of tar/ZIP archives.
+The recipe checks required paths, copies original SSH host keys for SOPS and
+sets recorded numeric ownership on application directories. It builds locally
+and runs kexec, Disko and installation, leaving the installer running with the
+installed root at `/mnt`. Inspect restored files and modes there before reboot.
+The restore tree still needs preparing and verifying; presence checks do not
+validate databases, permissions, or freshness. Do not include the reference-only
+GPG/dotfile archive, discarded NZBGet downloads/queue, or an unpacked Debian /etc.
+
+Validation used shell syntax checks and a stub installer: missing restore data
+and declined confirmation stop the recipe; the accepted path passes LAN target,
+host-key preservation and non-reboot phases. No build, SSH or disk operation was
+performed during those tests. nixos-anywhere is fetched from its upstream flake
+when invoked; it is not currently pinned in this repository.
