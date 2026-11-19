@@ -1,6 +1,6 @@
 { config, inputs, ... }:
 let
-  inherit (config.flake.modules) nixos;
+  inherit (config.flake.modules) nixos homeManager;
 in
 {
   # Migration draft; prerequisites and unported services are in docs/nuc-migration.md.
@@ -13,6 +13,7 @@ in
         nixos.nuc-bitcoin
         nixos.nuc-utilities
         inputs.sops-nix.nixosModules.sops
+        inputs.home-manager.nixosModules.home-manager
       ];
 
       nixpkgs.hostPlatform = "x86_64-linux";
@@ -24,6 +25,18 @@ in
       time.timeZone = "Europe/London";
       i18n.defaultLocale = "en_GB.UTF-8";
       system.stateVersion = "26.05";
+      systemd.defaultUnit = "multi-user.target";
+
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        backupFileExtension = "nuc-hm-backup";
+        users.will = {
+          imports = [ homeManager.nuc-terminal ];
+          home.username = "will";
+          home.homeDirectory = "/home/will";
+        };
+      };
 
       networking.hostName = "will-nuc";
       networking.useDHCP = false;

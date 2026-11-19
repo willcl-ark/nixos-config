@@ -264,3 +264,24 @@ installs and reboots without the formatting phase. It is still a real installati
 not a dry run. The current flake has runtime `fileSystems` definitions but no Disko
 mapping of the existing partitions/LVs; that mapping and its generated mount script
 must be prepared and inspected before using this workflow.
+
+## Headless terminal profile and administrative access
+
+The NUC imports its own small Home Manager profile for Will, not the shared
+workstation base. It configures Fish vi bindings, an SSH-friendly Starship
+prompt, Git/gh, htop, ripgrep, tmux and plain Neovim. No desktop environments,
+mail/music clients, GUI clipboard helpers, old plugin trees or pyenv/nvm/OMF
+startup hooks are imported. Neovim's optional language providers and Home Manager
+MIME/font integration are disabled. Keep old dotfiles archived for reference;
+do not restore the old Fish/Neovim plugin directories wholesale over this profile.
+Existing managed-file conflicts are backed up with the `nuc-hm-backup` suffix.
+
+The evaluated system boots to `multi-user.target`, with X11, the display manager
+and greetd disabled. Intel graphics libraries remain for Plex transcoding. Local
+console and emergency access are retained; the generic NixOS headless profile
+would disable those and is intentionally not imported.
+
+Will is in wheel, but sudo still requires a password. The separately tested
+root SSH key is the password-free administration path. Root permits public-key
+login and prohibits password login. No changes to live dotfiles or deployment
+were made while adding this profile.
