@@ -54,4 +54,4 @@ After committing bot changes, run `nix flake update mod-bot` here and rebuild.
 installation-ready replacement for all of the current services. See
 [the migration notes](docs/nuc-migration.md) for preserved storage, backup restore
 requirements and services still to port. Do not deploy it until those steps have
-been reviewed. The initial addition has only been checked statically, not built.
+been reviewed. Local evaluation passes; the configuration has not been built or deployed.

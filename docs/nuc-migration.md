@@ -15,6 +15,7 @@ and exclusions. Do not add that directory or its contents to Git.
 - DHCP on `eno1`, SSH, Tailscale, firmware and disk monitoring.
 - Existing numeric identities for Will, Bitcoin and the media applications.
 - Plex, Sonarr and Radarr using their existing state locations and media paths.
+- Bitcoin Core, electrs, Tor, UPS shutdown and the existing NZBGet installation.
 - NAS mount `10.0.0.130:/shared` at `/data`, using the existing NFS version 3.
 
 The flake attribute is `nuc`; the hostname is `will-nuc` to retain the existing
@@ -31,7 +32,7 @@ ACLs before first boot.
 | Plex | `/home/will/plex/Plex Media Server` | 998 / 998 |
 | Sonarr | `/var/lib/sonarr` | 119 / 1002 |
 | Radarr | `/var/lib/radarr` | 1002 / 1002 |
-| Bitcoin, not yet enabled | `/home/bitcoin/.bitcoin` | 1001 / 1001 |
+| Bitcoin | `/home/bitcoin/.bitcoin` | 1001 / 1001 |
 
 Plex's NixOS `dataDir` is the parent `/home/will/plex`; its module appends
 `Plex Media Server`. The old Debian symlink under `/var/lib/plexmediaserver`
@@ -43,7 +44,8 @@ the media users. Validate NAS permissions and download
 imports, including the Arr modules' user-namespace hardening, in a restore test.
 
 Keep `/data/plex/{tv,kids_tv,movies,kids_movies,documentaries}` unchanged.
-Existing downloads are under `/home/will/nzbget`; NZBGet itself is not yet ported.
+Existing downloads are under `/home/will/nzbget` and `/data/downloads`; NZBGet
+uses its existing static 21.1 installation and private runtime configuration.
 The media units require these mounts before starting. Restore the application
 state and ownership before first activation. The backup's extracted Plex files
 have private local permissions for inspection, not their final service ownership.
@@ -61,32 +63,35 @@ The ZIP/database archives do not include the actual media or downloaded files.
    systemd-boot configuration. The old 244 MiB ext2 partition is currently
    unmounted and is intentionally not repurposed. Compare a live NixOS hardware
    scan with this manually transcribed draft before using it.
-4. Provision `/var/lib/nuc-secrets/will-password` as a root-only file containing
-   Will's password hash. Restore `/home/will/.ssh/authorized_keys`, or provision
-   a reviewed public key, and test administrative access. Private keys and
-   password hashes do not belong in the Nix store. Retain password-required sudo.
+4. Preserve the SSH host private key for SOPS decryption before activation.
+   The draft authorizes `~/.ssh/hetzner-temp.pub` for root, with password login
+   disabled. Root administration does not require a sudo password secret. Keep
+   Will's existing authorized keys if normal-user SSH access is wanted too.
 5. Review `system.stateVersion` before the first installation, then keep it fixed.
 6. Refresh backups at the actual cutover, establish an ongoing off-host backup
    policy, and verify services individually before retiring Debian recovery data.
 
-## Still to port
+## Remaining cutover work
 
-- Bitcoin Core, electrs, Lightning and their exact versions/configuration. Keep
-  Core datadir `/home/bitcoin/.bitcoin` separate from blocksdir
-  `/mnt/data/bitcoin/.bitcoin`. Preserve whitebind and its download permissions,
-  the upload target, log rotation and the tailnet-only Electrum endpoints.
-- Lightning wallet/plugin recovery and secrets. Never start two nodes with the
-  same identity. A historical database backup is not a live channel backup.
-- Tailscale Serve on 50001/plain and 50002/TLS; the custom Caddy updater is
-  currently retained but its service is disabled.
-- NZBGet, Soju, Tor onion identity, UPS handling, NFS exports,
-  dynamic DNS, scheduled jobs, certificates and any remaining required services.
-- Secrets provisioning, application package pins, Plex hardware transcoding and
-  the full networking/firewall policy. Disabled legacy services need an explicit
-  retain-or-retire decision rather than being enabled automatically.
+- Confirm the electrs version/index combination: the current nixpkgs pin supplies
+  0.12.0, while Debian is indexing with 0.12.1. Use nixpkgs as requested, without
+  a package override. Upstream 0.12.1 also updates bindex, so do not assume a
+  backwards-compatible index without checking. No live downgrade was performed.
+- Rehearse restores, resolve `/nix` capacity and prepare the non-formatting
+  installer procedure. Preserve the existing Tailscale identity/IP; Core's RPC
+  configuration explicitly binds 100.104.49.27 and its unit checks that address.
+- Decide whether to retain Soju, exit-node routing, dynamic DNS, NFS exports,
+  discovery, bandwidth history and the old certificate renewal. These are not
+  yet fully represented by the draft. Caddy remains disabled.
+- Lightning, Nostr and DrahtBot are retired. Do not restore their enablement.
+  The stopped full Lightning datadir is backed up privately; never run duplicate
+  nodes with the same identity or treat an old database as a live channel backup.
+- Validate the firewall, media permissions, hardware transcoding and UPS operation
+  during the eventual restore test. The no-build/no-deploy restriction still holds.
 
-Only static Nix parsing is permitted at this stage. Build, deployment and disk
-installation require a later explicit request.
+Local evaluation is now authorized and passes with import-from-derivation
+disabled. Build, deployment and disk installation still require a later explicit
+request.
 
 ## Runtime audit and decisions, 2026-11-18
 
@@ -97,8 +102,7 @@ installation require a later explicit request.
   stopped again, alongside Plex and Sonarr. All three remain enabled for boot.
 - Sonarr 4.0.20.3014 and Plex 1.43.5.11079-b3b13e506 already match the flake pin.
   Sonarr and Radarr use `/sonarr/` and `/radarr/` URL bases. Both use NZBGet at
-  localhost:6789 with `tv` and `movies` categories; NZBGet must be ported before
-  downloads work. Indexer and client credentials remain in the backed-up DBs.
+  localhost:6789 with `tv` and `movies` categories; the draft now includes the existing NZBGet service. Indexer and client credentials remain in the backed-up DBs.
 - NZBGet 21.1 runs as plex:plex from `/home/will/nzbget/nzbget`. Preserve its
   queue, completed/incomplete paths, CA bundle and EMail.py/Logger.py scripts.
   Downloads are not included in the off-host configuration backup.
@@ -109,7 +113,7 @@ installation require a later explicit request.
   General C/C++ build tools and Python are included in the draft.
 - Tailscale currently provides SSH and advertises both default routes as an
   exit node. Restoring login state alone does not configure NixOS forwarding;
-  port the exit-node routing settings and SSH preference explicitly if retained.
+  port exit-node routing explicitly if retained. Tailscale SSH is now explicit.
 - Soju 0.9.0 binds specifically to 100.104.49.27:6667. Preserve that identity/IP,
   add the tailnet firewall allowance and order startup after Tailscale is ready.
   Preserve both its database and message-history files.
@@ -121,8 +125,8 @@ installation require a later explicit request.
   9051. The current bitcoin user belongs to debian-tor for control-cookie access;
   arrange the NixOS equivalent. Preserve Tor's onion identity. Lightning also
   has a hard-coded announced public address to review.
-- Core, electrs and Lightning binaries use Debian's ELF loader. Their backups
-  are recovery artifacts, not directly usable NixOS packages. Lightning is a
+- Core, electrs and Lightning binaries use Debian's ELF loader. The draft uses
+  nixpkgs for Core/electrs. Retired Lightning is a
   custom v23.11.2 build with plugins; its source is under
   `/home/bitcoin/src/lightning` at 6f9356fb9, with modified submodule revisions.
   That source tree is outside the current off-host backup. Preserve it before
@@ -130,8 +134,8 @@ installation require a later explicit request.
 - The NUC reexports the NAS-mounted `/data` over NFS to LAN and tailnet clients.
   The draft only mounts it; determine whether clients still need the exports.
 - ddclient updates Namecheap dynamic DNS. apcupsd provides actual USB UPS
-  shutdown handling at 5% battery or 5 minutes remaining. Both need ports if
-  retained; their private configuration is in the `/etc` backup.
+  shutdown handling at 5% battery or 5 minutes remaining. UPS handling is now included; ddclient still needs a port if retained. Their
+  private configuration is in the `/etc` backup.
 - Review Certbot's old elec.256k1.dev DNS renewal separately from Tailscale's
   managed Electrum certificate. Its manual DNS hook and credentials are not a
   replacement for the tailnet certificate. Caddy remains disabled.
@@ -178,8 +182,9 @@ key. The test timed out waiting for local SSH-agent signing, so a complete LAN
 login remains to be demonstrated with the agent unlocked. The existing authorized
 keys include both keys offered by the local agent. Preserve the host private key
 and `/home/will/.ssh/authorized_keys`; the draft allows port 22 on Ethernet and
-Tailscale, prohibits root login and requires a password for sudo. The sudo password
-hash file is still an explicit provisioning prerequisite, separate from Tailscale.
+Tailscale. Root key login was subsequently enabled and tested successfully with
+`hetzner-temp`; password login remains disabled. The draft no longer requires a
+sudo password-hash file because administration can use that root key.
 
 Only Will has an active user manager, with D-Bus and PulseAudio services. No user
 timers, lingering users, custom user-unit files, root/user crontabs, at jobs,
@@ -187,3 +192,64 @@ running tmux/screen servers or detached custom applications were found. Processe
 outside service units were interactive shells and a root journalctl session.
 System cron entries were packaged housekeeping. There are no additional custom
 user jobs to port based on this audit.
+
+## Root access and retained services, 2026-11-19
+
+The public key from `~/.ssh/hetzner-temp.pub` is authorized for root on Debian
+and in the NixOS draft. A direct LAN login using its private key succeeded,
+without a password. To test it yourself:
+
+```sh
+ssh -F ~/.ssh/config -i ~/.ssh/hetzner-temp -o IdentitiesOnly=yes -o IdentityAgent=none root@10.0.0.88
+```
+
+At first connection, verify the host key fingerprint against the existing NUC
+key. Root login is `prohibit-password`, not password authentication. This LAN
+access path avoids relying on Tailscale during the temporary installer boot.
+
+Core 32.1 uses the existing `/home/bitcoin/.bitcoin/bitcoin.conf`, including RPC
+credentials, whitebind, indexes, REST and maxuploadtarget=500M, outside the Nix
+store. The external blocks mount is required. Electrs retains its current paths
+and arguments and listens on loopback; Tailscale Serve provides 50001/plain and
+50002/TLS. Tor preserves its numeric identity and onion keys. Bitcoin debug logs
+rotate with SIGHUP; logrotate is allowed to access the datadir under `/home`.
+
+UPS shutdown preserves the 5% battery/5-minute thresholds. The native NixOS
+power-off hook uses a marker under `/run/apcupsd`; that directory is preserved
+until shutdown finishes. Do not test power loss until the migration is ready.
+
+NZBGet retains its static 21.1 AppDir because nixpkgs currently supplies 26.3.
+It runs as plex:plex, keeps UMask 0002 and requires `/data` for its movie/TV
+categories. Python3 handles the bundled scripts. Its small installation assets
+are now archived in `other-state/nzbget-installation.tar.gz`.
+
+Lightning was stopped and disabled. `lightning/final-datadir.tar.gz` is a fresh
+complete archive of `/home/bitcoin/.lightning`, including wallet secrets,
+databases, plugins and logs; it supersedes the earlier partial snapshot.
+The original directory remains intact. Bitcoin and electrs were not restarted.
+
+## Current mount and installer validation status
+
+The block SSD at `/mnt/data` is a boot mount with `nofail`, not an on-demand
+systemd automount. Core's explicit mount requirement prevents startup without
+it. The NAS at `/data` is also a boot mount (`_netdev`, NFSv3, `noatime`), without
+`x-systemd.automount`; its dependent media services require it. No automount
+conversion has been applied.
+
+The separate `/home` LV can be reused without formatting, but the installer
+procedure has not been authored or tested. The application backup is not a
+complete backup of `/home`. nixos-anywhere's `--vm-test` builds/tests a virtual
+installation; it is not a report of deletions on the live NUC. A useful rehearsal
+must represent the existing LVM layout with sample files and prove their survival.
+Review every generated disk/mount command, omit destructive disk phases, and
+resolve `/nix` storage before attempting the real installation. No installer
+command is currently approved or ready to run.
+
+## Local evaluation result
+
+The complete NUC system derivation evaluates successfully with
+`--option allow-import-from-derivation false`. No build was run. Evaluation caught
+and fixed Radarr's UID1002 needing an explicit `isSystemUser = true` declaration.
+Rendered units confirm block/NAS mount dependencies, runtime Bitcoin config,
+loopback electrs, key-only root SSH, UPS shutdown and logrotate home access.
+This does not validate boot, application restores or any disk installation steps.
