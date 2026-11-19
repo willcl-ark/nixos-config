@@ -162,14 +162,11 @@ auth-key enrollment can create a different device identity.
 The draft explicitly enables Tailscale SSH on startup, including fresh enrollment;
 tailnet SSH policy must still authorize the resulting device and user.
 
-nixos-anywhere can skip its disk phase with `--phases`, or use a mount-only Disko
-configuration with `--disko-mode mount`. Its default disk phase destroys the
-specified layout. We have not prepared or tested an installer command. Reusing
-filesystems requires mounting the intended target layout before installation;
-the draft's `fileSystems` options are not themselves an installer mount script.
-Plan LAN SSH and console access: the stock kexec installer does not preserve the
-running Tailscale session. Use the LAN address, not the tailnet SSH alias, for
-that installation path. No disk operations are authorized at this stage.
+The selected installation now wipes and restores the internal NVMe using Disko.
+The previous mount-only/preserve-home proposal is superseded. Use LAN SSH and
+console access: the stock kexec installer does not preserve the running Tailscale
+session. No installer command has been run; preparing the layout is not approval
+to execute the wipe before backup and restore decisions are complete.
 
 References: [nixos-anywhere CLI](https://github.com/nix-community/nixos-anywhere/blob/main/docs/cli.md),
 [Tailscale auth keys](https://tailscale.com/docs/features/access-control/auth-keys).
@@ -240,14 +237,38 @@ because the NAS is offline, restart those services once it is available.
 Normal NFS hard-mount behaviour is retained for an outage after mounting; the
 30-second timeout does not limit application I/O on an established mount.
 
-The separate `/home` LV can be reused without formatting, but the installer
-procedure has not been authored or tested. The application backup is not a
-complete backup of `/home`. nixos-anywhere's `--vm-test` builds/tests a virtual
-installation; it is not a report of deletions on the live NUC. A useful rehearsal
-must represent the existing LVM layout with sample files and prove their survival.
-Review every generated disk/mount command, omit destructive disk phases, and
-resolve `/nix` storage before attempting the real installation. No installer
-command is currently approved or ready to run.
+The user chose wiping the internal SSD and restoring selected backups. The
+hardware module now defines one Disko disk, identified by its verified serial:
+`/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_1TB_S467NX0KC41140T`.
+GPT contains a 1 GiB EFI partition at `/boot/efi` and an ext4 root partition using
+the remaining space. `/home`, `/var`, `/tmp` and `/nix` share root; swap is a
+32 GiB file. This destroys all existing internal partitions and LVs, including
+`/home`. The external block SSD and NAS are not Disko devices. Their existing
+runtime mount declarations remain unchanged.
+
+Full system evaluation with IFD disabled passed. The generated
+`config.disko.devices._destroyFormatMount` shell text passes `bash -n` and names
+only the internal NVMe and its new partitions as disk/format targets. No script
+was executed, no build was run, and installation/restore has not been rehearsed.
+Disko also recursively unmounts its `/mnt` target; use the temporary installer,
+not the running Debian host where `/mnt/data` holds active Bitcoin blocks.
+
+Before installation:
+
+1. Finish the backup selection below and verify copies off the internal disk.
+2. Stop retained services for a final consistent state/identity backup. Preserve
+   the SSH host key and refresh Tailscale/Tor state before wiping.
+3. Build and rehearse installation/restoration once authorized. Review the exact
+   generated disk commands and verify the target serial in the installer.
+4. Restore selected data with recorded numeric ownership before enabling services
+   or booting the installed system. Do not restore Debian `/etc` wholesale.
+   Stage the original SSH host key before NixOS activation for SOPS decryption.
+5. Check LAN root SSH, SOPS, Tailscale identity, mounted storage and each retained
+   service after boot. Keep the backups until restore checks pass.
+
+This is not yet an executable cutover procedure. In particular, restoring only
+Core logs/config/wallets would require rebuilding chainstate and indexes from the
+preserved blocks; the current electrs index would also need copying or rebuilding.
 
 ## Local evaluation result
 
@@ -258,12 +279,9 @@ Rendered units confirm block/NAS mount dependencies, runtime Bitcoin config,
 loopback electrs, key-only root SSH, UPS shutdown and logrotate home access.
 This does not validate boot, application restores or any disk installation steps.
 
-The upstream [mount-only guide](https://github.com/nix-community/nixos-anywhere/blob/main/docs/howtos/disko-modes.md)
-confirms that `--disko-mode mount` boots the installer, mounts existing filesystems,
-installs and reboots without the formatting phase. It is still a real installation,
-not a dry run. The current flake has runtime `fileSystems` definitions but no Disko
-mapping of the existing partitions/LVs; that mapping and its generated mount script
-must be prepared and inspected before using this workflow.
+The [Disko EFI example](https://github.com/nix-community/disko/blob/master/example/simple-efi.nix)
+is the basis for the new internal layout. `--disko-mode mount` would not create
+this new layout and is not the selected wipe-and-restore procedure.
 
 ## Headless terminal profile and administrative access
 
@@ -287,3 +305,36 @@ activation to `/run/secrets-for-users/will_password_hash`. The separately tested
 root SSH key is the password-free administration path. Root permits public-key
 login and prohibits password login. No changes to live dotfiles or deployment
 were made while adding this profile.
+
+## Backup selection after choosing a full internal wipe
+
+New verified local backups under `/home/will/nuc-backup-data`:
+
+- `bitcoin/debug-logs.tar.gz`: 66 debug log files, including `log_old` rotations,
+  signet debug log and historical named debug logs. Captured while Core runs;
+  this is a log snapshot, not a stopped database backup.
+- `other-state/historical-wallets.tar.gz`: `/home/bitcoin/{.lnd,.joinmarket,.loop,
+  .spark-wallet}` and `/home/will/{.lightning,.bitcoin,.joinmarket,.loop}`. These
+  are separate from the previously archived retired main Lightning datadir.
+  Source/local SHA256 match and the archive is readable; wallet recovery itself
+  has not been tested. Keep private and do not start duplicate wallet instances.
+
+Still not backed up or explicitly discarded:
+
+| Data | Approximate size | Consequence if omitted |
+| --- | ---: | --- |
+| NZBGet completed / incomplete downloads | 180 / 221 GiB | Lose local media awaiting import and download progress |
+| Core chainstate / indexes | 12 / 47 GiB | Rebuild from preserved external blocks |
+| Current electrs `db-v0.12` | 48 GiB | Repeat indexing |
+| Will / Bitcoin source directories | 16 / 2.8 GiB | May lose local source changes; not audited |
+| Dotfiles, `.config`, scripts | 8 MiB | Lose old configuration/reference beyond selected archives |
+| GPG directories under Will and Bitcoin homes | 124 KiB | May lose keys; preserve before wiping |
+| Will's Music / Downloads | 590 / 819 MiB | Lose personal files |
+| Will's `.codex` | 484 MiB | Lose session history/settings |
+| Will's `syslog.1.gz` | 1.4 GiB | Lose historical system log |
+| VPN/radio assets | under 1 MiB | Lose custom configuration |
+
+The original backup README's preserve-home section described the earlier plan;
+it has been updated to identify the new wipe decision. Existing application and
+wallet backups do not imply a complete home-directory backup. Caches, toolchains,
+old Python environments and retired services need not be restored.

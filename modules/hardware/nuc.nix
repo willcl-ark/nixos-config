@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.modules.nixos.nuc-hardware =
     {
@@ -8,7 +8,10 @@
       ...
     }:
     {
-      imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+      imports = [
+        (modulesPath + "/installer/scan/not-detected.nix")
+        inputs.disko.nixosModules.disko
+      ];
       boot.initrd.availableKernelModules = [
         "xhci_pci"
         "ahci"
@@ -28,27 +31,33 @@
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-      # Existing filesystems only. No partitioning or formatting is specified.
-      fileSystems."/" = {
-        device = "/dev/disk/by-uuid/3413781e-3087-412c-9f4f-d7545545eb5a";
-        fsType = "ext4";
-      };
-      fileSystems."/boot/efi" = {
-        device = "/dev/disk/by-uuid/2826-6B44";
-        fsType = "vfat";
-        options = [ "umask=0077" ];
-      };
-      fileSystems."/home" = {
-        device = "/dev/disk/by-uuid/7d084f95-464f-41af-88cd-a767980ce889";
-        fsType = "ext4";
-      };
-      fileSystems."/var" = {
-        device = "/dev/disk/by-uuid/ec514de2-ac1c-435b-8216-932624237842";
-        fsType = "ext4";
-      };
-      fileSystems."/tmp" = {
-        device = "/dev/disk/by-uuid/d6c51c1f-63df-4c9a-90f8-329815c276b2";
-        fsType = "ext4";
+      # Only the internal NVMe belongs in Disko. External storage is mount-only.
+      disko.devices.disk.internal = {
+        type = "disk";
+        device = "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_1TB_S467NX0KC41140T";
+        content = {
+          type = "gpt";
+          partitions = {
+            ESP = {
+              size = "1G";
+              type = "EF00";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot/efi";
+                mountOptions = [ "umask=0077" ];
+              };
+            };
+            root = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/";
+              };
+            };
+          };
+        };
       };
       fileSystems."/mnt/data" = {
         device = "/dev/disk/by-uuid/802dcc1e-ab0b-4b37-b404-9ca49eb037f7";
@@ -68,7 +77,10 @@
         ];
       };
       swapDevices = [
-        { device = "/dev/disk/by-uuid/cd87cbf6-6f00-46a0-9c0f-47c203ba568d"; }
+        {
+          device = "/swapfile";
+          size = 32768;
+        }
       ];
     };
 }
