@@ -323,7 +323,6 @@ Still not backed up or explicitly discarded:
 
 | Data | Approximate size | Consequence if omitted |
 | --- | ---: | --- |
-| NZBGet completed / incomplete downloads | 180 / 221 GiB | Lose local media awaiting import and download progress |
 | Core chainstate / indexes | 12 / 47 GiB | Rebuild from preserved external blocks |
 | Current electrs `db-v0.12` | 48 GiB | Repeat indexing |
 | Will / Bitcoin source directories | 16 / 2.8 GiB | May lose local source changes; not audited |
@@ -338,3 +337,24 @@ The original backup README's preserve-home section described the earlier plan;
 it has been updated to identify the new wipe decision. Existing application and
 wallet backups do not imply a complete home-directory backup. Caches, toolchains,
 old Python environments and retired services need not be restored.
+
+## NZBGet download disposal and NAS permission repair
+
+User explicitly chose not to preserve the 180 GiB completed and 221 GiB incomplete
+NZBGet directories. Leave them out of backups/restoration; the internal wipe will
+remove them. No live files were deleted. Retain the NZBGet installation/config.
+Do not restore stale download queue/history state that refers to discarded files.
+
+Read-only diagnosis found an empty queue, 15 retained history entries all reporting
+`FAILURE/MOVE`, and permission-denied errors on the NAS. `/data/downloads` was
+root:root 0770, preventing plex traversal despite its movies/tv children being
+plex:media 2775. Much of the local incomplete directory contains unpacked media.
+
+The Nix configuration now requires a `nas-download-permissions` oneshot before
+NZBGet, Sonarr and Radarr. It waits for the actual `/data` mount, sets only the
+parent `/data/downloads` group to media and mode to 2770, and fails service startup
+if either operation fails. It does not recurse or modify media files. Existing
+media group GID1002 and service membership are retained. NFS must permit root on
+the NUC to change this parent; if root squashing denies that, perform the same
+permission correction on the NAS itself before starting these services. Local
+evaluation does not verify server-side permission to change ownership/mode.
