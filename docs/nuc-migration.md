@@ -10,8 +10,8 @@ and exclusions. Do not add that directory or its contents to Git.
 
 ## Included in the draft
 
-- Existing ext4/LVM filesystems and swap, addressed by UUID; no formatting.
-- The existing EFI partition, with systemd-boot proposed for NixOS.
+- Internal NVMe wipe through Disko: 1 GiB EFI, remaining ext4 root, 32 GiB swapfile.
+- External Bitcoin block SSD preserved by UUID; systemd-boot on the new EFI partition.
 - DHCP on `eno1`, SSH, Tailscale, firmware and disk monitoring.
 - Existing numeric identities for Will, Bitcoin and the media applications.
 - Plex, Sonarr and Radarr using their existing state locations and media paths.
@@ -56,9 +56,9 @@ The ZIP/database archives do not include the actual media or downloaded files.
 1. Rehearse restores on copies. Match the recorded application versions first;
    packages from the current nixpkgs pin may upgrade databases. Do not point a
    test instance at the production writable state or permit duplicate downloads.
-2. Decide where `/nix` will live. The root LV is only 23 GiB and the volume group
-   has virtually no unallocated space. The draft does not repartition, resize or
-   move data. Preserve `/home` and the external Bitcoin block filesystem.
+2. Finish the selected backups before wiping the internal disk. `/nix` and
+   `/home` will share the new root filesystem. Preserve the external Bitcoin
+   block filesystem and NAS; neither is a Disko formatting target.
 3. Check firmware Secure Boot settings, available EFI space and the proposed
    systemd-boot configuration. The old 244 MiB ext2 partition is currently
    unmounted and is intentionally not repurposed. Compare a live NixOS hardware
@@ -77,8 +77,8 @@ The ZIP/database archives do not include the actual media or downloaded files.
   0.12.0, while Debian is indexing with 0.12.1. Use nixpkgs as requested, without
   a package override. Upstream 0.12.1 also updates bindex, so do not assume a
   backwards-compatible index without checking. No live downgrade was performed.
-- Rehearse restores, resolve `/nix` capacity and prepare the non-formatting
-  installer procedure. Preserve the existing Tailscale identity/IP; Core's RPC
+- Rehearse restores and prepare the wipe-and-restore installer procedure.
+  Preserve the existing Tailscale identity/IP; Core's RPC
   configuration explicitly binds 100.104.49.27 and its unit checks that address.
 - Decide whether to retain Soju, exit-node routing, dynamic DNS, NFS exports,
   discovery, bandwidth history and the old certificate renewal. These are not
@@ -358,3 +358,25 @@ media group GID1002 and service membership are retained. NFS must permit root on
 the NUC to change this parent; if root squashing denies that, perform the same
 permission correction on the NAS itself before starting these services. Local
 evaluation does not verify server-side permission to change ownership/mode.
+
+## Just recipes and first installation
+
+`just build nuc` selects the NUC configuration for a local build. Existing
+`just switch nuc`, `just test nuc` and `just boot nuc` act on the local machine,
+not the remote NUC. Do not run these from the desktop to update the NUC.
+
+After the NUC is running NixOS, `just switch-remote nuc root@10.0.0.88` builds
+locally and activates remotely using `nh --target-host`. SSH must use the
+existing authorized key; where needed set `NIX_SSHOPTS` with the SSH config,
+identity file and IdentitiesOnly options. Recipe expansion was checked with
+`just --dry-run`; remote activation has not been tested.
+
+The first Debian-to-NixOS install is separate and uses nixos-anywhere, not the
+switch recipe. Its CLI supports `--copy-host-keys`, `--extra-files` and numeric
+`--chown` for staging identities and application data, or separate phases to
+restore into the new root before reboot. Do not issue the default all-phases
+command until the private restore tree and ownership mapping are prepared and
+checked. The preserved host key must precede activation for SOPS, and Tailscale
+state must precede service start to retain the address Core requires. Full build
+and restore testing remain outstanding; evaluation alone does not establish
+installation readiness.

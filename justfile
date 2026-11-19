@@ -23,6 +23,11 @@ test hostname=host:
 switch hostname=host:
     nh os switch --accept-flake-config --ask -H {{hostname}} .
 
+# Update an existing NixOS host over SSH (not a first-install command)
+[group('build')]
+switch-remote hostname target:
+    nh os switch --accept-flake-config --ask -H {{quote(hostname)}} --target-host {{quote(target)}} .
+
 # Build a VM for testing (pass -r style flag handled by nh)
 [group('test')]
 build-vm hostname=host:
