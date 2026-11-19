@@ -183,8 +183,8 @@ login remains to be demonstrated with the agent unlocked. The existing authorize
 keys include both keys offered by the local agent. Preserve the host private key
 and `/home/will/.ssh/authorized_keys`; the draft allows port 22 on Ethernet and
 Tailscale. Root key login was subsequently enabled and tested successfully with
-`hetzner-temp`; password login remains disabled. The draft no longer requires a
-sudo password-hash file because administration can use that root key.
+`hetzner-temp`; SSH password login remains disabled. Root-key administration is
+independent of Will's password, which SOPS now provisions for console login/sudo.
 
 Only Will has an active user manager, with D-Bus and PulseAudio services. No user
 timers, lingering users, custom user-unit files, root/user crontabs, at jobs,
@@ -281,7 +281,9 @@ and greetd disabled. Intel graphics libraries remain for Plex transcoding. Local
 console and emergency access are retained; the generic NixOS headless profile
 would disable those and is intentionally not imported.
 
-Will is in wheel, but sudo still requires a password. The separately tested
+Will is in wheel, and sudo requires his password. Its hash is encrypted as
+`will_password_hash` in `secrets/nuc.yaml`; `neededForUsers` decrypts it before user
+activation to `/run/secrets-for-users/will_password_hash`. The separately tested
 root SSH key is the password-free administration path. Root permits public-key
 login and prohibits password login. No changes to live dotfiles or deployment
 were made while adding this profile.

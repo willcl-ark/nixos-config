@@ -73,6 +73,7 @@ in
       sops.defaultSopsFile = ../../secrets/nuc.yaml;
       sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       sops.secrets.tailscale_auth_key = { };
+      sops.secrets.will_password_hash.neededForUsers = true;
 
       users.users.root.openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH988C5DbEPHfoCphoW23MWq9M6fmA4UTXREiZU0J7n0 will.hetzner@temp.com"
@@ -94,7 +95,7 @@ in
           "dataaccess"
         ];
         shell = pkgs.fish;
-        # Administration uses root's SSH key; no password secret is required.
+        hashedPasswordFile = config.sops.secrets.will_password_hash.path;
         # OpenSSH also reads the preserved /home/will/.ssh/authorized_keys.
       };
       users.users.bitcoin = {
