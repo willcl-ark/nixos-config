@@ -13,8 +13,14 @@ in
 
       systemd.services.t3code = {
         description = "T3 Code server";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        after = [
+          "network-online.target"
+          "tailscaled.service"
+        ];
+        wants = [
+          "network-online.target"
+          "tailscaled.service"
+        ];
         wantedBy = [ "multi-user.target" ];
         environment = {
           HOME = "/home/${username}";
@@ -23,7 +29,7 @@ in
         serviceConfig = {
           User = username;
           WorkingDirectory = "/home/${username}";
-          ExecStart = "${t3code}/bin/t3 serve --host 127.0.0.1 --port 3773";
+          ExecStart = "${t3code}/bin/t3 serve --host 127.0.0.1 --port 3773 --tailscale-serve";
           Restart = "on-failure";
           RestartSec = 5;
         };
