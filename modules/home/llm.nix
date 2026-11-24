@@ -41,6 +41,7 @@
 
       home.packages = [
         llm-agents.claude-code
+        llm-agents.antigravity-cli
         codexSafe
         codexUnsafe
         llm-agents.opencode
