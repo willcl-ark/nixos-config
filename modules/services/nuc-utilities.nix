@@ -62,6 +62,16 @@
           Restart = "on-failure";
         };
       };
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 6789 ];
+
+      # Plaintext listener: only the tailnet can reach it, and WireGuard encrypts it.
+      services.soju = {
+        enable = true;
+        hostName = "will-nuc.tail1977.ts.net";
+        listen = [ "irc+insecure://:6667" ];
+      };
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+        6667
+        6789
+      ];
     };
 }

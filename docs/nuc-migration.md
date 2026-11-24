@@ -451,5 +451,7 @@ Application checks:
   identity. Media download clients use localhost, so required no IP changes.
 - No failed systemd units at verification time.
 
-The desktop Halloy configuration still references the old Soju endpoint; Soju
-was not included among the retained NUC services and was not restored here.
+Soju was not restored during this pass, which left the desktop Halloy client
+pointing at a dead address. It is now declared in `nuc-utilities` and Halloy uses
+the MagicDNS name. The backup in `other-state/soju` still has to be restored by
+hand: `main.db` becomes `/var/lib/soju/soju.db`, and `logs/` goes beside it.
