@@ -20,7 +20,7 @@
 
           [servers.soju]
           nickname = "willcl-ark"
-          server = "100.104.49.27"
+          server = "will-nuc.tail1977.ts.net"
           port = 6667
           use_tls = false
 
